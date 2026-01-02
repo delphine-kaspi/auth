@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Raleway:ital,wght@0,100..900;1,100..900&display=swap');
+
+* {
+    font-family: "Raleway", sans-serif;
+ }
+
+:root {
+    --color-lightgreen : #5BC2B1;
+    --color-green : #5BC27D;
+    --color-blue : #5BA0C2;
+    --color-dark : #212529; 
+}
+
+
+.w100px {
+    width: 100px;
+}
+
+.navbar-custom {
+    background-color: #5BC2B1;
+}
+
+.navbar-custom .nav-link,
+.navbar-custom .navbar-brand {
+    color: var(--color-blue);
+}
+
