@@ -9,6 +9,7 @@
     --color-green : #5BC27D;
     --color-blue : #5BA0C2;
     --color-dark : #212529; 
+    --color-white : #f2f0ef;
 }
 
 
@@ -25,3 +26,54 @@
     color: var(--color-blue);
 }
 
+.btn-custom {
+    background-color: var(--color-lightgreen); 
+    color: #212529;
+}
+
+.btn-custom:hover {
+    background-color: var(--color-green); 
+}
+
+.border-2 {
+    border-width: 2px;
+    border-radius: 0.5rem;
+}
+
+.border-green {
+    border-color: var(--color-lightgreen)!important;
+}
+
+.form-control:focus {
+    color: var(--color-dark);
+    background-color: white;
+    border-color: var(--color-lightgreen);
+    box-shadow: none;
+}
+
+footer {
+    color: var(--color-dark);    
+}
+
+footer a {
+    color: var(--color-dark);    
+    text-decoration: underline;
+}
+
+.bg-site {
+    background-color: var(--color-white);
+    min-height: 100vh;
+}
+
+.carousel-item img {
+    height: 80vh; 
+    width: auto;           
+    object-fit: contain;    
+    margin: 0 auto;  
+}
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: var(--color-lightgreen); 
+    border-radius: 0.3rem;
+}

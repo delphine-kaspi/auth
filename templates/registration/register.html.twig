@@ -1,19 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Inscription{% endblock %}
+{% block h1 %}Inscription{% endblock %}
 
 {% block body %}
-    <h1>Register</h1>
+    
+    
 
     {{ form_errors(registrationForm) }}
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
+    {{ form_start(registrationForm, {'attr': {'class':'bg-white col-md-6 mx-auto p-4 border border-2 border-green mb-5'} }) }}
+        {{ form_row(registrationForm.prenom, {'attr': {'class': 'form-control mb-2'}}) }}
+        {{ form_row(registrationForm.nom, {'attr': {'class': 'form-control mb-2'}}) }}
+        {{ form_row(registrationForm.email, {'attr': {'class': 'form-control mb-2'}}) }}
         {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
+            attr : {'class': 'form-control mb-2'}
         }) }}
+        
         {{ form_row(registrationForm.agreeTerms) }}
 
-        <button type="submit" class="btn">Register</button>
+        <button type="submit" class="btn btn-custom w-100 pt-2">S'inscrire</button>
     {{ form_end(registrationForm) }}
 {% endblock %}

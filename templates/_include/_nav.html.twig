@@ -9,10 +9,7 @@
     <div class="collapse navbar-collapse" id="navbarNavDropdown">
         <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
             <li class="nav-item">
-            <a class="nav-link active " aria-current="page" href="#">Accueil</a>
-            </li>
-            <li class="nav-item">
-            <a class="nav-link active " aria-current="page" href="#">Spectacles</a>
+            <a class="nav-link active " aria-current="page" href="{{ path('app_home') }}">Spectacles</a>
             </li>
             <li class="nav-item dropdown">
             <a class="nav-link active dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
@@ -27,12 +24,27 @@
             </li>
             <li class="nav-item"><a class="nav-link active " aria-current="page" href="#">À propos</a></li>
             <li><a class="nav-link active " aria-current="page" href="#">Contact</a></li>
-            <li class="nav-item dropdown">
+            
+
+            <li class="nav-item dropdown">    
             <a class="nav-link active dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                Espace pro
+                Mon compte
             </a>
-            <ul class="dropdown-menu dropdown-menu-end">
-                <li><a class="dropdown-item" href="#">Connexion</a></li>
+                <ul class="dropdown-menu dropdown-menu-end">
+
+                {% if app.user %}
+                
+                <li><a class="dropdown-item" href="#">{{ app.user.prenom }}</a></li>
+                <li><a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a></li>
+
+                {% else %}
+
+                    <li><a class="nav-link active " aria-current="page" href="{{ path('app_login') }}">Connexion</a></li>
+                    <li><a class="nav-link active " aria-current="page" href="{{ path('app_register') }}">Inscription</a></li>
+
+                {% endif %}
+                    
+            
             </ul>
             </li>
             
