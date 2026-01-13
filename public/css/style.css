@@ -72,6 +72,13 @@ footer a {
     margin: 0 auto;  
 }
 
+.rounded-carousel {
+    border-radius: 15px;                    
+    border: 2px solid var(--color-lightgreen); 
+    display: inline-block;                   
+    max-width: 90%;                        
+}
+
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
     background-color: var(--color-lightgreen); 

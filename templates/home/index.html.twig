@@ -5,35 +5,131 @@
 {% block keywords %} {% endblock %}
 
 {% block title %}Kastone Productions{% endblock %}
-{% block h1 %}Nos spectacles{% endblock %}
+{% block h1 %}À l'affiche{% endblock %}
 
 {% block body %}
  
-{# carousel #}
+{# carousel 
 
-    <div id="carouselExample" class="carousel slide mb-5">
-    <div class="carousel-inner">
+ <div id="carouselExample" class="carousel slide mb-5">
+    <div class="carousel-inner text-center">
+
         <div class="carousel-item active">
-        <img src="{{ asset('images/felix_visuel.png')}}" class="d-block w-100" alt="...">
+            <img src="{{ asset('images/felix_visuel.png') }}" class="rounded-carousel" alt="Felix">
         </div>
+
         <div class="carousel-item">
-        <img src="{{ asset('images/elies_visuel.jpg')}}" class="d-block w-100" alt="...">
+            <img src="{{ asset('images/elies_visuel.jpg') }}" class="rounded-carousel" alt="Elies">
         </div>
+
         <div class="carousel-item">
-        <img src="{{ asset('images/meryl_visuel.jpeg')}}" class="d-block w-100" alt="...">
+            <img src="{{ asset('images/meryl_visuel.jpeg') }}" class="rounded-carousel" alt="Meryl">
         </div>
+
         <div class="carousel-item">
-        <img src="{{ asset('images/ayrton_visuel.jpg')}}" class="d-block w-100" alt="...">
+            <img src="{{ asset('images/ayrton_visuel.jpg') }}" class="rounded-carousel" alt="Ayrton">
         </div>
+
     </div>
+
     <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="carousel-control-prev-icon"></span>
         <span class="visually-hidden">Previous</span>
     </button>
+
     <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="carousel-control-next-icon"></span>
         <span class="visually-hidden">Next</span>
     </button>
+</div>#}
+
+{# <div class="container mt-5 mb-5">
+    <div class="row justify-content-center">
+
+        {% for artiste in artistes %}
+
+            <div class="col-md-3 mb-4">
+                <div class="team-card text-center p-3 border border-2 border-green rounded shadow">
+
+                    {% if artiste.photo %}
+
+                        <img src="{{ asset('images/' ~ artiste.photo) }}" class="img-fluid rounded mb-2" alt="Photo de {{ artiste.nom }}">
+
+                    {% else %}
+
+                        <div class="img-placeholder rounded mb-2">Pas de photo</div>
+
+                    {% endif %}
+
+                    <h5>{{ artiste.prenom }} {{ artiste.nom }}</h5>
+                    <p class="text-muted">{{ artiste.bio|slice(0, 80) }}{% if artiste.bio|length > 80 %}
+                    
+                    {% endif %}</p>
+
+                    <div class="mt-2">
+                        <a href="{{ path('app_artiste_show', {'id': artiste.id}) }}" class="btn btn-custom btn-sm">Voir</a>
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}
+
     </div>
+</div> #}
+
+<div class="container mt-5 mb-5">
+
+    <div id="artistesCarousel" class="carousel slide" data-bs-ride="carousel">
+        <div class="carousel-inner">
+
+            {% set chunkedArtistes = artistes|batch(2) %} 
+
+            {% for chunk in chunkedArtistes %}
+
+                <div class="carousel-item {% if loop.first %}active{% endif %}">
+                    <div class="row justify-content-center">
+
+                        {% for artiste in chunk %}
+
+                            <div class="col-12 col-md-6 mb-4 d-flex">
+                                <div class="card text-center border border-2 border-green rounded shadow w-100 p-3 d-flex flex-column" style="height: 450px;">
+
+                                    {% if artiste.photo %}
+
+                                        <img src="{{ asset('images/' ~ artiste.photo) }}" class="img-fluid rounded mb-3" style="max-height: 250px; object-fit: cover;" alt="Photo de {{ artiste.nom }}">
+
+                                    {% else %}
+
+                                        <div class="img-placeholder rounded mb-4 py-5 bg-light text-muted">Pas de photo</div>
+
+                                    {% endif %}
+                                    
+                                    <h5 class="fw-bold mt-auto">{{ artiste.prenom }} {{ artiste.nom }}</h5>
+                                    <p class="text-muted">{{ artiste.bio|slice(0, 200) }}{% if artiste.bio|length > 200 %}...{% endif %}</p>
+                                    <a href="{{ path('app_artiste_show', {'id': artiste.id}) }}" class="btn btn-custom mt-auto">Réservez</a>
+
+                                </div>
+                            </div>
+
+                        {% endfor %}
+
+                    </div>
+                </div>
+
+            {% endfor %}
+
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#artistesCarousel" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#artistesCarousel" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+    </div>
+
+</div>
 
 {% endblock %}

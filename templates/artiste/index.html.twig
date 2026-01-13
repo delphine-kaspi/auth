@@ -17,8 +17,8 @@
             <thead class="table-dark">
                 <tr>
                     <th>Id</th>
-                    <th>Nom</th>
                     <th>Prénom</th>
+                    <th>Nom</th>
                     <th>Photo</th>
                     <th>Bio</th>
                     <th></th>
@@ -32,12 +32,11 @@
                     <td>{{ artiste.prenom }}</td>
                     <td>
                         {% if artiste.photo %}
-                            <img src="{{ asset('uploads/artistes/' ~ artiste.photo) }}" width="80" class="rounded">
+                            <img src="{{ asset('images/' ~ artiste.photo) }}" width="80" class="rounded">
                         {% else %}
                             <span class="text-muted">Aucune photo</span>
                         {% endif %}
                     </td>
-                    <td>{{ artiste.bio|slice(0, 80) }}...</td>
                     <td>
                         <a href="{{ path('app_artiste_show', {'id': artiste.id}) }}" class="btn btn-sm btn-primary">Voir</a>
                         <a href="{{ path('app_artiste_edit', {'id': artiste.id}) }}" class="btn btn-sm btn-warning">Modifier</a>

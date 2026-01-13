@@ -1,12 +1,31 @@
-{{ form_start(form) }}
+{{ form_start(form, {'attr': {'enctype': 'multipart/form-data'}}) }} {# envoyer la photo #}
 
-      {% for child in form %}
-        {% if child.vars.name != 'save' %}
-            {{ form_row(child, {'attr': {'class': 'form-control mb-2'}}) }}
+{% for child in form %}
+    {% if child.vars.name != 'save' %}
+
+        
+        {% if child.vars.name == 'imageFile' %}
+
+            {% if artiste.photo %}
+
+                <div class="mb-2">
+                    <img src="{{ asset('images/' ~ artiste.photo) }}" alt="Photo de {{ artiste.nom }}" width="150">
+                </div>
+
+            {% endif %}
+
         {% endif %}
-        {% endfor %} 
+
+        {{ form_row(child, {'attr': {'class': 'form-control mb-2'}}) }}
+
+    {% endif %}
+
+{% endfor %}
+
     <button type="submit" class="btn btn-custom w-100 mt-3">
+
         {{ button_label|default('Enregistrer') }}
+        
     </button>
 
 {{ form_end(form) }}

@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}À propos{% endblock %}
+{% block h1 %}À propos{% endblock %}
+
+{% block body %}
+
+<div class="container mt-5 mb-5">
+
+    <div class="bg-white p-4 border border-2 border-green rounded shadow mb-5">
+        <h2 class="mb-3 text-center">Kastone Productions</h2>
+        <p>
+            Kastone Productions est une compagnie de théâtre passionnée par la création et la diffusion de spectacles vivants.
+            Depuis sa création, notre mission est de proposer des expériences uniques au public, alliant qualité artistique et accessibilité.
+        </p>
+        <p>
+            Nous travaillons avec des artistes talentueux pour créer des pièces originales, des adaptations modernes et des collaborations innovantes.
+        </p>
+        <p>
+            Que vous soyez spectateur régulier ou nouveau venu dans le monde du théâtre, nous vous invitons à découvrir notre univers et à partager des moments inoubliables avec nous.
+        </p>
+    </div>
+
+    <h3 class="mb-4 text-center">Notre équipe</h3>
+    <div class="row justify-content-center">
+
+        <div class="col-md-3 mb-4">
+            <div class="team-card text-center p-3 border border-2 border-green rounded shadow">
+                <img src="{{ asset('images/logo3.png') }}" class="img-fluid rounded mb-2" alt="Artiste 1">
+                <h5>Thomas Escaffre Stone</h5>
+                <p class="text-muted">Grande directrice</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="team-card text-center p-3 border border-2 border-green rounded shadow">
+                <img src="{{ asset('images/logo3.png') }}" class="img-fluid rounded mb-2" alt="logo">
+                <h5>Zoé</h5>
+                <p class="text-muted">Adjointe</p>
+            </div>
+        </div>
+
+        <div class="col-md-3 mb-4">
+            <div class="team-card text-center p-3 border border-2 border-green rounded shadow">
+                <img src="{{ asset('images/logo3.png') }}" class="img-fluid rounded mb-2" alt="logo">
+                <h5>Gianni</h5>
+                <p class="text-muted">Adjoint</p>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+{% endblock %}

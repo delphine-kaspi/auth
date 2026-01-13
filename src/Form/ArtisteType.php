@@ -5,7 +5,9 @@ namespace App\Form;
 use App\Entity\Artiste;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\Validator\Constraints\File;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 class ArtisteType extends AbstractType
 {
@@ -13,8 +15,21 @@ class ArtisteType extends AbstractType
     {
         $builder
             ->add('nom')
-            ->add('prenom')
-            ->add('photo')
+            ->add('prenom', null, [
+                'label' => 'Prénom'
+                ])
+            ->add('imageFile', FileType::class, [
+                'label' => 'Photo',
+                'mapped' => false,       
+                'required' => false,     
+                'constraints' => [
+            new File([
+                'maxSize' => '10M',
+                'mimeTypes' => ['image/jpeg', 'image/png', 'image/webp'],
+                'mimeTypesMessage' => 'Merci d\'envoyer une image valide (jpg, png, webp)',
+            ])
+        ],
+    ])
             ->add('bio')
         ;
     }

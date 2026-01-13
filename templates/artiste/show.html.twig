@@ -1,38 +1,43 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Artiste{% endblock %}
+{% block title %}{{ artiste.prenom }} {{ artiste.nom }}{% endblock %}
+{% block h1 %}{{ artiste.prenom }} {{ artiste.nom }}{% endblock %}
 
 {% block body %}
-    <h1>Artiste</h1>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ artiste.id }}</td>
-            </tr>
-            <tr>
-                <th>Nom</th>
-                <td>{{ artiste.nom }}</td>
-            </tr>
-            <tr>
-                <th>Prénom</th>
-                <td>{{ artiste.prenom }}</td>
-            </tr>
-            <tr>
-                <th>Photo</th>
-                <td>{{ artiste.photo }}</td>
-            </tr>
-            <tr>
-                <th>Bio</th>
-                <td>{{ artiste.bio }}</td>
-            </tr>
-        </tbody>
-    </table>
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
 
-    <a href="{{ path('app_artiste_index') }}">back to list</a>
+            <div class="card border border-2 border-green rounded shadow p-4">
 
-    <a href="{{ path('app_artiste_edit', {'id': artiste.id}) }}">edit</a>
+                {% if artiste.photo %}
 
-    {{ include('artiste/_delete_form.html.twig') }}
+                    <img src="{{ asset('images/' ~ artiste.photo) }}" class="img-fluid rounded mb-4" alt="Photo de {{ artiste.nom }}" style="max-height: 400px; object-fit: cover;">
+
+                {% endif %}
+
+                <h2 class="fw-bold">{{ artiste.prenom }} {{ artiste.nom }}</h2>
+
+                {% if artiste.bio %}
+
+                    <p class="mt-3">{{ artiste.bio }}</p>
+
+                {% else %}
+
+                    <p class="text-muted">Aucune biographie disponible.</p>
+
+                {% endif %}
+
+                <div class="mt-4 text-center">
+
+                    <a href="{{ path('app_artiste_index') }}" class="btn btn-secondary me-2">Retour à la liste</a>
+                    <a href="{{ path('app_artiste_edit', {'id': artiste.id}) }}" class="btn btn-custom">Modifier</a>
+                    
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 {% endblock %}
