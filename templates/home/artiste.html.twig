@@ -1,15 +1,66 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-	{{ artiste.prenom }}
-	{{ artiste.nom }}
+    {{ artiste.prenom }} {{ artiste.nom }}
 {% endblock %}
+
 {% block h1 %}
-	{{ artiste.prenom }}
-	{{ artiste.nom }}
+    {{ artiste.prenom }} {{ artiste.nom }}
 {% endblock %}
 
 {% block body %}
 
+<div class="container my-5">
+
+    <div class="row mb-5 align-items-center">
+        {% if artiste.photo %}
+            <div class="col-md-4">
+                <img src="{{ asset('images/' ~ artiste.photo) }}" 
+                     class="img-fluid rounded shadow-sm" 
+                     alt="Photo de {{ artiste.nom }}" 
+                     style="max-height: 400px; object-fit: cover;">
+            </div>
+        {% endif %}
+
+        <div class="col-md-8 d-flex flex-column justify-content-center">
+            {% if artiste.bio %}
+                <p class="lead">{{ artiste.bio }}</p>
+            {% else %}
+                <p class="text-muted">Pas de bio pour cet artiste.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <h2 class="mb-3 text-center">Ses spectacles</h2>
+
+    {% if artiste.spectacles|length > 0 %}
+        <div class="row justify-content-center">
+            {% for spectacle in artiste.spectacles %}
+                <div class="col-md-6 mb-4">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ spectacle.titre }}</h5>
+                            {% if spectacle.description %}
+                                <p class="card-text">{{ spectacle.description }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="card-footer text-center">
+                            <a href="{{ path('reservation', { id: spectacle.id }) }}" 
+                               class="btn btn-primary">
+                               Réserver
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-muted text-center">Aucun spectacle pour le moment.</p>
+        <div class="text-center mt-3">
+            <a href="#" class="btn btn-custom">Réserver</a>
+        </div>
+    {% endif %}
+
+</div>
 
 {% endblock %}
