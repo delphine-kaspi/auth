@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Representation
+{% endblock %}
+
+{% block body %}
+	<h1>Representation</h1>
+
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>Id</th>
+				<td>{{ representation.id }}</td>
+			</tr>
+			<tr>
+				<th>DateRepresentation</th>
+				<td>{{ representation.dateRepresentation ? representation.dateRepresentation|date('Y-m-d') : '' }}</td>
+			</tr>
+			<tr>
+				<th>HeureRepresentation</th>
+				<td>{{ representation.heureRepresentation ? representation.heureRepresentation|date('H:i:s') : '' }}</td>
+			</tr>
+			<tr>
+				<th>Prix</th>
+				<td>{{ representation.prix }}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<a href="{{ path('app_admin_representation_index', {'id': representation.spectacle.id}) }}">back to list</a>
+
+	<a href="{{ path('app_admin_representation_edit', {'id': representation.id}) }}">edit</a>
+
+	{{ include('admin_representation/_delete_form.html.twig') }}
+{% endblock %}

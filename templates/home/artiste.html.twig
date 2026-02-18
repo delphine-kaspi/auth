@@ -45,10 +45,22 @@
                             {% endif %}
                         </div>
                         <div class="card-footer text-center">
-                            <a href="{{ path('reservation', { id: spectacle.id }) }}" 
-                               class="btn btn-primary">
-                               Réserver
-                            </a>
+                            {% if spectacle.representations|length > 0 %}
+                                <div class="dropdown">
+                                    <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">Réserver</button>
+                                    <ul class="dropdown-menu">
+                                        {% for representation in spectacle.representations %}
+                                            <li>
+                                                <a class="dropdown-item" href="{{ path('reservation', { id: representation.id }) }}">
+                                                    {{ representation.dateRepresentation|date('d/m/Y') }} à {{ representation.heureRepresentation|date('H:i') }}
+                                                </a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            {% else %}
+                                <span class="text-muted">Aucune représentation disponible</span>
+                            {% endif %}
                         </div>
                     </div>
                 </div>

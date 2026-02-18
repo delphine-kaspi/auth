@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réservation{% endblock %}
+
+{% block body %}
+
+    <div class="container my-5">
+
+        <div class="bg-white col-md-6 mx-auto p-4 border border-2 border-green rounded shadow">
+
+            <h2 class="text-center mb-4">Réservez votre place</h2>
+
+            <div class="mb-3">
+                <p class="mb-1">
+                    <span class="text-muted">Représentation :</span>
+                    <strong>{{ representation.spectacle.titre }}</strong>
+                </p>
+                <p class="mb-0">
+                    <span class="text-muted">Artiste :</span>
+                    {{ representation.spectacle.artiste.prenom }} {{ representation.spectacle.artiste.nom }}
+                </p>
+            </div>
+
+            <hr>
+
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    ✅ {{ message }}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            {% endfor %}
+
+            {{ form_start(form) }}
+                {{ form_row(form.nbPlace, {
+                    'label': 'Nombre de places',
+                    'attr': {'class': 'form-control', 'min': 1},
+                    'label_attr': {'class': 'form-label fw-semibold'}
+                }) }}
+                <div class="d-grid mt-3">
+                    {{ form_row(form.submit, {
+                        'label': 'Confirmez ma réservation',
+                        'attr': {'class': 'btn w-100', 'style': 'background-color: var(--color-lightgreen); color: white;'}
+                    }) }}
+                </div>
+            {{ form_end(form) }}
+
+        </div>
+
+    </div>
+
+{% endblock %}

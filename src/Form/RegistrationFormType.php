@@ -4,15 +4,16 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Email;
 use Symfony\Component\Validator\Constraints\IsTrue;
-use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Validator\Constraints\Regex;
 
 class RegistrationFormType extends AbstractType
 {
@@ -75,27 +76,40 @@ class RegistrationFormType extends AbstractType
                     ]),
                 ],
             ])
-            ->add('plainPassword', PasswordType::class, [
-                // instead of being set onto the object directly,
-                // this is read and encoded in the controller
-                'mapped' => false,
-                'label' => 'Mot de passe <span>*</span>',
-                'label_html' => true,
-                'required' => false,
-                'attr' => ['autocomplete' => 'new-password',
-                    'placeholder' => 'Saisir un mot de passe'
-            ],
+            ->add('plainPassword', RepeatedType::class, [
+                'type' => PasswordType::class,
+                'options' => [
+                    'attr' => [
+                        'autocomplete' => 'new-password',
+                    ],
+                ],
+                'first_options' => [
+                    'label' => 'Mot de passe <span>*</span>',
+                    'label_html' => true,
+                    'attr' => [
+                        'placeholder' => 'Saisissez votre mot de passe',
+                    ],
+                ],
+                'second_options' => [
+                    'label' => 'Confimation du mot de passe <span>*</span>',
+                    'label_html' => true,
+                    'attr' => [
+                        'placeholder' => 'Confirmez votre mot de passe',
+                    ],
+                ],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez saisir un mot de passe',
                     ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => 'Mot de passe incorrect',
-                        // max length allowed by Symfony for security reasons
-                        'max' => 4096,
-                    ]),
+                    new Regex([
+                        'pattern' => '/^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[+!%&@.\-_]).{12,}$/',
+                        'match' => true,
+                        'message' => 'Votre mot de passe doit comporter au moins douze caracteres, au moins une lettre majuscule et une minuscule, un chiffre et un symbole : + ! * $ @ % _ - .'
+                    ])
                 ],
+                'invalid_message' => 'Les mots de passe doivent être identiques.',
+                'required' => false,
+                'mapped' => false,
             ])
         ;
     }

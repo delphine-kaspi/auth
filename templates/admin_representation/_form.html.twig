@@ -1,0 +1,39 @@
+{{ form_start(form) }}
+
+    <div class="mb-3">
+        {{ form_row(form.dateRepresentation, {
+            'label': 'Date de la représentation',
+            'attr': {'class': 'form-control'},
+            'label_attr': {'class': 'form-label fw-semibold'}
+        }) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_row(form.heureRepresentation, {
+            'label': 'Heure de la représentation',
+            'attr': {'class': 'form-control'},
+            'label_attr': {'class': 'form-label fw-semibold'}
+        }) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_row(form.prix, {
+            'label': 'Prix',
+            'attr': {'class': 'form-control'},
+            'label_attr': {'class': 'form-label fw-semibold'}
+        }) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_row(form.salle, {
+            'label': 'Salle',
+            'attr': {'class': 'form-select'},
+            'label_attr': {'class': 'form-label fw-semibold'}
+        }) }}
+    </div>
+
+    <div class="d-grid mt-3">
+        <button class="btn btn-green">{{ button_label|default('Enregistrer') }}</button>
+    </div>
+
+{{ form_end(form) }}

@@ -1,0 +1,10 @@
+{% extends "email/base.html.twig" %}
+
+{% block body %}
+
+    <p>Pour activer votre compte, veuillez cliquer sur le lien suivant :</p>
+
+    <a href="{{ url('', {token: resetToken.token}) }}">{{ url('', {token: }) }}</a>
+    
+
+{% endblock %}

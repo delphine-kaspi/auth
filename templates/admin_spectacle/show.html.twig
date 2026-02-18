@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Spectacle
+{% endblock %}
+
+{% block body %}
+	<h1>Spectacle</h1>
+
+	<table class="table">
+		<tbody>
+			<tr>
+				<th>Id</th>
+				<td>{{ spectacle.id }}</td>
+			</tr>
+			<tr>
+				<th>Titre</th>
+				<td>{{ spectacle.titre }}</td>
+			</tr>
+			<tr>
+				<th>Description</th>
+				<td>{{ spectacle.description }}</td>
+			</tr>
+			<tr>
+				<th>Duree</th>
+				<td>{{ spectacle.duree }}</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<a href="{{ path('app_admin_spectacle_index', {'id': spetacle.artiste.id}) }}">back to list</a>
+
+	<a href="{{ path('app_admin_spectacle_edit', {'id': spectacle.id}) }}">edit</a>
+
+	{{ include('admin_spectacle/_delete_form.html.twig') }}
+{% endblock %}

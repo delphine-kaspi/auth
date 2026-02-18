@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Spectacles{% endblock %}
+
+{% block body %}
+
+    <div class="container my-5">
+        <div class="bg-white col-md-10 mx-auto p-4 border border-2 border-green rounded shadow">
+
+            <h2 class="text-center mb-4">Spectacles de {{ artiste.prenom }} {{ artiste.nom }}</h2>
+
+            <div class="d-flex justify-content-between mb-3">
+                <a href="{{ path('app_admin_artiste_index') }}" class="btn btn-secondary">
+                    Retour à la liste
+                </a>
+                <a href="{{ path('app_admin_spectacle_new', {'id': artiste.id}) }}" class="btn btn-custom">
+                    Ajouter un spectacle
+                </a>
+            </div>
+
+            <table class="table table-striped table-hover align-middle text-center">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Id</th>
+                        <th>Titre</th>
+                        <th>Description</th>
+                        <th>Durée</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for spectacle in spectacles %}
+                        <tr>
+                            <td>{{ spectacle.id }}</td>
+                            <td>{{ spectacle.titre }}</td>
+                            <td>{{ spectacle.description }}</td>
+                            <td>{{ spectacle.duree }}</td>
+                            <td>
+                                <a href="{{ path('app_admin_spectacle_show', {'id': spectacle.id}) }}" class="btn btn-sm btn-primary">Voir</a>
+                                <a href="{{ path('app_admin_spectacle_edit', {'id': spectacle.id}) }}" class="btn btn-sm btn-warning">Modifier</a>
+                                <a href="{{ path('app_admin_representation_index', {'id': spectacle.id}) }}" class="btn btn-sm btn-warning">Représentations</a>
+                            </td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td colspan="5" class="text-center">Aucun spectacle pour le moment</td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+
+{% endblock %}

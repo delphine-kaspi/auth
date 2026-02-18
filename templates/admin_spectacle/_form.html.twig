@@ -1,0 +1,31 @@
+{{ form_start(form) }}
+
+    <div class="mb-3">
+        {{ form_row(form.titre, {
+            'label': 'Titre',
+            'attr': {'class': 'form-control'},
+            'label_attr': {'class': 'form-label fw-semibold'}
+        }) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_row(form.description, {
+            'label': 'Description',
+            'attr': {'class': 'form-control'},
+            'label_attr': {'class': 'form-label fw-semibold'}
+        }) }}
+    </div>
+
+    <div class="mb-3">
+        {{ form_row(form.duree, {
+            'label': 'Durée',
+            'attr': {'class': 'form-control'},
+            'label_attr': {'class': 'form-label fw-semibold'}
+        }) }}
+    </div>
+
+    <div class="d-grid mt-3">
+        <button class="btn btn-green">{{ button_label|default('Enregistrer') }}</button>
+    </div>
+
+{{ form_end(form) }}

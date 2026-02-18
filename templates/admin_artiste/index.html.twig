@@ -42,6 +42,8 @@
 							<td>
 								<a href="{{ path('app_admin_artiste_show', {'id': artiste.id}) }}" class="btn btn-sm btn-primary">Voir</a>
 								<a href="{{ path('app_admin_artiste_edit', {'id': artiste.id}) }}" class="btn btn-sm btn-warning">Modifier</a>
+								<a href="{{ path('app_admin_spectacle_index', {'id': artiste.id}) }}" class="btn btn-sm btn-warning">Spectacles</a>
+
 							</td>
 						</tr>
 					{% else %}
