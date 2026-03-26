@@ -1,24 +1,20 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}
-    {{ artiste.prenom }} {{ artiste.nom }}
-{% endblock %}
-
-{% block h1 %}
-    {{ artiste.prenom }} {{ artiste.nom }}
-{% endblock %}
+{% block title %}{{ artiste.prenom }} {{ artiste.nom }}{% endblock %}
+{% block h1 %}{{ artiste.prenom }} {{ artiste.nom }}{% endblock %}
 
 {% block body %}
 
 <div class="container my-5">
 
+    {# Bio #}
     <div class="row mb-5 align-items-center">
         {% if artiste.photo %}
-            <div class="col-md-4">
-                <img src="{{ asset('images/' ~ artiste.photo) }}" 
-                     class="img-fluid rounded shadow-sm" 
-                     alt="Photo de {{ artiste.nom }}" 
-                     style="max-height: 400px; object-fit: cover;">
+            <div class="col-md-4 mb-4 mb-md-0">
+                <img src="{{ asset('images/' ~ artiste.photo) }}"
+                     class="img-fluid rounded shadow-sm w-100"
+                     style="max-height: 400px; object-fit: cover;"
+                     alt="Photo de {{ artiste.prenom }} {{ artiste.nom }}">
             </div>
         {% endif %}
 
@@ -31,46 +27,81 @@
         </div>
     </div>
 
-    <h2 class="mb-3 text-center">Ses spectacles</h2>
-
+    {# Spectacles et représentations #}
     {% if artiste.spectacles|length > 0 %}
-        <div class="row justify-content-center">
-            {% for spectacle in artiste.spectacles %}
-                <div class="col-md-6 mb-4">
-                    <div class="card h-100 shadow-sm">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ spectacle.titre }}</h5>
-                            {% if spectacle.description %}
-                                <p class="card-text">{{ spectacle.description }}</p>
-                            {% endif %}
-                        </div>
-                        <div class="card-footer text-center">
-                            {% if spectacle.representations|length > 0 %}
-                                <div class="dropdown">
-                                    <button class="btn btn-primary dropdown-toggle" type="button" data-bs-toggle="dropdown">Réserver</button>
-                                    <ul class="dropdown-menu">
-                                        {% for representation in spectacle.representations %}
-                                            <li>
-                                                <a class="dropdown-item" href="{{ path('reservation', { id: representation.id }) }}">
-                                                    {{ representation.dateRepresentation|date('d/m/Y') }} à {{ representation.heureRepresentation|date('H:i') }}
-                                                </a>
-                                            </li>
-                                        {% endfor %}
-                                    </ul>
-                                </div>
-                            {% else %}
-                                <span class="text-muted">Aucune représentation disponible</span>
-                            {% endif %}
-                        </div>
-                    </div>
+
+        {% for spectacle in artiste.spectacles %}
+
+            <div class="spectacle-block mb-5">
+                <div class="spectacle-header">
+                    <h2 class="spectacle-titre">{{ spectacle.titre }}</h2>
+                    {% if spectacle.duree %}
+                        <span class="spectacle-duree">⏱ {{ spectacle.duree }} min</span>
+                    {% endif %}
                 </div>
-            {% endfor %}
-        </div>
+
+                {% if spectacle.description %}
+                    <p class="spectacle-description">{{ spectacle.description }}</p>
+                {% endif %}
+
+                {% if spectacle.representations|length > 0 %}
+
+                    {# Sépare à venir / passées #}
+                    {% set repros_a_venir = [] %}
+                    {% set repros_passees = [] %}
+                    {% for rep in spectacle.representations %}
+                        {% if rep.dateRepresentation >= date() %}
+                            {% set repros_a_venir = repros_a_venir|merge([rep]) %}
+                        {% else %}
+                            {% set repros_passees = repros_passees|merge([rep]) %}
+                        {% endif %}
+                    {% endfor %}
+
+                    {% if repros_a_venir|length > 0 %}
+                        <h3 class="repros-section-title">Dates disponibles</h3>
+                        <div class="table-responsive">
+                            <table class="table-repros">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Heure</th>
+                                        <th>Salle</th>
+                                        <th>Ville</th>
+                                        <th>Prix</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for rep in repros_a_venir %}
+                                        <tr>
+                                            <td>{{ rep.dateRepresentation|date('d/m/Y') }}</td>
+                                            <td>{{ rep.heureRepresentation|date('H:i') }}</td>
+                                            <td>{{ rep.salle.nom }}</td>
+                                            <td>{{ rep.salle.ville }}</td>
+                                            <td><strong>{{ rep.prix }} €</strong></td>
+                                            <td>
+                                                <a href="{{ path('reservation', { id: rep.id }) }}" class="btn-reserver">
+                                                    Réserver
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="text-muted">Aucune représentation à venir pour ce spectacle.</p>
+                    {% endif %}
+
+                {% else %}
+                    <p class="text-muted">Aucune représentation programmée.</p>
+                {% endif %}
+            </div>
+
+        {% endfor %}
+
     {% else %}
         <p class="text-muted text-center">Aucun spectacle pour le moment.</p>
-        <div class="text-center mt-3">
-            <a href="#" class="btn btn-custom">Réserver</a>
-        </div>
     {% endif %}
 
 </div>

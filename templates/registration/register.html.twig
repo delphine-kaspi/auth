@@ -4,21 +4,84 @@
 {% block h1 %}Inscription{% endblock %}
 
 {% block body %}
-    
-    
 
-    {{ form_errors(registrationForm) }}
+{{ form_errors(registrationForm) }}
 
-    {{ form_start(registrationForm, {'attr': {'class':'bg-white col-md-6 mx-auto p-4 border border-2 border-green mb-5'} }) }}
-        {{ form_row(registrationForm.prenom, {'attr': {'class': 'form-control mb-2'}}) }}
-        {{ form_row(registrationForm.nom, {'attr': {'class': 'form-control mb-2'}}) }}
-        {{ form_row(registrationForm.email, {'attr': {'class': 'form-control mb-2'}}) }}
-        {{ form_row(registrationForm.plainPassword, {
-            attr : {'class': 'form-control mb-2'}
-        }) }}
-        
-        {{ form_row(registrationForm.agreeTerms) }}
+{{ form_start(registrationForm, {'attr': {'class': 'register-card', 'novalidate': 'novalidate'}}) }}
 
-        <button type="submit" class="btn btn-custom w-100 pt-2">S'inscrire</button>
-    {{ form_end(registrationForm) }}
+    {# Prénom #}
+    <div class="form-field-group">
+        {{ form_label(registrationForm.prenom, null, {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(registrationForm.prenom, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(registrationForm.prenom) }}
+    </div>
+
+    {# Nom #}
+    <div class="form-field-group">
+        {{ form_label(registrationForm.nom, null, {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(registrationForm.nom, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(registrationForm.nom) }}
+    </div>
+
+    {# Email #}
+    <div class="form-field-group">
+        {{ form_label(registrationForm.email, null, {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
+        {{ form_errors(registrationForm.email) }}
+    </div>
+
+    {# Mot de passe #}
+    <div class="form-field-group">
+        {{ form_label(registrationForm.plainPassword.first, null, {'label_attr': {'class': 'form-label'}}) }}
+        <div class="password-wrapper">
+            {{ form_widget(registrationForm.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
+            <button type="button" class="toggle-password" onclick="togglePassword(this)" aria-label="Afficher/masquer le mot de passe">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+                </svg>
+            </button>
+        </div>
+        {{ form_errors(registrationForm.plainPassword.first) }}
+    </div>
+
+    {# Confirmation mot de passe #}
+    <div class="form-field-group">
+        {{ form_label(registrationForm.plainPassword.second, null, {'label_attr': {'class': 'form-label'}}) }}
+        <div class="password-wrapper">
+            {{ form_widget(registrationForm.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
+            <button type="button" class="toggle-password" onclick="togglePassword(this)" aria-label="Afficher/masquer le mot de passe">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+                </svg>
+            </button>
+        </div>
+        {{ form_errors(registrationForm.plainPassword.second) }}
+    </div>
+
+    {# Conditions d'utilisation - checkbox à gauche du texte #}
+    <div class="agree-terms-row">
+        {{ form_widget(registrationForm.agreeTerms) }}
+        <label for="{{ registrationForm.agreeTerms.vars.id }}">
+            J'accepte les <a href="{{ path('app_cgv') }}" target="_blank">conditions générales de vente.</a> <span>*</span>
+        </label>
+    </div>
+    {{ form_errors(registrationForm.agreeTerms) }}
+
+    <button type="submit" class="btn-register">S'inscrire</button>
+
+{{ form_end(registrationForm) }}
+
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    function togglePassword(btn) {
+        const input = btn.previousElementSibling;
+        const isPassword = input.type === 'password';
+        input.type = isPassword ? 'text' : 'password';
+        btn.style.color = isPassword ? '#4db6ac' : '#888';
+}
+</script>
 {% endblock %}

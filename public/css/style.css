@@ -84,3 +84,493 @@ footer a {
     background-color: var(--color-lightgreen); 
     border-radius: 0.3rem;
 }
+
+/* ===== PAGE INSCRIPTION ===== */
+
+.register-card {
+    background: #fff;
+    border: 2px solid #4db6ac;
+    border-radius: 12px;
+    padding: 2rem;
+    max-width: 600px;
+    margin: 0 auto 3rem auto;
+}
+
+.register-card .form-label {
+    font-weight: 600;
+    color: #2c2c2c;
+    margin-bottom: 4px;
+}
+
+.register-card .form-control {
+    border: 1.5px solid #ced4da;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-size: 15px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.register-card .form-control:focus {
+    border-color: #4db6ac;
+    box-shadow: 0 0 0 3px rgba(77, 182, 172, 0.2);
+    outline: none;
+}
+
+.register-card .form-control.is-invalid {
+    border-color: #dc3545;
+}
+
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper .form-control {
+    padding-right: 44px;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    color: #888;
+    line-height: 1;
+}
+
+.toggle-password:hover {
+    color: #4db6ac;
+}
+
+.agree-terms-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 1.2rem;
+}
+
+.agree-terms-row input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    flex-shrink: 0;
+    accent-color: #4db6ac;
+    cursor: pointer;
+    margin: 0;
+}
+
+.agree-terms-row label {
+    font-size: 14px;
+    color: #444;
+    margin: 0;
+    cursor: pointer;
+}
+
+.agree-terms-row label a {
+    color: #4db6ac;
+    text-decoration: underline;
+}
+
+.agree-terms-row label a:hover {
+    color: #00897b;
+}
+
+.invalid-feedback {
+    font-size: 13px;
+    color: #dc3545;
+    margin-top: 4px;
+}
+
+.btn-register {
+    background-color: #4db6ac;
+    border: none;
+    color: #fff;
+    font-weight: 700;
+    font-size: 16px;
+    border-radius: 8px;
+    padding: 12px;
+    width: 100%;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.btn-register:hover {
+    background-color: #00897b;
+    color: #fff;
+    transform: translateY(-1px);
+}
+
+.btn-register:active {
+    transform: translateY(0);
+}
+
+.form-field-group {
+    margin-bottom: 1.1rem;
+}
+
+/* PAGE CONFIRMATION RÉSERVATION */
+
+.confirmation-card {
+    max-width: 580px;
+    margin: 0 auto 3rem auto;
+    background: #fff;
+    border: 2px solid #4db6ac;
+    border-radius: 12px;
+    padding: 2rem;
+}
+
+.confirmation-icon {
+    font-size: 48px;
+    text-align: center;
+    margin-bottom: 0.5rem;
+}
+
+.confirmation-msg {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    color: #2c2c2c;
+    margin-bottom: 1.5rem;
+}
+
+.recap-block {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 1.2rem 1.5rem;
+    margin-bottom: 1rem;
+}
+
+.recap-block h2 {
+    font-size: 16px;
+    font-weight: 700;
+    color: #4db6ac;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin-bottom: 1rem;
+}
+
+.recap-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid #eeeeee;
+    font-size: 15px;
+}
+
+.recap-row:last-child {
+    border-bottom: none;
+}
+
+.recap-label {
+    color: #666;
+    font-weight: 500;
+}
+
+/* NAVBAR PANIER */
+
+.nav-panier {
+    color: inherit;
+    transition: color 0.2s, transform 0.2s;
+    padding: 6px 10px;
+}
+
+.nav-panier:hover {
+    color: #4db6ac;
+    transform: scale(1.15);
+}
+
+/* ===== PAGE PANIER ===== */
+
+.panier-wrapper {
+    max-width: 680px;
+    margin: 0 auto 3rem auto;
+    padding: 0 1rem;
+}
+
+.panier-empty {
+    text-align: center;
+    padding: 3rem 0;
+}
+
+.panier-empty-icon {
+    font-size: 56px;
+    margin-bottom: 0.5rem;
+}
+
+.panier-empty-msg {
+    font-size: 17px;
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+.panier-card {
+    background: #fff;
+    border: 2px solid #4db6ac;
+    border-radius: 12px;
+    margin-bottom: 1.2rem;
+    overflow: hidden;
+}
+
+.panier-card-header {
+    background: #4db6ac;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 18px;
+}
+
+.panier-titre {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.panier-prix-total {
+    font-size: 16px;
+    font-weight: 700;
+    color: #fff;
+}
+
+.panier-card-body {
+    padding: 1rem 1.5rem;
+}
+
+.panier-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 0;
+    border-bottom: 1px solid #eeeeee;
+    font-size: 14px;
+}
+
+.panier-row:last-child {
+    border-bottom: none;
+}
+
+.panier-label {
+    color: #666;
+    font-weight: 500;
+}
+
+.panier-value {
+    color: #2c2c2c;
+    font-weight: 600;
+    text-align: right;
+}
+
+.panier-total-general {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #f8f9fa;
+    border: 2px solid #4db6ac;
+    border-radius: 8px;
+    padding: 14px 20px;
+    font-size: 18px;
+    font-weight: 700;
+    color: #2c2c2c;
+    margin-top: 0.5rem;
+}
+
+.panier-total-general span:last-child {
+    color: #4db6ac;
+}
+
+/* ===== CAROUSEL ARTISTES (INDEX) ===== */
+
+.card-artiste {
+    background: #fff;
+    border: 2px solid #4db6ac;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+    height: 100%;
+}
+
+.card-artiste-img {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+}
+
+.card-artiste-img-placeholder {
+    width: 100%;
+    height: 260px;
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #aaa;
+    font-size: 14px;
+}
+
+.card-artiste-body {
+    padding: 1.2rem;
+}
+
+.card-artiste-name {
+    font-size: 18px;
+    font-weight: 700;
+    color: #2c2c2c;
+    margin-bottom: 0.5rem;
+}
+
+.card-artiste-bio {
+    font-size: 14px;
+    color: #555;
+    line-height: 1.6;
+    margin-bottom: 1rem;
+}
+
+.card-artiste-repros {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.repros-label {
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #4db6ac;
+    margin-bottom: 4px;
+}
+
+.repro-badge {
+    display: inline-block;
+    background: #f0fafa;
+    border: 1px solid #4db6ac;
+    border-radius: 6px;
+    padding: 5px 10px;
+    font-size: 13px;
+    color: #2c2c2c;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+}
+
+.repro-badge:hover {
+    background: #4db6ac;
+    color: #fff;
+}
+
+.btn-artiste {
+    display: block;
+    text-align: center;
+    background-color: #4db6ac;
+    color: #fff;
+    font-weight: 700;
+    font-size: 14px;
+    padding: 9px;
+    border-radius: 8px;
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+
+.btn-artiste:hover {
+    background-color: #00897b;
+    color: #fff;
+}
+
+/* PAGE ARTISTES */
+
+.spectacle-block {
+    background: #fff;
+    border: 2px solid #4db6ac;
+    border-radius: 12px;
+    padding: 1.5rem;
+}
+
+.spectacle-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.8rem;
+}
+
+.spectacle-titre {
+    font-size: 22px;
+    font-weight: 700;
+    color: #2c2c2c;
+    margin: 0;
+}
+
+.spectacle-duree {
+    font-size: 13px;
+    color: #4db6ac;
+    font-weight: 600;
+    background: #f0fafa;
+    border: 1px solid #4db6ac;
+    border-radius: 20px;
+    padding: 3px 10px;
+    white-space: nowrap;
+}
+
+.spectacle-description {
+    font-size: 15px;
+    color: #555;
+    line-height: 1.7;
+    margin-bottom: 1.2rem;
+}
+
+.repros-section-title {
+    font-size: 15px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: #4db6ac;
+    margin-bottom: 0.8rem;
+}
+
+.table-repros {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.table-repros thead tr {
+    background: #4db6ac;
+    color: #fff;
+}
+
+.table-repros th {
+    padding: 10px 14px;
+    font-weight: 600;
+    text-align: left;
+}
+
+.table-repros tbody tr {
+    border-bottom: 1px solid #eee;
+    transition: background 0.15s;
+}
+
+.table-repros tbody tr:hover {
+    background: #f0fafa;
+}
+
+.table-repros td {
+    padding: 10px 14px;
+    color: #2c2c2c;
+    vertical-align: middle;
+}
+
+.btn-reserver {
+    display: inline-block;
+    background: #4db6ac;
+    color: #fff;
+    font-weight: 700;
+    font-size: 13px;
+    padding: 6px 14px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+
+.btn-reserver:hover {
+    background: #00897b;
+    color: #fff;
+}

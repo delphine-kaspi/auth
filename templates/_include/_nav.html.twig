@@ -7,7 +7,7 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="navbarNavDropdown">
-			<ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+			<ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
 				<li class="nav-item">
 					<a class="nav-link active " aria-current="page" href="{{ path('app_home') }}">Spectacles</a>
 				</li>
@@ -15,9 +15,7 @@
 					<a class="nav-link active dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 						Artistes
 					</a>
-					<ul
-						class="dropdown-menu">
-
+					<ul class="dropdown-menu">
 						{% for artiste in parameter.artistes %}
 							<li>
 								<a class="dropdown-item" href="{{ path('app_artiste_show', {'id' : artiste.id })}}">{{ artiste.prenom }} {{ artiste.nom }}</a>
@@ -37,34 +35,37 @@
 					<a href="{{ path('app_admin_artiste_index') }}">Gestion artistes</a>
 				{% endif %}
 
+				{# Icône panier — visible uniquement si connecté #}
+				{% if app.user %}
+					<li class="nav-item">
+						<a class="nav-link nav-panier" href="{{ path('app_panier') }}" title="Mes réservations">
+							<svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" fill="currentColor" viewBox="0 0 16 16">
+								<path d="M8 1a2.5 2.5 0 0 1 2.5 2.5V4h-5v-.5A2.5 2.5 0 0 1 8 1zm3.5 3v-.5a3.5 3.5 0 1 0-7 0V4H1v10a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V4h-3.5zM2 5h12v9a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V5z"/>
+							</svg>
+						</a>
+					</li>
+				{% endif %}
 
 				<li class="nav-item dropdown">
 					<a class="nav-link active dropdown-toggle " href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 						Mon compte
 					</a>
 					<ul class="dropdown-menu dropdown-menu-end">
-
 						{% if app.user %}
-
 							<li>
 								<a class="dropdown-item" href="#">{{ app.user.prenom }}</a>
 							</li>
 							<li>
 								<a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a>
 							</li>
-
 						{% else %}
-
 							<li>
 								<a class="nav-link active " aria-current="page" href="{{ path('app_login') }}">Connexion</a>
 							</li>
 							<li>
 								<a class="nav-link active " aria-current="page" href="{{ path('app_register') }}">Inscription</a>
 							</li>
-
 						{% endif %}
-
-
 					</ul>
 				</li>
 
