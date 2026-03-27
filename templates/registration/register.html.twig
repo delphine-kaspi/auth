@@ -5,6 +5,13 @@
 
 {% block body %}
 
+{# Flash email envoyé #}
+{% for message in app.flashes('success') %}
+	<div class="alert alert-success col-md-6 mx-auto text-center" role="alert">
+		✅ {{ message }}
+	</div>
+{% endfor %}
+
 {{ form_errors(registrationForm) }}
 
 {{ form_start(registrationForm, {'attr': {'class': 'register-card', 'novalidate': 'novalidate'}}) }}
@@ -60,7 +67,7 @@
         {{ form_errors(registrationForm.plainPassword.second) }}
     </div>
 
-    {# Conditions d'utilisation - checkbox à gauche du texte #}
+    {# Conditions d'utilisation #}
     <div class="agree-terms-row">
         {{ form_widget(registrationForm.agreeTerms) }}
         <label for="{{ registrationForm.agreeTerms.vars.id }}">
@@ -82,6 +89,6 @@
         const isPassword = input.type === 'password';
         input.type = isPassword ? 'text' : 'password';
         btn.style.color = isPassword ? '#4db6ac' : '#888';
-}
+    }
 </script>
 {% endblock %}

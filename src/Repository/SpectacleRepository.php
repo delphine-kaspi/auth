@@ -16,6 +16,16 @@ class SpectacleRepository extends ServiceEntityRepository
         parent::__construct($registry, Spectacle::class);
     }
 
+    public function findAllWithArtiste(): array
+    {
+        return $this->createQueryBuilder('s')
+            ->join('s.artiste', 'a')
+            ->addSelect('a')
+            ->orderBy('a.nom', 'ASC')
+            ->addOrderBy('s.titre', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
     //    /**
     //     * @return Spectacle[] Returns an array of Spectacle objects
     //     */

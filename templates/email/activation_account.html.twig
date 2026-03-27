@@ -2,10 +2,16 @@
 
 {% block body %}
 
-    <p>Bienvenue sur Kastone ! Nous sommes ravis de vous compter parmi nos membres.</p>
+    <p>Bienvenue sur Kastone, {{ user.prenom }} !</p>
 
     <p>Votre compte a bien été créé avec l'adresse email suivante : <strong>{{ user.email }}</strong></p>
 
-    <p>Vous pouvez dès à présent vous connecter.</p>
+    <p>Pour activer votre compte et accéder à nos spectacles, cliquez sur le bouton ci-dessous :</p>
+
+    <a href="{{ url('app_activation', {'token': user.token}) }}"
+       style="display:inline-block; margin: 16px 0; padding: 14px 32px; background-color:#5BC2B1; color:#ffffff; font-size:16px; font-weight:700; text-decoration:none; border-radius:10px;">
+        Activer mon compte
+    </a>
+
 
 {% endblock %}

@@ -29,4 +29,18 @@ class ReservationRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findAllOrderedByDate(): array
+    {
+        return $this->createQueryBuilder('r')
+            ->join('r.representation', 'rep')
+            ->join('rep.spectacle', 's')
+            ->join('rep.salle', 'sa')
+            ->addSelect('rep', 's', 'sa')
+            ->orderBy('rep.dateRepresentation', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 }
+
+    

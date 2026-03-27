@@ -1,4 +1,37 @@
 {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+
+    <div class="form-field-group">
+        {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.nom, {'attr': {'class': 'form-control', 'placeholder': 'Nom de la salle'}}) }}
+        {{ form_errors(form.nom) }}
+    </div>
+
+    <div class="form-field-group">
+        {{ form_label(form.capacite, 'Capacité', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.capacite, {'attr': {'class': 'form-control', 'placeholder': 'Nombre de places'}}) }}
+        {{ form_errors(form.capacite) }}
+    </div>
+
+    <div class="form-field-group">
+        {{ form_label(form.adresse, 'Adresse', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.adresse, {'attr': {'class': 'form-control', 'placeholder': '10 rue Example'}}) }}
+        {{ form_errors(form.adresse) }}
+    </div>
+
+    <div class="form-field-group">
+        {{ form_label(form.codePostal, 'Code postal', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.codePostal, {'attr': {'class': 'form-control', 'placeholder': '75000'}}) }}
+        {{ form_errors(form.codePostal) }}
+    </div>
+
+    <div class="form-field-group">
+        {{ form_label(form.Ville, 'Ville', {'label_attr': {'class': 'form-label'}}) }}
+        {{ form_widget(form.Ville, {'attr': {'class': 'form-control', 'placeholder': 'Paris'}}) }}
+        {{ form_errors(form.Ville) }}
+    </div>
+
+    <button type="submit" class="btn-register mt-3">
+        {{ button_label|default('Enregistrer') }}
+    </button>
+
 {{ form_end(form) }}

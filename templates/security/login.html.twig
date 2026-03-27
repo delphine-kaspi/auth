@@ -1,26 +1,17 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Connexion
-{% endblock %}
-{% block h1 %}Connexion
-{% endblock %}
-
+{% block title %}Connexion{% endblock %}
+{% block h1 %}Connexion{% endblock %}
 
 {% block body %}
 
 	<form method="post" class="bg-white col-md-6 mx-auto p-4 border border-2 border-green mb-5">
 		{% if error %}
-			{# <pre>
-			                {{ dump(error) }}
-			            </pre> #}
-
 			{% if error.line == 67 or error.line == 265 %}
 				<div class="alert alert-danger text-center">L'email ou le mot de passe est incorrect.</div>
 			{% else %}
 				<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 			{% endif %}
-
-
 		{% endif %}
 
 		{% if app.user %}
@@ -31,16 +22,19 @@
 			</div>
 		{% endif %}
 
-
-		<label class="my-1" for="inputEmail">Email
-			<span>*</span>
-		</label>
+		<label class="my-1" for="inputEmail">Email <span>*</span></label>
 		<input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="off" placeholder="Saisir votre email" required autofocus>
 
-		<label class="my-1" for="inputPassword">Mot de passe
-			<span>*</span>
-		</label>
-		<input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" placeholder="Saisir votre mot de passe" required>
+		<label class="my-1" for="inputPassword">Mot de passe <span>*</span></label>
+		<div class="password-wrapper">
+			<input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" placeholder="Saisir votre mot de passe" required>
+			<button type="button" class="toggle-password" onclick="togglePassword(this)" aria-label="Afficher/masquer le mot de passe">
+				<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
+					<path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+					<path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+				</svg>
+			</button>
+		</div>
 
 		<input type="hidden" name="_csrf_token" data-controller="csrf-protection" value="{{ csrf_token('authenticate') }}">
 
@@ -55,12 +49,23 @@
 
 		<div class="row">
 			<div class="col-lg-6 mt-3">
-				<a class="btn btn-custom w-100" href="{{path('app_register')}}">Inscrivez-vous ?</a>
+				<a class="btn btn-custom w-100" href="{{ path('app_register') }}">Inscrivez-vous ?</a>
 			</div>
 			<div class="col-lg-6 mt-3">
-				<a class="btn btn-custom w-100" href="{{path('app_forgot_password_request')}}">Mot de passe oublié ?</a>
+				<a class="btn btn-custom w-100" href="{{ path('app_forgot_password_request') }}">Mot de passe oublié ?</a>
 			</div>
 		</div>
 	</form>
 
+{% endblock %}
+
+{% block javascripts %}
+<script>
+	function togglePassword(btn) {
+		const input = btn.previousElementSibling;
+		const isPassword = input.type === 'password';
+		input.type = isPassword ? 'text' : 'password';
+		btn.style.color = isPassword ? '#4db6ac' : '#888';
+	}
+</script>
 {% endblock %}

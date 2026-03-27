@@ -11,16 +11,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_ADMIN')]
 #[Route('/admin/spectacle')]
 final class AdminSpectacleController extends AbstractController
 {
-    #[Route('/{id}', name: 'app_admin_spectacle_index', methods: ['GET'])]
-    public function index(SpectacleRepository $spectacleRepository, Artiste $artiste): Response
+    #[Route('', name: 'app_admin_spectacle_index', methods: ['GET'])]
+    public function index(SpectacleRepository $spectacleRepository): Response
     {
         return $this->render('admin_spectacle/index.html.twig', [
-            'spectacles' => $spectacleRepository->findBy(['artiste' => $artiste]),
-            'artiste' => $artiste
+            'spectacles' => $spectacleRepository->findAllWithArtiste(),
         ]);
     }
 
@@ -32,26 +33,17 @@ final class AdminSpectacleController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $spectacle->setArtiste($artiste);
             $entityManager->persist($spectacle);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_admin_spectacle_index', ['id' => $artiste->getId() ], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_admin_spectacle_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('admin_spectacle/new.html.twig', [
             'spectacle' => $spectacle,
             'form' => $form,
-            'artiste' => $artiste
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_admin_spectacle_show', methods: ['GET'])]
-    public function show(Spectacle $spectacle): Response
-    {
-        return $this->render('admin_spectacle/show.html.twig', [
-            'spectacle' => $spectacle,
+            'artiste' => $artiste,
         ]);
     }
 
@@ -64,7 +56,7 @@ final class AdminSpectacleController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-             return $this->redirectToRoute('app_admin_spectacle_index', ['id' => $spectacle->getArtiste()->getId() ], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_admin_spectacle_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('admin_spectacle/edit.html.twig', [
@@ -81,6 +73,6 @@ final class AdminSpectacleController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_admin_spectacle_index', ['id' => $spectacle->getArtiste()->getId() ], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_admin_spectacle_index', [], Response::HTTP_SEE_OTHER);
     }
 }
