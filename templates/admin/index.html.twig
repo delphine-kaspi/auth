@@ -1,13 +1,44 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Artistes
-{% endblock %}
-{% block h1 %}Back office
-{% endblock %}
+{% block title %}Back office{% endblock %}
+{% block h1 %}Back office{% endblock %}
 
 {% block body %}
 
-	<a class="btn btn-success" href="{{ path('app_admin_artiste_index')}}">Mes artistes</a>
+<div class="admin-dashboard">
+    <div class="admin-grid">
 
-	<a class="btn btn-warning" href="{{ path('app_admin_salle_index')}}">Mes salles</a>
+        <a href="{{ path('app_admin_artiste_index') }}" class="admin-card">
+            <div class="admin-card-icon">🎤</div>
+            <div class="admin-card-label">Artistes</div>
+            <div class="admin-card-desc">Ajouter, modifier, supprimer des artistes</div>
+        </a>
+
+        <a href="{{ path('app_admin_salle_index') }}" class="admin-card">
+            <div class="admin-card-icon">🏛️</div>
+            <div class="admin-card-label">Salles</div>
+            <div class="admin-card-desc">Gérer les salles et leurs capacités</div>
+        </a>
+
+        <a href="{{ path('app_admin_spectacle_index') }}" class="admin-card">
+            <div class="admin-card-icon">🎭</div>
+            <div class="admin-card-label">Spectacles</div>
+            <div class="admin-card-desc">Gérer les spectacles par artiste</div>
+        </a>
+
+        <a href="{{ path('app_admin_representation_index') }}" class="admin-card">
+            <div class="admin-card-icon">📅</div>
+            <div class="admin-card-label">Représentations</div>
+            <div class="admin-card-desc">Gérer les dates et horaires</div>
+        </a>
+
+        <a href="{{ path('app_admin_reservation_index') }}" class="admin-card">
+            <div class="admin-card-icon">🎟️</div>
+            <div class="admin-card-label">Réservations</div>
+            <div class="admin-card-desc">Consulter et gérer les réservations</div>
+        </a>
+
+    </div>
+</div>
+
 {% endblock %}

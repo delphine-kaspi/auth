@@ -11,16 +11,17 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Security\Http\Attribute\IsGranted;
 
+#[IsGranted('ROLE_ADMIN')]
 #[Route('/admin/representation')]
 final class AdminRepresentationController extends AbstractController
 {
-    #[Route('/{id}', name: 'app_admin_representation_index', methods: ['GET'])]
-    public function index(RepresentationRepository $representationRepository, Spectacle $spectacle): Response
+    #[Route('', name: 'app_admin_representation_index', methods: ['GET'])]
+    public function index(RepresentationRepository $representationRepository): Response
     {
         return $this->render('admin_representation/index.html.twig', [
-            'representations' => $representationRepository->findBy(['spectacle' => $spectacle]),
-            'spectacle' => $spectacle
+            'representations' => $representationRepository->findAllWithDetails(),
         ]);
     }
 
@@ -32,26 +33,17 @@ final class AdminRepresentationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $representation->setSpectacle($spectacle);
             $entityManager->persist($representation);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_admin_representation_index', ['id' => $spectacle->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_admin_representation_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('admin_representation/new.html.twig', [
             'representation' => $representation,
             'form' => $form,
-            'spectacle' => $spectacle
-        ]);
-    }
-
-    #[Route('/{id}', name: 'app_admin_representation_show', methods: ['GET'])]
-    public function show(Representation $representation): Response
-    {
-        return $this->render('admin_representation/show.html.twig', [
-            'representation' => $representation,
+            'spectacle' => $spectacle,
         ]);
     }
 
@@ -64,7 +56,7 @@ final class AdminRepresentationController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_admin_representation_index', ['id' => $representation->getSpectacle()->getId()], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_admin_representation_index', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('admin_representation/edit.html.twig', [
@@ -81,6 +73,6 @@ final class AdminRepresentationController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_admin_representation_index', ['id' => $representation->getSpectacle()->getId()], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_admin_representation_index', [], Response::HTTP_SEE_OTHER);
     }
 }

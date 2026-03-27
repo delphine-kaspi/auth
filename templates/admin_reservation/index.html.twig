@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réservations{% endblock %}
+{% block h1 %}Toutes les réservations{% endblock %}
+
+{% block body %}
+
+<div class="admin-section">
+
+    <div class="admin-section-header">
+        <a href="{{ path('admin_dashboard') }}" class="btn-back">← Retour au dashboard</a>
+    </div>
+
+    {% if reservations is empty %}
+        <p class="text-muted text-center mt-4">Aucune réservation enregistrée.</p>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table-admin">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Utilisateur</th>
+                        <th>Spectacle</th>
+                        <th>Date représentation</th>
+                        <th>Salle</th>
+                        <th>Places</th>
+                        <th>Total</th>
+                        <th>Réservé le</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for reservation in reservations %}
+                        <tr>
+                            <td>{{ reservation.id }}</td>
+                            <td>{{ reservation.user.prenom }} {{ reservation.user.nom }}</td>
+                            <td>{{ reservation.representation.spectacle.titre }}</td>
+                            <td>{{ reservation.representation.dateRepresentation|date('d/m/Y') }} à {{ reservation.representation.heureRepresentation|date('H:i') }}</td>
+                            <td>{{ reservation.representation.salle.nom }}</td>
+                            <td>{{ reservation.nbPlace }}</td>
+                            <td>{{ (reservation.nbPlace * reservation.representation.prix)|number_format(2, ',', ' ') }} €</td>
+                            <td>{{ reservation.dateResa|date('d/m/Y') }}</td>
+                            <td>
+                                <form method="post" action="{{ path('app_admin_reservation_delete', {'id': reservation.id}) }}" onsubmit="return confirm('Supprimer cette réservation ?')">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reservation.id) }}">
+                                    <button class="btn-admin-delete">Supprimer</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}

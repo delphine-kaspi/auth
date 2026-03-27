@@ -5,6 +5,7 @@
 
 {% block body %}
 
+
 <div class="panier-wrapper">
 
     {% if reservations is empty %}
@@ -58,6 +59,9 @@
                     <div class="panier-row">
                         <span class="panier-label">Réservé le</span>
                         <span class="panier-value">{{ reservation.dateResa|date('d/m/Y à H:i') }}</span>
+                    </div>
+                    <div class="panier-row">
+                        <p>Une confirmation vous sera envoyé sur votre adresse : <strong>{{ app.user.email }}</strong></p>
                     </div>
                 </div>
             </div>

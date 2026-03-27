@@ -1,54 +1,57 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Représentations{% endblock %}
+{% block h1 %}Toutes les représentations{% endblock %}
 
 {% block body %}
 
-    <div class="container my-5">
-        <div class="bg-white col-md-10 mx-auto p-4 border border-2 border-green rounded shadow">
+<div class="admin-section">
 
-            <h2 class="text-center mb-4">Liste des représentations</h2>
+    <div class="admin-section-header">
+        <a href="{{ path('admin_dashboard') }}" class="btn-back">← Retour au dashboard</a>
+    </div>
 
-            <div class="d-flex justify-content-between mb-3">
-                <a href="{{ path('app_admin_spectacle_index', {'id': spectacle.artiste.id}) }}" class="btn btn-secondary">
-                    Retour à la liste
-                </a>
-                <a href="{{ path('app_admin_representation_new', {'id': spectacle.id}) }}" class="btn btn-custom">
-                    Ajouter une représentation
-                </a>
-            </div>
-
-            <table class="table table-striped table-hover align-middle text-center">
-                <thead class="table-dark">
+    {% if representations is empty %}
+        <p class="text-muted text-center mt-4">Aucune représentation enregistrée.</p>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table-admin">
+                <thead>
                     <tr>
-                        <th>Id</th>
+                        <th>#</th>
+                        <th>Spectacle</th>
+                        <th>Artiste</th>
                         <th>Date</th>
                         <th>Heure</th>
+                        <th>Salle</th>
                         <th>Prix</th>
-                        <th>Actions</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
                     {% for representation in representations %}
                         <tr>
                             <td>{{ representation.id }}</td>
-                            <td>{{ representation.dateRepresentation ? representation.dateRepresentation|date('d/m/Y') : '' }}</td>
-                            <td>{{ representation.heureRepresentation ? representation.heureRepresentation|date('H:i') : '' }}</td>
+                            <td>{{ representation.spectacle.titre }}</td>
+                            <td>{{ representation.spectacle.artiste.prenom }} {{ representation.spectacle.artiste.nom }}</td>
+                            <td>{{ representation.dateRepresentation|date('d/m/Y') }}</td>
+                            <td>{{ representation.heureRepresentation|date('H:i') }}</td>
+                            <td>{{ representation.salle.nom }}</td>
                             <td>{{ representation.prix }} €</td>
-                            <td>
-                                {# <a href="{{ path('app_admin_representation_show', {'id': representation.id}) }}" class="btn btn-sm btn-primary">Voir</a> #}
-                                <a href="{{ path('app_admin_representation_edit', {'id': representation.id}) }}" class="btn btn-sm btn-warning">Modifier</a>
+                            <td class="table-admin-actions">
+                                <a href="{{ path('app_admin_representation_edit', {'id': representation.id}) }}" class="btn-admin-edit">Modifier</a>
+                                <form method="post" action="{{ path('app_admin_representation_delete', {'id': representation.id}) }}" onsubmit="return confirm('Supprimer cette représentation ?')">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ representation.id) }}">
+                                    <button class="btn-admin-delete">Supprimer</button>
+                                </form>
                             </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="5" class="text-center">Aucune représentation pour le moment</td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
-
         </div>
-    </div>
+    {% endif %}
+
+</div>
 
 {% endblock %}

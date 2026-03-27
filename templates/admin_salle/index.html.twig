@@ -1,43 +1,56 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Salle index{% endblock %}
+{% block title %}Salles{% endblock %}
+{% block h1 %}Toutes les salles{% endblock %}
 
 {% block body %}
-    <h1>Salle index</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>Capacite</th>
-                <th>Adresse</th>
-                <th>CodePostal</th>
-                <th>Ville</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for salle in salles %}
-            <tr>
-                <td>{{ salle.id }}</td>
-                <td>{{ salle.nom }}</td>
-                <td>{{ salle.capacite }}</td>
-                <td>{{ salle.adresse }}</td>
-                <td>{{ salle.codePostal }}</td>
-                <td>{{ salle.Ville }}</td>
-                <td>
-                    <a href="{{ path('app_admin_salle_show', {'id': salle.id}) }}">show</a>
-                    <a href="{{ path('app_admin_salle_edit', {'id': salle.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="7">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+<div class="admin-section">
 
-    <a href="{{ path('app_admin_salle_new') }}">Create new</a>
+    <div class="admin-section-header" style="display:flex; justify-content:space-between; align-items:center;">
+        <a href="{{ path('admin_dashboard') }}" class="btn-back">← Retour au dashboard</a>
+        <a href="{{ path('app_admin_salle_new') }}" class="btn-admin-add" style="font-size:14px; padding: 7px 16px;">+ Nouvelle salle</a>
+    </div>
+
+    {% if salles is empty %}
+        <p class="text-muted text-center mt-4">Aucune salle enregistrée.</p>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table-admin">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nom</th>
+                        <th>Capacité</th>
+                        <th>Adresse</th>
+                        <th>Code postal</th>
+                        <th>Ville</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for salle in salles %}
+                        <tr>
+                            <td>{{ salle.id }}</td>
+                            <td><strong>{{ salle.nom }}</strong></td>
+                            <td>{{ salle.capacite }} places</td>
+                            <td>{{ salle.adresse }}</td>
+                            <td>{{ salle.codePostal }}</td>
+                            <td>{{ salle.Ville }}</td>
+                            <td class="table-admin-actions">
+                                <a href="{{ path('app_admin_salle_edit', {'id': salle.id}) }}" class="btn-admin-edit">Modifier</a>
+                                <form method="post" action="{{ path('app_admin_salle_delete', {'id': salle.id}) }}" onsubmit="return confirm('Supprimer cette salle ?')">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ salle.id) }}">
+                                    <button class="btn-admin-delete">Supprimer</button>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+
+</div>
+
 {% endblock %}

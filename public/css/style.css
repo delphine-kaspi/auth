@@ -85,7 +85,7 @@ footer a {
     border-radius: 0.3rem;
 }
 
-/* ===== PAGE INSCRIPTION ===== */
+/* PAGE INSCRIPTION */
 
 .register-card {
     background: #fff;
@@ -281,7 +281,7 @@ footer a {
     transform: scale(1.15);
 }
 
-/* ===== PAGE PANIER ===== */
+/* PAGE PANIER */
 
 .panier-wrapper {
     max-width: 680px;
@@ -379,7 +379,7 @@ footer a {
     color: #4db6ac;
 }
 
-/* ===== CAROUSEL ARTISTES (INDEX) ===== */
+/* CAROUSEL ARTISTES */
 
 .card-artiste {
     background: #fff;
@@ -572,5 +572,201 @@ footer a {
 
 .btn-reserver:hover {
     background: #00897b;
+    color: #fff;
+}
+
+/* DASHBOARD ADMIN */
+
+.admin-dashboard {
+    max-width: 900px;
+    margin: 0 auto 3rem auto;
+    padding: 0 1rem;
+}
+
+.admin-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.2rem;
+}
+
+.admin-card {
+    background: #fff;
+    border: 2px solid #4db6ac;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-decoration: none;
+    text-align: center;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.2s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+}
+
+.admin-card:hover {
+    background: #4db6ac;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 18px rgba(77, 182, 172, 0.3);
+}
+
+.admin-card:hover .admin-card-label,
+.admin-card:hover .admin-card-desc {
+    color: #fff;
+}
+
+.admin-card-icon {
+    font-size: 36px;
+    line-height: 1;
+}
+
+.admin-card-label {
+    font-size: 17px;
+    font-weight: 700;
+    color: #2c2c2c;
+    transition: color 0.2s;
+}
+
+.admin-card-desc {
+    font-size: 13px;
+    color: #666;
+    transition: color 0.2s;
+}
+
+/* Lien admin dans le dropdown */
+.admin-link {
+    color: #00897b !important;
+    font-weight: 600;
+}
+
+.admin-link:hover {
+    background: #f0fafa !important;
+}
+
+/* SECTIONS ADMIN */
+
+.admin-section {
+    max-width: 1100px;
+    margin: 0 auto 3rem auto;
+    padding: 0 1rem;
+}
+
+.admin-section-header {
+    margin-bottom: 1.2rem;
+}
+
+.btn-back {
+    color: #4db6ac;
+    font-weight: 600;
+    font-size: 14px;
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.btn-back:hover {
+    color: #00897b;
+}
+
+.table-admin {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+    background: #fff;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.table-admin thead tr {
+    background: #4db6ac;
+    color: #fff;
+}
+
+.table-admin th {
+    padding: 12px 14px;
+    font-weight: 600;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.table-admin tbody tr {
+    border-bottom: 1px solid #eee;
+    transition: background 0.15s;
+}
+
+.table-admin tbody tr:last-child {
+    border-bottom: none;
+}
+
+.table-admin tbody tr:hover {
+    background: #f0fafa;
+}
+
+.table-admin td {
+    padding: 10px 14px;
+    color: #2c2c2c;
+    vertical-align: middle;
+}
+
+.table-admin-actions {
+    display: flex;
+    gap: 6px;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.btn-admin-edit {
+    display: inline-block;
+    background: #f0fafa;
+    border: 1.5px solid #4db6ac;
+    color: #4db6ac;
+    font-weight: 600;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+}
+
+.btn-admin-edit:hover {
+    background: #4db6ac;
+    color: #fff;
+}
+
+.btn-admin-add {
+    display: inline-block;
+    background: #e8f5e9;
+    border: 1.5px solid #66bb6a;
+    color: #388e3c;
+    font-weight: 600;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+}
+
+.btn-admin-add:hover {
+    background: #66bb6a;
+    color: #fff;
+}
+
+.btn-admin-delete {
+    display: inline-block;
+    background: #fdecea;
+    border: 1.5px solid #ef5350;
+    color: #c62828;
+    font-weight: 600;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    white-space: nowrap;
+}
+
+.btn-admin-delete:hover {
+    background: #ef5350;
     color: #fff;
 }

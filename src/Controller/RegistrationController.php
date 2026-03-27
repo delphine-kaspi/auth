@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Attribute\Route;
 class RegistrationController extends AbstractController
 {
     #[Route('/inscription', name: 'app_register', methods: ['GET', 'POST'])]
-    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, MailerInterface $mailer,): Response
+    public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -27,25 +27,21 @@ class RegistrationController extends AbstractController
             /** @var string $plainPassword */
             $plainPassword = $form->get('plainPassword')->getData();
 
-            
             $user->setPassword($userPasswordHasher->hashPassword($user, $plainPassword));
             $user->setToken(uniqid());
             $entityManager->persist($user);
             $entityManager->flush();
-            $this->addFlash('success', 'Votre compte a bien été créé.');
 
-            
             $email = (new TemplatedEmail())
-            ->from(new Address('no-reply@kastone.fr', 'No Reply Kastone'))
-            ->to((string) $user->getEmail())
-            ->subject('Activation de votre compte.')
-            ->htmlTemplate('email/activation_account.html.twig')
-            ->context([
-                'user' => $user,
-            ])
-            ;
+                ->from(new Address('no-reply@kastone.fr', 'No Reply Kastone'))
+                ->to((string) $user->getEmail())
+                ->subject('Activation de votre compte.')
+                ->htmlTemplate('email/activation_account.html.twig')
+                ->context(['user' => $user]);
 
             $mailer->send($email);
+
+            $this->addFlash('success', 'Votre compte a été créé ! Un email d\'activation a été envoyé à ' . $user->getEmail() . '. Vérifiez vos spams si vous ne le trouvez pas.');
 
             return $this->redirectToRoute('app_login');
         }

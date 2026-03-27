@@ -16,6 +16,18 @@ class RepresentationRepository extends ServiceEntityRepository
         parent::__construct($registry, Representation::class);
     }
 
+    public function findAllWithDetails(): array
+    {
+        return $this->createQueryBuilder('r')
+            ->join('r.spectacle', 's')
+            ->join('s.artiste', 'a')
+            ->join('r.salle', 'sa')
+            ->addSelect('s', 'a', 'sa')
+            ->orderBy('r.dateRepresentation', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
 //    /**
 //     * @return Representation[] Returns an array of Representation objects
 //     */

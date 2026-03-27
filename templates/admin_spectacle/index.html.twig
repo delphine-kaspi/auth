@@ -1,31 +1,30 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}Spectacles{% endblock %}
+{% block h1 %}Tous les spectacles{% endblock %}
 
 {% block body %}
 
-    <div class="container my-5">
-        <div class="bg-white col-md-10 mx-auto p-4 border border-2 border-green rounded shadow">
+<div class="admin-section">
 
-            <h2 class="text-center mb-4">Spectacles de {{ artiste.prenom }} {{ artiste.nom }}</h2>
+    <div class="admin-section-header">
+        <a href="{{ path('admin_dashboard') }}" class="btn-back">← Retour au dashboard</a>
+        {# <a href="{{ path('app_admin_spectacle_new', {'id': categorie.id}) }}" class="btn-admin-add" style="font-size:14px; padding: 7px 16px;">+ Nouveau Spectacle</a> #}
+    </div>
 
-            <div class="d-flex justify-content-between mb-3">
-                <a href="{{ path('app_admin_artiste_index') }}" class="btn btn-secondary">
-                    Retour à la liste
-                </a>
-                <a href="{{ path('app_admin_spectacle_new', {'id': artiste.id}) }}" class="btn btn-custom">
-                    Ajouter un spectacle
-                </a>
-            </div>
-
-            <table class="table table-striped table-hover align-middle text-center">
-                <thead class="table-dark">
+    {% if spectacles is empty %}
+        <p class="text-muted text-center mt-4">Aucun spectacle enregistré.</p>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table-admin">
+                <thead>
                     <tr>
-                        <th>Id</th>
+                        <th>#</th>
                         <th>Titre</th>
-                        <th>Description</th>
+                        <th>Artiste</th>
                         <th>Durée</th>
-                        <th>Actions</th>
+                        <th>Représentations</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -33,23 +32,24 @@
                         <tr>
                             <td>{{ spectacle.id }}</td>
                             <td>{{ spectacle.titre }}</td>
-                            <td>{{ spectacle.description }}</td>
-                            <td>{{ spectacle.duree }}</td>
-                            <td>
-                                <a href="{{ path('app_admin_spectacle_show', {'id': spectacle.id}) }}" class="btn btn-sm btn-primary">Voir</a>
-                                <a href="{{ path('app_admin_spectacle_edit', {'id': spectacle.id}) }}" class="btn btn-sm btn-warning">Modifier</a>
-                                <a href="{{ path('app_admin_representation_index', {'id': spectacle.id}) }}" class="btn btn-sm btn-warning">Représentations</a>
+                            <td>{{ spectacle.artiste.prenom }} {{ spectacle.artiste.nom }}</td>
+                            <td>{{ spectacle.duree }} min</td>
+                            <td>{{ spectacle.representations|length }}</td>
+                            <td class="table-admin-actions">
+                                <a href="{{ path('app_admin_representation_new', {'id': spectacle.id}) }}" class="btn-admin-add">+ Représentation</a>
+                                <a href="{{ path('app_admin_spectacle_edit', {'id': spectacle.id}) }}" class="btn-admin-edit">Modifier</a>
+                                <form method="post" action="{{ path('app_admin_spectacle_delete', {'id': spectacle.id}) }}" onsubmit="return confirm('Supprimer ce spectacle ?')">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ spectacle.id) }}">
+                                    <button class="btn-admin-delete">Supprimer</button>
+                                </form>
                             </td>
-                        </tr>
-                    {% else %}
-                        <tr>
-                            <td colspan="5" class="text-center">Aucun spectacle pour le moment</td>
                         </tr>
                     {% endfor %}
                 </tbody>
             </table>
-
         </div>
-    </div>
+    {% endif %}
+
+</div>
 
 {% endblock %}

@@ -1,13 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Salle{% endblock %}
+{% block title %}Modifier la salle{% endblock %}
+{% block h1 %}Modifier la salle{% endblock %}
 
 {% block body %}
-    <h1>Edit Salle</h1>
 
-    {{ include('admin_salle/_form.html.twig', {'button_label': 'Update'}) }}
+<div class="admin-section">
 
-    <a href="{{ path('app_admin_salle_index') }}">back to list</a>
+    <div class="admin-section-header">
+        <a href="{{ path('app_admin_salle_index') }}" class="btn-back">← Retour aux salles</a>
+    </div>
 
-    {{ include('admin_salle/_delete_form.html.twig') }}
+    <p class="admin-form-context">
+        Modification de : <strong>{{ salle.nom }}</strong> — {{ salle.ville }}
+    </p>
+
+    <div class="admin-form-card">
+        {{ include('admin_salle/_form.html.twig', { button_label: 'Enregistrer les modifications' }) }}
+    </div>
+
+    <div style="max-width:600px; margin: 1rem auto 0 auto; text-align:right;">
+        {{ include('admin_salle/_delete_form.html.twig') }}
+    </div>
+
+</div>
+
 {% endblock %}
