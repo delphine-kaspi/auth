@@ -770,3 +770,87 @@ footer a {
     background: #ef5350;
     color: #fff;
 }
+
+/* PANIER actions */
+
+.panier-row-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.panier-form-places {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    gap: 10px;
+}
+
+.panier-places-control {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.panier-input-places {
+    width: 70px;
+    border: 1.5px solid #4db6ac;
+    border-radius: 6px;
+    padding: 5px 8px;
+    font-size: 14px;
+    text-align: center;
+}
+
+.panier-input-places:focus {
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(77, 182, 172, 0.2);
+}
+
+.btn-panier-update {
+    background: #4db6ac;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+
+.btn-panier-update:hover {
+    background: #00897b;
+}
+
+.panier-row-delete {
+    padding: 10px 0 4px 0;
+    text-align: right;
+}
+
+.btn-panier-delete {
+    background: none;
+    border: 1.5px solid #ef5350;
+    color: #c62828;
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+}
+
+.btn-panier-delete:hover {
+    background: #ef5350;
+    color: #fff;
+}
+
+.panier-email-info {
+    text-align: center;
+    font-size: 13px;
+    color: #666;
+    margin-top: 1rem;
+}
