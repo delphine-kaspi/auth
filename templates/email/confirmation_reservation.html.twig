@@ -1,0 +1,29 @@
+{% extends "email/base.html.twig" %}
+
+{% block body %}
+
+    <p>Merci pour vos réservations ! Voici le récapitulatif de vos places à venir.</p>
+
+    {% for reservation in reservations %}
+        {% set representation = reservation.representation %}
+        {% set spectacle = representation.spectacle %}
+
+        <div style="background:#f0fafa; border-left:4px solid #4db6ac; border-radius:6px; padding:12px 16px; margin-bottom:16px;">
+            <p style="margin:0 0 6px 0; font-size:16px; font-weight:700; color:#2c2c2c;">{{ spectacle.titre }}</p>
+            <p style="margin:0; font-size:14px; color:#555;">
+                📅 {{ representation.dateRepresentation|date('d/m/Y') }} à {{ representation.heureRepresentation|date('H:i') }}<br>
+                🏛️ {{ representation.salle.nom }} — {{ representation.salle.ville }}<br>
+                🎟️ {{ reservation.nbPlace }} place(s) × {{ representation.prix }} € =
+                <strong>{{ (reservation.nbPlace * representation.prix)|number_format(2, ',', ' ') }} €</strong>
+            </p>
+        </div>
+
+    {% endfor %}
+
+    <p style="text-align:right; font-size:17px; font-weight:700; color:#2c2c2c; border-top:2px solid #4db6ac; padding-top:12px;">
+        Total : {{ total|number_format(2, ',', ' ') }} €
+    </p>
+
+    
+
+{% endblock %}

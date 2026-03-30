@@ -5,7 +5,6 @@
 
 {% block body %}
 
-
 <div class="panier-wrapper">
 
     {% if reservations is empty %}
@@ -49,10 +48,6 @@
                         <span class="panier-value">{{ representation.salle }}</span>
                     </div>
                     <div class="panier-row">
-                        <span class="panier-label">Nombre de places</span>
-                        <span class="panier-value">{{ reservation.nbPlace }}</span>
-                    </div>
-                    <div class="panier-row">
                         <span class="panier-label">Prix unitaire</span>
                         <span class="panier-value">{{ representation.prix }} €</span>
                     </div>
@@ -60,9 +55,27 @@
                         <span class="panier-label">Réservé le</span>
                         <span class="panier-value">{{ reservation.dateResa|date('d/m/Y à H:i') }}</span>
                     </div>
-                    <div class="panier-row">
-                        <p>Une confirmation vous sera envoyé sur votre adresse : <strong>{{ app.user.email }}</strong></p>
+
+                    {# Modifier le nombre de places #}
+                    <div class="panier-row panier-row-actions">
+                        <form method="post" action="{{ path('app_panier_update', {'id': reservation.id}) }}" class="panier-form-places">
+                            <input type="hidden" name="_token" value="{{ csrf_token('update' ~ reservation.id) }}">
+                            <span class="panier-label">Nombre de places</span>
+                            <div class="panier-places-control">
+                                <input type="number" name="nbPlace" value="{{ reservation.nbPlace }}" min="1" class="panier-input-places">
+                                <button type="submit" class="btn-panier-update">Mettre à jour</button>
+                            </div>
+                        </form>
                     </div>
+
+                    {# Supprimer la réservation #}
+                    <div class="panier-row-delete">
+                        <form method="post" action="{{ path('app_panier_delete', {'id': reservation.id}) }}" onsubmit="return confirm('Annuler cette réservation ?')">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reservation.id) }}">
+                            <button type="submit" class="btn-panier-delete">🗑 Annuler cette réservation</button>
+                        </form>
+                    </div>
+
                 </div>
             </div>
 
@@ -72,6 +85,16 @@
             <span>Total</span>
             <span>{{ total_general|number_format(2, ',', ' ') }} €</span>
         </div>
+
+        <p class="panier-email-info">
+            Une confirmation sera envoyée à : <strong>{{ app.user.email }}</strong>
+        </p>
+
+        <form method="post" action="{{ path('app_panier_confirm') }}" style="text-align:center; margin-top: 1.2rem;">
+            <button type="submit" class="btn-panier-update" style="padding: 10px 24px; font-size: 15px;">
+                📩 Valider ma commande
+            </button>
+        </form>
 
     {% endif %}
 
