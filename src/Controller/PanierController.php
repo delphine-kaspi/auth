@@ -77,7 +77,7 @@ final class PanierController extends AbstractController
     }
 
     #[Route('/panier/confirmer', name: 'app_panier_confirm', methods: ['POST'])]
-    public function confirm(ReservationRepository $reservationRepository, MailerInterface $mailer): Response
+    public function confirm(ReservationRepository $reservationRepository, MailerInterface $mailer, EntityManagerInterface $em): Response
     {
         /** @var User $user */
         $user = $this->getUser();
@@ -107,8 +107,26 @@ final class PanierController extends AbstractController
 
         $mailer->send($email);
 
-        $this->addFlash('success', 'Un email de confirmation vous a été envoyé à ' . $user->getEmail() . '.');
+        foreach ($reservations as $reservation) {
+            $reservation->setStatut('confirmee');
+        }
+        $em->flush();
 
-        return $this->redirectToRoute('app_panier');
+        $this->addFlash('success', 'Commande confirmée ! Retrouvez vos réservations dans "Mes commandes".');
+
+        return $this->redirectToRoute('app_mes_commandes');
+    }
+
+    #[Route('/mes-commandes', name: 'app_mes_commandes')]
+    public function mesCommandes(ReservationRepository $reservationRepository): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+
+        $commandes = $reservationRepository->findCommandesConfirmees($user);
+
+        return $this->render('panier/commandes.html.twig', [
+            'commandes' => $commandes,
+        ]);
     }
 }

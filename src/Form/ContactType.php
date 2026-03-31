@@ -28,7 +28,7 @@ class ContactType extends AbstractType
                     'placeholder' => 'Saisir un email'
                 ],
         ])
-            ->add('message', TextareaType::class, [
+            ->add('contenu', TextareaType::class, [
                 'label' => 'Message <span>*</span>',
                 'label_html' => true,
                 'attr' => [

@@ -3,10 +3,12 @@
 namespace App\Controller;
 
 use App\Form\ContactType;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Entity\Message;
 
 class PageController extends AbstractController
 {
@@ -17,22 +19,25 @@ class PageController extends AbstractController
     }
 
     #[Route('/contact', name: 'app_contact')]
-    public function contact(Request $request): Response
+    public function contact(Request $request, EntityManagerInterface $em): Response
     {
-        $form = $this->createForm(ContactType::class);
+        $message = new Message();
+        $form = $this->createForm(ContactType::class, $message);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // pour les maiils
+            $message->setCreatedAt(new \DateTimeImmutable());
+            $em->persist($message);
+            $em->flush();
 
             $this->addFlash('success', 'Message envoyé avec succès !');
+            return $this->redirectToRoute('app_contact');
         }
 
         return $this->render('page/contact.html.twig', [
             'form' => $form->createView(),
         ]);
     }
-
 
     #[Route('/mentions-legales', name: 'app_mentions_legales')]
     public function mentionsLegales(): Response

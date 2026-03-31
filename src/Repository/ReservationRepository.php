@@ -23,20 +23,23 @@ class ReservationRepository extends ServiceEntityRepository
             ->join('r.representation', 'rep')
             ->where('r.user = :user')
             ->andWhere('rep.dateRepresentation >= :today')
+            ->andWhere('r.statut = :statut')
             ->setParameter('user', $user)
             ->setParameter('today', new \DateTime('today'))
+            ->setParameter('statut', 'en_attente')
             ->orderBy('rep.dateRepresentation', 'ASC')
             ->getQuery()
             ->getResult();
     }
 
-    public function findAllOrderedByDate(): array
+    public function findCommandesConfirmees(User $user): array
     {
         return $this->createQueryBuilder('r')
             ->join('r.representation', 'rep')
-            ->join('rep.spectacle', 's')
-            ->join('rep.salle', 'sa')
-            ->addSelect('rep', 's', 'sa')
+            ->where('r.user = :user')
+            ->andWhere('r.statut = :statut')
+            ->setParameter('user', $user)
+            ->setParameter('statut', 'confirmee')
             ->orderBy('rep.dateRepresentation', 'DESC')
             ->getQuery()
             ->getResult();

@@ -18,7 +18,7 @@ class ArtisteController extends AbstractController
         ]);
     }
 
-    #[Route('/artiste/{id}', name: 'artiste')]
+    #[Route('/artiste/{id}', name: 'app_artiste_show')]
     public function show(Artiste $artiste): Response
     {
         return $this->render('artiste.html.twig', [

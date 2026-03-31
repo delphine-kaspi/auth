@@ -13,6 +13,7 @@ use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use App\Repository\MessageRepository;
 
 
 #[Route('/admin')]
@@ -20,9 +21,11 @@ final class AdminController extends AbstractController
 {
     // Dashboard admin
     #[Route('/', name: 'admin_dashboard', methods: ['GET'])]
-    public function dashboard(): Response
-    {
-        return $this->render('admin/index.html.twig');
-    }
+    public function dashboard(MessageRepository $messageRepo): Response
+        {
+            return $this->render('admin/index.html.twig', [
+                'nb_messages' => $messageRepo->count([]),
+            ]);
+        }
 
 }
