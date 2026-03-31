@@ -21,11 +21,14 @@ class Reservation
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?user $user = null;
+    private ?User $user = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Representation $representation = null;
+
+    #[ORM\Column(length: 20, options: ['default' => 'en_attente'])]
+    private string $statut = 'en_attente';
 
     public function getId(): ?int
     {
@@ -40,7 +43,6 @@ class Reservation
     public function setNbPlace(int $nbPlace): static
     {
         $this->nbPlace = $nbPlace;
-
         return $this;
     }
 
@@ -52,19 +54,17 @@ class Reservation
     public function setDateResa(\DateTime $dateResa): static
     {
         $this->dateResa = $dateResa;
-
         return $this;
     }
 
-    public function getUser(): ?user
+    public function getUser(): ?User
     {
         return $this->user;
     }
 
-    public function setUser(?user $user): static
+    public function setUser(?User $user): static
     {
         $this->user = $user;
-
         return $this;
     }
 
@@ -76,7 +76,17 @@ class Reservation
     public function setRepresentation(?Representation $representation): static
     {
         $this->representation = $representation;
+        return $this;
+    }
 
+    public function getStatut(): string
+    {
+        return $this->statut;
+    }
+
+    public function setStatut(string $statut): static
+    {
+        $this->statut = $statut;
         return $this;
     }
 }

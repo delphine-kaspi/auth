@@ -5,21 +5,25 @@
 
 {% block body %}
 
-<div class="admin-section">
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
 
-    <div class="admin-section-header">
-        <a href="{{ path('app_admin_spectacle_index') }}" class="btn-back">← Retour aux spectacles</a>
-        <a href="{{ path('admin_dashboard') }}" class="btn-back">← Retour au dashboard</a>
+            <div class="admin-section-header">
+                <a href="{{ path('app_admin_spectacle_index') }}" class="btn-back">← Retour aux spectacles</a>
+                <a href="{{ path('admin_dashboard') }}" class="btn-back">← Retour au dashboard</a>
+            </div>
+
+            <p class="admin-form-context">
+                Artiste : <strong>{{ artiste.prenom }} {{ artiste.nom }}</strong>
+            </p>
+
+            <div class="bg-white col-md-6 mx-auto p-4 border border-2 border-green mb-5">
+                {{ include('admin_spectacle/_form.html.twig', { button_label: 'Créer le spectacle' }) }}
+            </div>
+
+        </div>
     </div>
-
-    <p class="admin-form-context">
-        Artiste : <strong>{{ artiste.prenom }} {{ artiste.nom }}</strong>
-    </p>
-
-    <div class="admin-form-card">
-        {{ include('admin_spectacle/_form.html.twig', { button_label: 'Créer le spectacle' }) }}
-    </div>
-
 </div>
 
 {% endblock %}

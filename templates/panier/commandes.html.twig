@@ -1,0 +1,72 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Mes commandes{% endblock %}
+{% block h1 %}Mes commandes confirmées{% endblock %}
+
+{% block body %}
+
+<div class="panier-wrapper">
+
+    {% if commandes is empty %}
+
+        <div class="panier-empty">
+            <p class="panier-empty-icon">🎟️</p>
+            <p class="panier-empty-msg">Vous n'avez aucune commande confirmée.</p>
+            <a href="{{ path('app_home') }}" class="btn-confirmation">Découvrir les spectacles</a>
+        </div>
+
+    {% else %}
+
+        {% for reservation in commandes %}
+            {% set representation = reservation.representation %}
+            {% set spectacle = representation.spectacle %}
+            {% set total = reservation.nbPlace * representation.prix %}
+
+            <div class="panier-card">
+                <div class="panier-card-header">
+                    <span class="panier-titre">{{ spectacle.titre }}</span>
+                    <span class="panier-prix-total">{{ total|number_format(2, ',', ' ') }} €</span>
+                </div>
+                <div class="panier-card-body">
+                    <div class="panier-row">
+                        <span class="panier-label">Artiste</span>
+                        <span class="panier-value">{{ spectacle.artiste }}</span>
+                    </div>
+                    <div class="panier-row">
+                        <span class="panier-label">Date</span>
+                        <span class="panier-value">{{ representation.dateRepresentation|date('d/m/Y') }}</span>
+                    </div>
+                    <div class="panier-row">
+                        <span class="panier-label">Heure</span>
+                        <span class="panier-value">{{ representation.heureRepresentation|date('H:i') }}</span>
+                    </div>
+                    <div class="panier-row">
+                        <span class="panier-label">Salle</span>
+                        <span class="panier-value">{{ representation.salle }}</span>
+                    </div>
+                    <div class="panier-row">
+                        <span class="panier-label">Places</span>
+                        <span class="panier-value">{{ reservation.nbPlace }}</span>
+                    </div>
+                    <div class="panier-row">
+                        <span class="panier-label">Prix unitaire</span>
+                        <span class="panier-value">{{ representation.prix }} €</span>
+                    </div>
+                    <div class="panier-row">
+                        <span class="panier-label">Commandé le</span>
+                        <span class="panier-value">{{ reservation.dateResa|date('d/m/Y à H:i') }}</span>
+                    </div>
+                    <div class="panier-row">
+                        <span class="panier-label">Statut</span>
+                        <span class="panier-value" style="color: green; font-weight: bold;">✅ Confirmée</span>
+                    </div>
+                </div>
+            </div>
+
+        {% endfor %}
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

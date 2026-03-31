@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Messages de contact{% endblock %}
+{% block h1 %}Messages de contact{% endblock %}
+
+{% block body %}
+
+<div class="admin-section">
+
+    <div class="admin-section-header">
+        <a href="{{ path('admin_dashboard') }}" class="btn-back">← Retour au dashboard</a>
+    </div>
+
+    {% for message in app.flashes('success') %}
+        <div class="alert alert-success">{{ message }}</div>
+    {% endfor %}
+
+    {% if messages is empty %}
+        <p class="text-muted text-center mt-4">Aucun message reçu.</p>
+    {% else %}
+        <div class="table-responsive">
+            <table class="table-admin">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Nom</th>
+                        <th>Email</th>
+                        <th>Message</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for msg in messages %}
+                        <tr>
+                            <td>{{ msg.id }}</td>
+                            <td><strong>{{ msg.nom }}</strong></td>
+                            <td>
+                                <a href="mailto:{{ msg.email }}">{{ msg.email }}</a>
+                            </td>
+                            <td style="max-width:320px; color:#666; font-size:13px;">
+                                {{ msg.contenu|slice(0, 100) }}{% if msg.contenu|length > 100 %}…{% endif %}
+                            </td>
+                            <td style="font-size:12px; color:#999;">
+                                {{ msg.createdAt|date('d/m/Y H:i') }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% endif %}
+
+</div>
+
+{% endblock %}
