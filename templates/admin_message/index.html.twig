@@ -27,6 +27,7 @@
                         <th>Email</th>
                         <th>Message</th>
                         <th>Date</th>
+                        <th></th>
                     </tr>
                 </thead>
                 <tbody>
@@ -42,6 +43,9 @@
                             </td>
                             <td style="font-size:12px; color:#999;">
                                 {{ msg.createdAt|date('d/m/Y H:i') }}
+                            </td>
+                            <td>
+                                <a href="{{ path('admin_messages_show', {'id': msg.id}) }}" class="btn-admin-edit">Voir</a>
                             </td>
                         </tr>
                     {% endfor %}

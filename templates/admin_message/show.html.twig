@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Message de {{ message.nom }}{% endblock %}
+{% block h1 %}Message de {{ message.nom }}{% endblock %}
+
+{% block body %}
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+
+            <div class="admin-section-header">
+                <a href="{{ path('admin_messages_index') }}" class="btn-back">← Retour aux messages</a>
+            </div>
+
+            <div class="bg-white p-4 border border-2 border-green mb-4">
+
+                <div class="panier-row mb-3">
+                    <span class="panier-label">Nom</span>
+                    <span class="panier-value"><strong>{{ message.nom }}</strong></span>
+                </div>
+
+                <div class="panier-row mb-3">
+                    <span class="panier-label">Email</span>
+                    <span class="panier-value">
+                        <a href="mailto:{{ message.email }}">{{ message.email }}</a>
+                    </span>
+                </div>
+
+                <div class="panier-row mb-3">
+                    <span class="panier-label">Date</span>
+                    <span class="panier-value">{{ message.createdAt|date('d/m/Y à H:i') }}</span>
+                </div>
+
+                <div class="mt-4">
+                    <p class="panier-label">Message</p>
+                    <p class="mt-2" style="white-space: pre-wrap;">{{ message.contenu }}</p>
+                </div>
+
+            </div>
+
+            <div style="text-align:right;">
+                <form method="post" action="{{ path('admin_messages_delete', {'id': message.id}) }}" onsubmit="return confirm('Supprimer ce message ?')">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ message.id) }}">
+                    <button class="btn-admin-delete">🗑 Supprimer ce message</button>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+{% endblock %}
