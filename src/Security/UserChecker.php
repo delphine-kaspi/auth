@@ -19,7 +19,7 @@ class UserChecker implements UserCheckerInterface
         }
 
         if ($user->getToken() != NULL) {
-            // the message passed to this exception is meant to be displayed to the user
+            
             throw new CustomUserMessageAccountStatusException('Ce compte n\'est pas activé.');
         }
     }

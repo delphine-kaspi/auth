@@ -1,7 +1,118 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Confirmation de réservation{% endblock %}
-{% block h1 %}Confirmation de réservation{% endblock %}
+{% block title %}Confirmation de réservation — Kastone Productions{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root { --cream:#F5EDD6; --dark:#1C1208; --red:#C13020; --gold:#C8963C; --mid:#2E1F0A; }
+  body { background:var(--dark); font-family:'Crimson Pro',serif; color:var(--cream); }
+
+  .ks-confirm { min-height:calc(100vh - 62px); display:flex; align-items:center; justify-content:center; padding:60px 24px; position:relative; overflow:hidden; }
+
+  /* Arches fond */
+  .ks-confirm__arch {
+    position:absolute; left:50%; transform:translateX(-50%);
+    border:1.5px solid rgba(200,150,60,.1); border-radius:50% 50% 0 0; pointer-events:none;
+  }
+  .ks-confirm__arch--1 { width:min(1100px,160vw); height:min(550px,80vw); top:-60px; }
+  .ks-confirm__arch--2 { width:min(750px,120vw);  height:min(375px,60vw); top:-20px; }
+
+  .ks-confirm__inner {
+    position:relative; z-index:2;
+    max-width:680px; width:100%; text-align:center;
+  }
+
+  /* Ticket */
+  .ks-ticket {
+    background:var(--mid); border:1px solid rgba(200,150,60,.2);
+    position:relative; overflow:visible; margin-top:32px;
+  }
+
+  /* Découpe haut */
+  .ks-ticket::before {
+    content:'';
+    position:absolute; left:-1px; right:-1px; top:-16px; height:16px;
+    background:var(--dark);
+    clip-path:polygon(0 0, 3% 100%, 6% 0, 9% 100%, 12% 0, 15% 100%, 18% 0, 21% 100%, 24% 0, 27% 100%, 30% 0, 33% 100%, 36% 0, 39% 100%, 42% 0, 45% 100%, 48% 0, 51% 100%, 54% 0, 57% 100%, 60% 0, 63% 100%, 66% 0, 69% 100%, 72% 0, 75% 100%, 78% 0, 81% 100%, 84% 0, 87% 100%, 90% 0, 93% 100%, 96% 0, 99% 100%, 100% 0);
+  }
+
+  /* Découpe bas */
+  .ks-ticket::after {
+    content:'';
+    position:absolute; left:-1px; right:-1px; bottom:-16px; height:16px;
+    background:var(--dark);
+    clip-path:polygon(0 100%, 3% 0, 6% 100%, 9% 0, 12% 100%, 15% 0, 18% 100%, 21% 0, 24% 100%, 27% 0, 30% 100%, 33% 0, 36% 100%, 39% 0, 42% 100%, 45% 0, 48% 100%, 51% 0, 54% 100%, 57% 0, 60% 100%, 63% 0, 66% 100%, 69% 0, 72% 100%, 75% 0, 78% 100%, 81% 0, 84% 100%, 87% 0, 90% 100%, 93% 0, 96% 100%, 99% 0, 100% 100%);
+  }
+
+  .ks-ticket__header {
+    padding:32px 40px 20px;
+    border-bottom:1px dashed rgba(200,150,60,.2);
+    text-align:center;
+  }
+
+  .ks-ticket__icon { font-size:2.5rem; margin-bottom:12px; display:block; }
+
+  .ks-ticket__title {
+    font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:900;
+    color:var(--cream); text-transform:uppercase; margin-bottom:4px;
+  }
+
+  .ks-ticket__subtitle {
+    font-size:.85rem; font-style:italic; color:rgba(245,237,214,.45);
+  }
+
+  .ks-ticket__body { padding:24px 40px; }
+
+  .ks-ticket__show {
+    font-family:'Playfair Display',serif; font-size:2rem; font-weight:900;
+    color:var(--gold); text-align:center; margin-bottom:20px; line-height:1;
+  }
+
+  .ks-ticket__row {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:10px 0; border-bottom:1px solid rgba(200,150,60,.08); gap:16px; flex-wrap:wrap;
+  }
+  .ks-ticket__row:last-child { border-bottom:none; }
+
+  .ks-ticket__label { font-size:.65rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(245,237,214,.3); }
+  .ks-ticket__value { font-size:.95rem; color:rgba(245,237,214,.75); text-align:right; }
+
+  .ks-ticket__footer {
+    padding:20px 40px 32px; text-align:center;
+    border-top:1px dashed rgba(200,150,60,.2);
+  }
+
+  .ks-ticket__total-label { font-size:.65rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(245,237,214,.3); margin-bottom:4px; }
+  .ks-ticket__total-amount { font-family:'Playfair Display',serif; font-size:3rem; font-weight:900; color:var(--gold); line-height:1; }
+
+  /* Actions */
+  .ks-confirm__actions {
+    display:flex; gap:16px; justify-content:center; flex-wrap:wrap; margin-top:48px;
+  }
+
+  .ks-btn-red {
+    background:var(--red); color:white; border:none;
+    padding:12px 32px; font-family:'Playfair Display',serif;
+    font-variant:small-caps; font-size:.9rem; letter-spacing:.15em;
+    text-decoration:none; display:inline-block; transition:background .3s;
+  }
+  .ks-btn-red:hover { background:#a02010; color:white; }
+
+  .ks-btn-gold {
+    background:transparent; color:var(--gold); border:1px solid var(--gold);
+    padding:12px 32px; font-family:'Playfair Display',serif;
+    font-variant:small-caps; font-size:.9rem; letter-spacing:.15em;
+    text-decoration:none; display:inline-block; transition:background .3s;
+  }
+  .ks-btn-gold:hover { background:rgba(200,150,60,.1); color:var(--gold); }
+
+  /* Ornements */
+  .ks-confirm__pretitle { font-size:.68rem; letter-spacing:.42em; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
+  .ks-confirm__ornament { color:var(--gold); font-size:1.2rem; letter-spacing:.3em; opacity:.55; margin:6px 0; }
+</style>
+{% endblock %}
 
 {% block body %}
 
@@ -9,65 +120,67 @@
 {% set spectacle = representation.spectacle %}
 {% set total = reservation.nbPlace * representation.prix %}
 
-<div class="confirmation-card">
+<section class="ks-confirm">
+  <div class="ks-confirm__arch ks-confirm__arch--1"></div>
+  <div class="ks-confirm__arch ks-confirm__arch--2"></div>
 
-    <div class="confirmation-icon"></div>
-    <p class="confirmation-msg">Votre réservation a bien été enregistrée !</p>
+  <div class="ks-confirm__inner">
 
-    <div class="recap-block">
-        <h2>Récapitulatif</h2>
+    <p class="ks-confirm__pretitle">Kastone Productions · Billetterie</p>
+    <div class="ks-confirm__ornament">✦ ✦ ✦</div>
 
-        <div class="recap-row">
-            <span class="recap-label">Spectacle</span>
-            <span class="recap-value">{{ spectacle.titre }}</span>
+    <div class="ks-ticket">
+      <div class="ks-ticket__header">
+        <span class="ks-ticket__icon">🎟️</span>
+        <div class="ks-ticket__title">Réservation confirmée</div>
+        <div class="ks-ticket__subtitle">Votre réservation a bien été enregistrée !</div>
+      </div>
+
+      <div class="ks-ticket__body">
+        <div class="ks-ticket__show">{{ spectacle.titre }}</div>
+
+        <div class="ks-ticket__row">
+          <span class="ks-ticket__label">Artiste</span>
+          <span class="ks-ticket__value">{{ spectacle.artiste }}</span>
         </div>
-
-        <div class="recap-row">
-            <span class="recap-label">Artiste</span>
-            <span class="recap-value">{{ spectacle.artiste }}</span>
+        <div class="ks-ticket__row">
+          <span class="ks-ticket__label">Date</span>
+          <span class="ks-ticket__value">{{ representation.dateRepresentation|date('d/m/Y') }}</span>
         </div>
-
-        <div class="recap-row">
-            <span class="recap-label">Date</span>
-            <span class="recap-value">{{ representation.dateRepresentation|date('d/m/Y') }}</span>
+        <div class="ks-ticket__row">
+          <span class="ks-ticket__label">Heure</span>
+          <span class="ks-ticket__value">{{ representation.heureRepresentation|date('H:i') }}</span>
         </div>
-
-        <div class="recap-row">
-            <span class="recap-label">Heure</span>
-            <span class="recap-value">{{ representation.heureRepresentation|date('H:i') }}</span>
+        <div class="ks-ticket__row">
+          <span class="ks-ticket__label">Salle</span>
+          <span class="ks-ticket__value">{{ representation.salle }}</span>
         </div>
-
-        <div class="recap-row">
-            <span class="recap-label">Salle</span>
-            <span class="recap-value">{{ representation.salle }}</span>
+        <div class="ks-ticket__row">
+          <span class="ks-ticket__label">Nombre de places</span>
+          <span class="ks-ticket__value">{{ reservation.nbPlace }}</span>
         </div>
-
-        <div class="recap-row">
-            <span class="recap-label">Nombre de places</span>
-            <span class="recap-value">{{ reservation.nbPlace }}</span>
+        <div class="ks-ticket__row">
+          <span class="ks-ticket__label">Prix unitaire</span>
+          <span class="ks-ticket__value">{{ representation.prix }} €</span>
         </div>
-
-        <div class="recap-row">
-            <span class="recap-label">Prix unitaire</span>
-            <span class="recap-value">{{ representation.prix }} €</span>
+        <div class="ks-ticket__row">
+          <span class="ks-ticket__label">Réservé le</span>
+          <span class="ks-ticket__value">{{ reservation.dateResa|date('d/m/Y') }}</span>
         </div>
+      </div>
 
-        <div class="recap-row recap-total">
-            <span class="recap-label">Total</span>
-            <span class="recap-value">{{ total|number_format(2, ',', ' ') }} €</span>
-        </div>
+      <div class="ks-ticket__footer">
+        <div class="ks-ticket__total-label">Total</div>
+        <div class="ks-ticket__total-amount">{{ total|number_format(2, ',', ' ') }} €</div>
+      </div>
     </div>
 
-    <div class="recap-row" style="margin-top: 1rem;">
-        <span class="recap-label">Réservation effectuée le</span>
-        <span class="recap-value">{{ reservation.dateResa|date('d/m/Y') }}</span>
+    <div class="ks-confirm__actions">
+      <a href="{{ path('app_home') }}" class="ks-btn-red">Retour à l'accueil</a>
+      <a href="{{ path('app_panier') }}" class="ks-btn-gold">Voir mon panier</a>
     </div>
 
-    <div class="confirmation-actions">
-        <a href="{{ path('app_home') }}" class="btn btn-custom">Retour à l'accueil</a>
-        <a href="{{ path('app_panier') }}" class="btn btn-custom">Voir mon panier</a>
-    </div>
-
-</div>
+  </div>
+</section>
 
 {% endblock %}

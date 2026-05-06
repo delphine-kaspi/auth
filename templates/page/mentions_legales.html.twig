@@ -1,63 +1,126 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mentions légales – Kastone Productions{% endblock %}
-{% block h1 %}Mentions légales{% endblock %}
+{% block title %}Mentions légales — Kastone Productions{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root { --cream:#F5EDD6; --dark:#1C1208; --red:#C13020; --gold:#C8963C; --mid:#2E1F0A; }
+  body { background:var(--cream); font-family:'Crimson Pro',serif; color:var(--dark); }
+
+  .ks-hero { background:var(--dark); position:relative; overflow:hidden; padding:90px 40px 70px; text-align:center; }
+  .ks-hero__arch { position:absolute; left:50%; transform:translateX(-50%); border:1.5px solid rgba(200,150,60,.14); border-radius:50% 50% 0 0; pointer-events:none; }
+  .ks-hero__arch--1 { width:min(1000px,160vw); height:min(500px,80vw); top:-60px; }
+  .ks-hero__arch--2 { width:min(700px,120vw);  height:min(350px,60vw); top:-20px; }
+  .ks-hero__inner { position:relative; z-index:2; }
+  .ks-hero__pretitle { font-size:.68rem; letter-spacing:.42em; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
+  .ks-hero__ornament { color:var(--gold); font-size:1.2rem; letter-spacing:.3em; opacity:.55; margin:6px 0 14px; }
+  .ks-hero__title { font-family:'Playfair Display',serif; font-size:clamp(2.5rem,6vw,6rem); font-weight:900; line-height:.9; color:var(--cream); text-transform:uppercase; letter-spacing:-.02em; margin:0; }
+  .ks-hero__title em { display:block; font-style:italic; font-weight:400; color:var(--gold); font-size:.42em; letter-spacing:.06em; line-height:1.7; margin-bottom:4px; }
+  .ks-hero__rule { display:flex; align-items:center; justify-content:center; gap:14px; margin:22px auto; max-width:320px; }
+  .ks-hero__rule span { flex:1; height:1px; background:var(--gold); opacity:.3; }
+  .ks-hero__rule i { color:var(--gold); font-style:normal; opacity:.5; }
+
+  .ks-band { background:var(--gold); padding:12px 0; display:flex; justify-content:center; gap:24px; flex-wrap:wrap;
+    font-family:'Playfair Display',serif; font-size:.72rem; letter-spacing:.2em; font-variant:small-caps; color:var(--dark); }
+  .ks-band span { opacity:.4; }
+
+  .ks-legal { padding:80px 40px; background:var(--dark); color:var(--cream); }
+
+  .ks-legal__inner {
+    max-width:820px; margin:0 auto;
+    border:1px solid rgba(200,150,60,.15); padding:56px 64px; position:relative;
+  }
+  @media (max-width:600px) { .ks-legal__inner { padding:32px 24px; } }
+
+  .ks-legal__inner::before, .ks-legal__inner::after {
+    content:''; position:absolute; width:20px; height:20px; border-color:var(--gold); border-style:solid; opacity:.4;
+  }
+  .ks-legal__inner::before { top:12px; left:12px; border-width:2px 0 0 2px; }
+  .ks-legal__inner::after  { bottom:12px; right:12px; border-width:0 2px 2px 0; }
+
+  .ks-legal h2 {
+    font-family:'Playfair Display',serif; font-size:1.35rem; font-weight:700;
+    color:var(--gold); margin:40px 0 14px;
+    padding-bottom:8px; border-bottom:1px solid rgba(200,150,60,.15);
+  }
+  .ks-legal h2:first-child { margin-top:0; }
+
+  .ks-legal p { font-size:1rem; line-height:1.85; color:rgba(245,237,214,.6); margin-bottom:14px; }
+
+  .ks-legal ul { list-style:none; padding:0; margin-bottom:14px; }
+  .ks-legal ul li {
+    font-size:1rem; line-height:1.85; color:rgba(245,237,214,.6);
+    padding:6px 0 6px 20px; position:relative;
+    border-bottom:1px solid rgba(200,150,60,.06);
+  }
+  .ks-legal ul li::before { content:'❧'; position:absolute; left:0; color:var(--gold); opacity:.5; font-size:.8rem; }
+
+  .ks-legal a { color:var(--gold); text-decoration:none; }
+  .ks-legal a:hover { text-decoration:underline; }
+  .ks-legal strong { color:rgba(245,237,214,.85); }
+</style>
+{% endblock %}
 
 {% block body %}
-<div class="container my-5">
-    <div class="row justify-content-center">
-        <div class="col-md-10">
-            <div class="bg-white p-4 border border-2 border-green rounded shadow mb-5">
 
-                <h2>1. Éditeur du site</h2>
-                <p>
-                    Le site <a href="https://www.kastone-productions.com">www.kastone-productions.com</a> est édité par : Delphine Kaspi<br>
-                    <strong>Kastone Productions</strong><br>
-                    Adresse : 21 rue des oeillets, 94140 Alfortville<br>
-                    SIRET : 984 163 568 00012<br>
-                    Email : contact@kastone-productions.com<br>
-                    Téléphone : 06 02 03 04 05<br>
-                    Directeur de la publication : Thomas Esacaffre Stone
-                </p>
+<section class="ks-hero">
+  <div class="ks-hero__arch ks-hero__arch--1"></div>
+  <div class="ks-hero__arch ks-hero__arch--2"></div>
+  <div class="ks-hero__inner">
+    <p class="ks-hero__pretitle">Kastone Productions · Légal</p>
+    <div class="ks-hero__ornament">✦ ✦ ✦</div>
+    <h1 class="ks-hero__title">
+      <em>Informations légales</em>
+      Mentions
+    </h1>
+    <div class="ks-hero__rule"><span></span><i>❧</i><span></span></div>
+  </div>
+</section>
 
-                <h2>2. Hébergeur</h2>
-                <p>
-                    Le site est hébergé par :<br>
-                    <strong>OVH SAS</strong><br>
-                    2 rue Kellermann – 59100 Roubaix – France<br>
-                    Téléphone : 1007
-                </p>
-
-                <h2>3. Propriété intellectuelle</h2>
-                <p>
-                    Tous les contenus présents sur le site (textes, images, vidéos, logos) sont la propriété exclusive de Kastone Productions ou de leurs auteurs respectifs.<br>
-                    Toute reproduction, totale ou partielle, est interdite sans autorisation écrite préalable.
-                </p>
-
-                <h2>4. Données personnelles</h2>
-                <p>
-                    Les informations collectées via le site sont nécessaires à la gestion des commandes, à l’envoi de newsletters ou à l’accompagnement du service client.<br>
-                    Conformément au RGPD, vous pouvez exercer vos droits d’accès, de modification, de rectification et de suppression en nous contactant à contact@kastone-productions.com.
-                </p>
-
-                <h2>5. Cookies</h2>
-                <p>
-                    Le site utilise des cookies pour améliorer l’expérience utilisateur et réaliser des statistiques anonymes.<br>
-                    Vous pouvez configurer votre navigateur pour refuser les cookies.
-                </p>
-
-                <h2>6. Responsabilité</h2>
-                <p>
-                    Kastone Productions ne peut être tenue responsable des dommages directs ou indirects liés à l’utilisation du site ou à l’achat de billets en ligne.
-                </p>
-
-                <h2>7. Loi applicable</h2>
-                <p>
-                    Les présentes mentions légales sont soumises au droit français.
-                </p>
-
-            </div>
-        </div>
-    </div>
+<div class="ks-band">
+  <span>✦</span> Kastone Productions <span>✦</span> Mentions légales <span>✦</span>
 </div>
+
+<section class="ks-legal">
+  <div class="ks-legal__inner">
+
+    <h2>1. Éditeur du site</h2>
+    <p>
+      Le site <a href="https://www.kastone-productions.com">www.kastone-productions.com</a> est édité par : <strong>Delphine Kaspi</strong><br>
+      <strong>Kastone Productions</strong><br>
+      Adresse : 21 rue des œillets, 94140 Alfortville<br>
+      SIRET : 984 163 568 00012<br>
+      Email : <a href="mailto:contact@kastone-productions.com">contact@kastone-productions.com</a><br>
+      Téléphone : 06 02 03 04 05<br>
+      Directeur de la publication : Thomas Escaffre Stone
+    </p>
+
+    <h2>2. Hébergeur</h2>
+    <p>
+      Le site est hébergé par :<br>
+      <strong>OVH SAS</strong><br>
+      2 rue Kellermann – 59100 Roubaix – France<br>
+      Téléphone : 1007
+    </p>
+
+    <h2>3. Propriété intellectuelle</h2>
+    <p>Tous les contenus présents sur le site (textes, images, vidéos, logos) sont la propriété exclusive de Kastone Productions ou de leurs auteurs respectifs. Toute reproduction, totale ou partielle, est interdite sans autorisation écrite préalable.</p>
+
+    <h2>4. Données personnelles</h2>
+    <p>Les informations collectées via le site sont nécessaires à la gestion des commandes, à l'envoi de newsletters ou à l'accompagnement du service client. Conformément au RGPD, vous pouvez exercer vos droits d'accès, de modification, de rectification et de suppression en nous contactant à <a href="mailto:contact@kastone-productions.com">contact@kastone-productions.com</a>.</p>
+
+    <h2>5. Cookies</h2>
+    <p>Le site utilise des cookies pour améliorer l'expérience utilisateur et réaliser des statistiques anonymes. Vous pouvez configurer votre navigateur pour refuser les cookies.</p>
+
+    <h2>6. Responsabilité</h2>
+    <p>Kastone Productions ne peut être tenue responsable des dommages directs ou indirects liés à l'utilisation du site ou à l'achat de billets en ligne.</p>
+
+    <h2>7. Loi applicable</h2>
+    <p>Les présentes mentions légales sont soumises au droit français.</p>
+
+  </div>
+</section>
+
 {% endblock %}

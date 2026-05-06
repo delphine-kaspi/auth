@@ -13,7 +13,7 @@ class ArtisteController extends AbstractController
     #[Route('/artistes', name: 'artistes')]
     public function index(ArtisteRepository $repo): Response
     {
-        return $this->render('artistes.html.twig', [
+        return $this->render('home/artistes.html.twig', [
             'artistes' => $repo->findAll(),
         ]);
     }

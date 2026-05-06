@@ -1,0 +1,230 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Les Artistes — Kastone Productions{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root { --cream:#F5EDD6; --dark:#1C1208; --red:#C13020; --gold:#C8963C; --mid:#2E1F0A; }
+  body { background:var(--cream); font-family:'Crimson Pro',serif; color:var(--dark); }
+
+  /* ── HERO ── */
+  .ks-hero {
+    background:var(--dark); position:relative; overflow:hidden;
+    padding:90px 40px 70px; text-align:center;
+  }
+  .ks-hero__arch {
+    position:absolute; left:50%; transform:translateX(-50%);
+    border:1.5px solid rgba(200,150,60,.14); border-radius:50% 50% 0 0; pointer-events:none;
+  }
+  .ks-hero__arch--1 { width:min(1000px,160vw); height:min(500px,80vw); top:-60px; }
+  .ks-hero__arch--2 { width:min(700px,120vw);  height:min(350px,60vw); top:-20px; }
+
+  .ks-hero__dots {
+    position:absolute; width:160px; height:260px;
+    background-image:radial-gradient(circle, rgba(200,150,60,.2) 1.5px, transparent 1.5px);
+    background-size:18px 18px; pointer-events:none;
+  }
+  .ks-hero__dots--left  { left:0; top:50%; transform:translateY(-50%); mask-image:linear-gradient(to right, black, transparent); }
+  .ks-hero__dots--right { right:0; bottom:40px; mask-image:linear-gradient(to left, black, transparent); }
+
+  .ks-hero__inner { position:relative; z-index:2; }
+  .ks-hero__pretitle { font-size:.68rem; letter-spacing:.42em; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
+  .ks-hero__ornament { color:var(--gold); font-size:1.2rem; letter-spacing:.3em; opacity:.55; margin:6px 0 14px; }
+  .ks-hero__title {
+    font-family:'Playfair Display',serif; font-size:clamp(3rem,7vw,7rem);
+    font-weight:900; line-height:.88; color:var(--cream);
+    text-transform:uppercase; letter-spacing:-.02em; margin:0;
+  }
+  .ks-hero__title em { display:block; font-style:italic; font-weight:400; color:var(--gold); font-size:.45em; letter-spacing:.06em; line-height:1.7; margin-bottom:4px; }
+  .ks-hero__rule { display:flex; align-items:center; justify-content:center; gap:14px; margin:22px auto; max-width:320px; }
+  .ks-hero__rule span { flex:1; height:1px; background:var(--gold); opacity:.3; }
+  .ks-hero__rule i { color:var(--gold); font-style:normal; opacity:.5; }
+  .ks-hero__count {
+    font-size:.78rem; font-style:italic;
+    color:rgba(245,237,214,.4); letter-spacing:.05em;
+  }
+  .ks-hero__count strong { color:var(--gold); font-style:normal; }
+
+  /* ── BANDEAU ── */
+  .ks-band { background:var(--gold); padding:12px 0; display:flex; justify-content:center; gap:24px; flex-wrap:wrap;
+    font-family:'Playfair Display',serif; font-size:.72rem; letter-spacing:.2em; font-variant:small-caps; color:var(--dark); }
+  .ks-band span { opacity:.4; }
+
+  /* ── SECTION ── */
+  .ks-section { padding:80px 48px; background:var(--dark); }
+
+  /* ── GRILLE ARTISTES ── */
+  .ks-artists-grid {
+    display:grid;
+    grid-template-columns:repeat(auto-fill, minmax(300px, 1fr));
+    gap:2px;
+    max-width:1200px; margin:0 auto;
+  }
+
+  /* ── CARTE ── */
+  .ks-artist-card {
+    background:var(--mid); position:relative; overflow:hidden;
+    display:flex; flex-direction:column;
+    transition:transform .3s;
+    text-decoration:none;
+  }
+  .ks-artist-card:hover { transform:translateY(-4px); }
+
+  .ks-artist-card::before {
+    content:''; position:absolute; inset:10px;
+    border:1px solid rgba(200,150,60,.12); pointer-events:none; z-index:1;
+    transition:border-color .3s;
+  }
+  .ks-artist-card:hover::before { border-color:rgba(200,150,60,.4); }
+
+  /* Overlay au hover */
+  .ks-artist-card__overlay {
+    position:absolute; inset:0;
+    background:linear-gradient(to top, rgba(28,18,8,.95) 0%, rgba(28,18,8,.3) 60%, transparent 100%);
+    z-index:2; opacity:0; transition:opacity .3s;
+  }
+  .ks-artist-card:hover .ks-artist-card__overlay { opacity:1; }
+
+  .ks-artist-card__img {
+    width:100%; height:300px;
+    object-fit:cover; object-position:top;
+    display:block;
+    filter:sepia(15%) grayscale(20%);
+    transition:filter .3s, transform .4s;
+  }
+  .ks-artist-card:hover .ks-artist-card__img {
+    filter:sepia(5%) grayscale(0%);
+    transform:scale(1.03);
+  }
+
+  .ks-artist-card__img-placeholder {
+    width:100%; height:300px;
+    background:rgba(255,255,255,.03);
+    display:flex; align-items:center; justify-content:center;
+    color:rgba(245,237,214,.15); font-style:italic; font-size:.85rem;
+  }
+
+  .ks-artist-card__body {
+    padding:24px 28px 28px;
+    position:relative; z-index:3;
+    display:flex; flex-direction:column; flex:1;
+  }
+
+  .ks-artist-card__num {
+    position:absolute; top:-48px; right:16px;
+    font-family:'Playfair Display',serif; font-size:4rem; font-weight:900;
+    color:rgba(200,150,60,.12); line-height:1; pointer-events:none; z-index:3;
+  }
+
+  .ks-artist-card__genre {
+    font-size:.62rem; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--red); margin-bottom:8px;
+  }
+
+  .ks-artist-card__name {
+    font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:900;
+    color:var(--cream); line-height:1.1; margin-bottom:10px;
+  }
+
+  .ks-artist-card__bio {
+    font-size:.85rem; line-height:1.7; color:rgba(245,237,214,.42);
+    font-style:italic; flex:1; margin-bottom:20px;
+  }
+
+  .ks-artist-card__footer {
+    display:flex; align-items:center; justify-content:space-between;
+    border-top:1px solid rgba(200,150,60,.12); padding-top:16px;
+  }
+
+  .ks-artist-card__shows {
+    font-size:.68rem; letter-spacing:.12em; text-transform:uppercase;
+    color:rgba(200,150,60,.5);
+  }
+
+  .ks-artist-card__cta {
+    background:var(--red); color:white; border:none;
+    padding:8px 18px; font-family:'Playfair Display',serif;
+    font-variant:small-caps; font-size:.8rem; letter-spacing:.12em;
+    transition:background .3s; white-space:nowrap;
+  }
+  .ks-artist-card:hover .ks-artist-card__cta { background:#a02010; }
+
+  /* ── VIDE ── */
+  .ks-empty {
+    text-align:center; padding:100px 40px;
+    font-style:italic; color:rgba(245,237,214,.3); font-size:1.1rem;
+    grid-column:1/-1;
+  }
+</style>
+{% endblock %}
+
+{% block body %}
+
+{# ── HERO ── #}
+<section class="ks-hero">
+  <div class="ks-hero__arch ks-hero__arch--1"></div>
+  <div class="ks-hero__arch ks-hero__arch--2"></div>
+  <div class="ks-hero__dots ks-hero__dots--left"></div>
+  <div class="ks-hero__dots ks-hero__dots--right"></div>
+
+  <div class="ks-hero__inner">
+    <p class="ks-hero__pretitle">Kastone Productions · La Troupe</p>
+    <div class="ks-hero__ornament">✦ ✦ ✦</div>
+    <h1 class="ks-hero__title">
+      <em>Découvrez</em>
+      Nos Artistes
+    </h1>
+    <div class="ks-hero__rule"><span></span><i>❧</i><span></span></div>
+    <p class="ks-hero__count">
+      <strong>{{ artistes|length }}</strong> artiste{% if artistes|length > 1 %}s{% endif %} au programme
+    </p>
+  </div>
+</section>
+
+<div class="ks-band">
+  <span>✦</span> Stand-Up <span>✦</span> One-Man Show <span>✦</span> Improvisation <span>✦</span> Sketch <span>✦</span>
+</div>
+
+{# ── GRILLE ── #}
+<section class="ks-section">
+  <div class="ks-artists-grid">
+
+    {% for artiste in artistes %}
+      <a href="{{ path('app_artiste_show', {'id': artiste.id}) }}" class="ks-artist-card">
+
+        <div class="ks-artist-card__overlay"></div>
+        <div class="ks-artist-card__num">{{ loop.index|number_format(2, 0, '.', '0') }}</div>
+
+        {% if artiste.photo %}
+          <img src="{{ asset('images/' ~ artiste.photo) }}"
+               class="ks-artist-card__img"
+               alt="Photo de {{ artiste.prenom }} {{ artiste.nom }}">
+        {% else %}
+          <div class="ks-artist-card__img-placeholder">Pas de photo</div>
+        {% endif %}
+
+        <div class="ks-artist-card__body">
+          <div class="ks-artist-card__genre">Stand-Up</div>
+          <div class="ks-artist-card__name">{{ artiste.prenom }} {{ artiste.nom }}</div>
+          <div class="ks-artist-card__bio">
+            {{ artiste.bio|slice(0, 120) }}{% if artiste.bio|length > 120 %}…{% endif %}
+          </div>
+          <div class="ks-artist-card__footer">
+            <span class="ks-artist-card__shows">
+              {{ artiste.spectacles|length }} spectacle{% if artiste.spectacles|length > 1 %}s{% endif %}
+            </span>
+            <span class="ks-artist-card__cta">Voir le profil</span>
+          </div>
+        </div>
+
+      </a>
+    {% else %}
+      <p class="ks-empty">Aucun artiste pour le moment.</p>
+    {% endfor %}
+
+  </div>
+</section>
+
+{% endblock %}
