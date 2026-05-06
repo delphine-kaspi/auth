@@ -1,103 +1,272 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mon panier{% endblock %}
-{% block h1 %}Mes réservations à venir{% endblock %}
+{% block title %}Mon panier — Kastone Productions{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root { --cream:#F5EDD6; --dark:#1C1208; --red:#C13020; --gold:#C8963C; --mid:#2E1F0A; }
+  body { background:var(--cream); font-family:'Crimson Pro',serif; color:var(--dark); }
+
+  /* HERO */
+  .ks-hero { background:var(--dark); position:relative; overflow:hidden; padding:80px 40px 60px; text-align:center; }
+  .ks-hero__arch { position:absolute; left:50%; transform:translateX(-50%); border:1.5px solid rgba(200,150,60,.14); border-radius:50% 50% 0 0; pointer-events:none; }
+  .ks-hero__arch--1 { width:min(900px,160vw); height:min(450px,80vw); top:-50px; }
+  .ks-hero__arch--2 { width:min(620px,120vw); height:min(310px,60vw); top:-10px; }
+  .ks-hero__inner { position:relative; z-index:2; }
+  .ks-hero__pretitle { font-size:.68rem; letter-spacing:.42em; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
+  .ks-hero__ornament { color:var(--gold); font-size:1.2rem; letter-spacing:.3em; opacity:.55; margin:6px 0 14px; }
+  .ks-hero__title { font-family:'Playfair Display',serif; font-size:clamp(2.5rem,6vw,5.5rem); font-weight:900; line-height:.9; color:var(--cream); text-transform:uppercase; letter-spacing:-.02em; margin:0; }
+  .ks-hero__title em { display:block; font-style:italic; font-weight:400; color:var(--gold); font-size:.45em; letter-spacing:.06em; line-height:1.7; margin-bottom:4px; }
+  .ks-hero__rule { display:flex; align-items:center; justify-content:center; gap:14px; margin:20px auto; max-width:280px; }
+  .ks-hero__rule span { flex:1; height:1px; background:var(--gold); opacity:.3; }
+  .ks-hero__rule i { color:var(--gold); font-style:normal; opacity:.5; }
+
+  /* BANDEAU */
+  .ks-band { background:var(--gold); padding:12px 0; display:flex; justify-content:center; gap:24px; flex-wrap:wrap;
+    font-family:'Playfair Display',serif; font-size:.72rem; letter-spacing:.2em; font-variant:small-caps; color:var(--dark); }
+  .ks-band span { opacity:.4; }
+
+  /* SECTION */
+  .ks-section { padding:60px 40px 80px; background:var(--dark); color:var(--cream); }
+
+  /* VIDE */
+  .ks-empty {
+    text-align:center; padding:80px 40px; max-width:500px; margin:0 auto;
+  }
+  .ks-empty__icon { font-size:3.5rem; margin-bottom:20px; display:block; }
+  .ks-empty__msg { font-size:1.1rem; font-style:italic; color:rgba(245,237,214,.45); margin-bottom:28px; }
+  .ks-btn-gold {
+    display:inline-block; background:transparent; color:var(--gold);
+    border:1px solid var(--gold); padding:12px 32px;
+    font-family:'Playfair Display',serif; font-variant:small-caps;
+    font-size:.9rem; letter-spacing:.15em; text-decoration:none;
+    transition:background .3s;
+  }
+  .ks-btn-gold:hover { background:rgba(200,150,60,.1); color:var(--gold); }
+
+  /* WRAPPER CARTES */
+  .ks-panier-wrapper { max-width:820px; margin:0 auto; display:flex; flex-direction:column; gap:2px; }
+
+  /* CARTE */
+  .ks-panier-card {
+    border:1px solid rgba(200,150,60,.15); position:relative; overflow:hidden;
+  }
+  .ks-panier-card::before {
+    content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+    background:var(--gold);
+  }
+
+  .ks-panier-card__header {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:20px 28px; background:rgba(255,255,255,.03);
+    border-bottom:1px solid rgba(200,150,60,.1);
+    flex-wrap:wrap; gap:12px;
+  }
+
+  .ks-panier-card__titre {
+    font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:700; color:var(--cream);
+  }
+
+  .ks-panier-card__total {
+    font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:900; color:var(--gold);
+  }
+
+  .ks-panier-card__body { padding:20px 28px; }
+
+  .ks-panier-row {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:10px 0; border-bottom:1px solid rgba(200,150,60,.06);
+    gap:16px; flex-wrap:wrap;
+  }
+  .ks-panier-row:last-child { border-bottom:none; }
+
+  .ks-panier-label {
+    font-size:.68rem; letter-spacing:.15em; text-transform:uppercase;
+    color:rgba(245,237,214,.35); flex-shrink:0;
+  }
+
+  .ks-panier-value {
+    font-size:.95rem; color:rgba(245,237,214,.7); text-align:right;
+  }
+
+  /* Contrôle places */
+  .ks-panier-places {
+    display:flex; align-items:center; gap:10px; flex-wrap:wrap;
+  }
+
+  .ks-panier-input {
+    width:70px; background:rgba(255,255,255,.06) !important;
+    border:1px solid rgba(200,150,60,.25) !important;
+    color:var(--cream) !important; padding:6px 10px !important;
+    font-family:'Crimson Pro',serif !important; font-size:.95rem !important;
+    text-align:center; border-radius:0 !important;
+  }
+
+  .ks-btn-update {
+    background:rgba(200,150,60,.15); color:var(--gold); border:1px solid rgba(200,150,60,.3);
+    padding:6px 16px; font-family:'Playfair Display',serif; font-variant:small-caps;
+    font-size:.78rem; letter-spacing:.1em; cursor:pointer; transition:background .3s;
+  }
+  .ks-btn-update:hover { background:rgba(200,150,60,.3); }
+
+  .ks-btn-delete {
+    background:transparent; color:rgba(193,48,32,.6); border:1px solid rgba(193,48,32,.2);
+    padding:8px 18px; font-family:'Playfair Display',serif; font-variant:small-caps;
+    font-size:.78rem; letter-spacing:.1em; cursor:pointer; transition:all .3s;
+    margin-top:12px; width:100%;
+  }
+  .ks-btn-delete:hover { background:rgba(193,48,32,.1); color:var(--red); border-color:var(--red); }
+
+  /* TOTAL GÉNÉRAL */
+  .ks-panier-total {
+    max-width:820px; margin:16px auto 0;
+    background:rgba(200,150,60,.08); border:1px solid rgba(200,150,60,.25);
+    padding:20px 28px;
+    display:flex; justify-content:space-between; align-items:center;
+  }
+
+  .ks-panier-total__label {
+    font-family:'Playfair Display',serif; font-size:1rem; font-variant:small-caps;
+    letter-spacing:.15em; color:var(--gold);
+  }
+
+  .ks-panier-total__amount {
+    font-family:'Playfair Display',serif; font-size:2rem; font-weight:900; color:var(--gold);
+  }
+
+  /* EMAIL + VALIDER */
+  .ks-panier-footer {
+    max-width:820px; margin:24px auto 0; text-align:center;
+  }
+
+  .ks-panier-email {
+    font-size:.85rem; font-style:italic; color:rgba(245,237,214,.4); margin-bottom:20px;
+  }
+  .ks-panier-email strong { color:rgba(245,237,214,.7); font-style:normal; }
+
+  .ks-btn-confirm {
+    background:var(--red); color:white; border:none;
+    padding:14px 48px; font-family:'Playfair Display',serif;
+    font-variant:small-caps; font-size:1rem; letter-spacing:.15em;
+    cursor:pointer; transition:background .3s, transform .2s;
+  }
+  .ks-btn-confirm:hover { background:#a02010; transform:translateY(-2px); }
+</style>
+{% endblock %}
 
 {% block body %}
 
-<div class="panier-wrapper">
+<section class="ks-hero">
+  <div class="ks-hero__arch ks-hero__arch--1"></div>
+  <div class="ks-hero__arch ks-hero__arch--2"></div>
+  <div class="ks-hero__inner">
+    <p class="ks-hero__pretitle">Kastone Productions · Billetterie</p>
+    <div class="ks-hero__ornament">✦ ✦ ✦</div>
+    <h1 class="ks-hero__title">
+      <em>Mes réservations à venir</em>
+      Mon Panier
+    </h1>
+    <div class="ks-hero__rule"><span></span><i>❧</i><span></span></div>
+  </div>
+</section>
 
-    {% if reservations is empty %}
+<div class="ks-band">
+  <span>✦</span> Billetterie <span>✦</span> Réservations <span>✦</span> Kastone Productions <span>✦</span>
+</div>
 
-        <div class="panier-empty">
-            <p class="panier-empty-icon">🎭</p>
-            <p class="panier-empty-msg">Vous n'avez aucune réservation à venir.</p>
-            <a href="{{ path('app_home') }}" class="btn btn-custom">Découvrir les spectacles</a>
-        </div>
+<section class="ks-section">
 
-    {% else %}
+  {% if reservations is empty %}
+    <div class="ks-empty">
+      <span class="ks-empty__icon">🎭</span>
+      <p class="ks-empty__msg">Vous n'avez aucune réservation à venir.</p>
+      <a href="{{ path('app_home') }}" class="ks-btn-gold">Découvrir les spectacles</a>
+    </div>
 
-        {% set total_general = 0 %}
+  {% else %}
+    {% set total_general = 0 %}
 
-        {% for reservation in reservations %}
-            {% set representation = reservation.representation %}
-            {% set spectacle = representation.spectacle %}
-            {% set total = reservation.nbPlace * representation.prix %}
-            {% set total_general = total_general + total %}
+    <div class="ks-panier-wrapper">
+      {% for reservation in reservations %}
+        {% set representation = reservation.representation %}
+        {% set spectacle = representation.spectacle %}
+        {% set total = reservation.nbPlace * representation.prix %}
+        {% set total_general = total_general + total %}
 
-            <div class="panier-card">
-                <div class="panier-card-header">
-                    <span class="panier-titre">{{ spectacle.titre }}</span>
-                    <span class="panier-prix-total">{{ total|number_format(2, ',', ' ') }} €</span>
-                </div>
-                <div class="panier-card-body">
-                    <div class="panier-row">
-                        <span class="panier-label">Artiste</span>
-                        <span class="panier-value">{{ spectacle.artiste }}</span>
-                    </div>
-                    <div class="panier-row">
-                        <span class="panier-label">Date</span>
-                        <span class="panier-value">{{ representation.dateRepresentation|date('d/m/Y') }}</span>
-                    </div>
-                    <div class="panier-row">
-                        <span class="panier-label">Heure</span>
-                        <span class="panier-value">{{ representation.heureRepresentation|date('H:i') }}</span>
-                    </div>
-                    <div class="panier-row">
-                        <span class="panier-label">Salle</span>
-                        <span class="panier-value">{{ representation.salle }}</span>
-                    </div>
-                    <div class="panier-row">
-                        <span class="panier-label">Prix unitaire</span>
-                        <span class="panier-value">{{ representation.prix }} €</span>
-                    </div>
-                    <div class="panier-row">
-                        <span class="panier-label">Réservé le</span>
-                        <span class="panier-value">{{ reservation.dateResa|date('d/m/Y à H:i') }}</span>
-                    </div>
+        <div class="ks-panier-card">
+          <div class="ks-panier-card__header">
+            <span class="ks-panier-card__titre">{{ spectacle.titre }}</span>
+            <span class="ks-panier-card__total">{{ total|number_format(2, ',', ' ') }} €</span>
+          </div>
+          <div class="ks-panier-card__body">
 
-                    {# Modifier le nombre de places #}
-                    <div class="panier-row panier-row-actions">
-                        <form method="post" action="{{ path('app_panier_update', {'id': reservation.id}) }}" class="panier-form-places">
-                            <input type="hidden" name="_token" value="{{ csrf_token('update' ~ reservation.id) }}">
-                            <span class="panier-label">Nombre de places</span>
-                            <div class="panier-places-control">
-                                <input type="number" name="nbPlace" value="{{ reservation.nbPlace }}" min="1" class="panier-input-places">
-                                <button type="submit" class="btn-panier-update">Mettre à jour</button>
-                            </div>
-                        </form>
-                    </div>
-
-                    {# Supprimer la réservation #}
-                    <div class="panier-row-delete">
-                        <form method="post" action="{{ path('app_panier_delete', {'id': reservation.id}) }}" onsubmit="return confirm('Annuler cette réservation ?')">
-                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reservation.id) }}">
-                            <button type="submit" class="btn-panier-delete">🗑 Annuler cette réservation</button>
-                        </form>
-                    </div>
-
-                </div>
+            <div class="ks-panier-row">
+              <span class="ks-panier-label">Artiste</span>
+              <span class="ks-panier-value">{{ spectacle.artiste }}</span>
+            </div>
+            <div class="ks-panier-row">
+              <span class="ks-panier-label">Date</span>
+              <span class="ks-panier-value">{{ representation.dateRepresentation|date('d/m/Y') }}</span>
+            </div>
+            <div class="ks-panier-row">
+              <span class="ks-panier-label">Heure</span>
+              <span class="ks-panier-value">{{ representation.heureRepresentation|date('H:i') }}</span>
+            </div>
+            <div class="ks-panier-row">
+              <span class="ks-panier-label">Salle</span>
+              <span class="ks-panier-value">{{ representation.salle }}</span>
+            </div>
+            <div class="ks-panier-row">
+              <span class="ks-panier-label">Prix unitaire</span>
+              <span class="ks-panier-value">{{ representation.prix }} €</span>
+            </div>
+            <div class="ks-panier-row">
+              <span class="ks-panier-label">Réservé le</span>
+              <span class="ks-panier-value">{{ reservation.dateResa|date('d/m/Y à H:i') }}</span>
             </div>
 
-        {% endfor %}
+            {# Modifier places #}
+            <div class="ks-panier-row">
+              <span class="ks-panier-label">Nombre de places</span>
+              <form method="post" action="{{ path('app_panier_update', {'id': reservation.id}) }}">
+                <input type="hidden" name="_token" value="{{ csrf_token('update' ~ reservation.id) }}">
+                <div class="ks-panier-places">
+                  <input type="number" name="nbPlace" value="{{ reservation.nbPlace }}" min="1" class="ks-panier-input">
+                  <button type="submit" class="ks-btn-update">Mettre à jour</button>
+                </div>
+              </form>
+            </div>
 
-        <div class="panier-total-general">
-            <span>Total</span>
-            <span>{{ total_general|number_format(2, ',', ' ') }} €</span>
+            {# Supprimer #}
+            <form method="post" action="{{ path('app_panier_delete', {'id': reservation.id}) }}"
+                  onsubmit="return confirm('Annuler cette réservation ?')">
+              <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reservation.id) }}">
+              <button type="submit" class="ks-btn-delete">🗑 Annuler cette réservation</button>
+            </form>
+
+          </div>
         </div>
+      {% endfor %}
+    </div>
 
-        <p class="panier-email-info">
-            Une confirmation sera envoyée à : <strong>{{ app.user.email }}</strong>
-        </p>
+    <div class="ks-panier-total">
+      <span class="ks-panier-total__label">Total général</span>
+      <span class="ks-panier-total__amount">{{ total_general|number_format(2, ',', ' ') }} €</span>
+    </div>
 
-        <form method="post" action="{{ path('app_panier_confirm') }}" style="text-align:center; margin-top: 1.2rem;">
-            <button type="submit" class="btn-panier-update" style="padding: 10px 24px; font-size: 15px;">
-                📩 Valider ma commande
-            </button>
-        </form>
+    <div class="ks-panier-footer">
+      <p class="ks-panier-email">
+        Une confirmation sera envoyée à : <strong>{{ app.user.email }}</strong>
+      </p>
+      <form method="post" action="{{ path('app_panier_confirm') }}">
+        <button type="submit" class="ks-btn-confirm">📩 Valider ma commande</button>
+      </form>
+    </div>
 
-    {% endif %}
+  {% endif %}
 
-</div>
+</section>
 
 {% endblock %}

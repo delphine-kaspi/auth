@@ -1,34 +1,351 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <title>{% block title %}Kastone{% endblock %}</title>
-        <meta name="description" content="{% block description %} {% endblock %}">
-        <meta name="keywords" content="{% block keywords %} {% endblock %}">
-        <link rel="icon" href="{{asset('images/logo3.png')}}">
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
-        <link rel="stylesheet" href="{{asset('css/style.css')}}">
-        {% block stylesheets %}{% endblock %}
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>{% block title %}Kastone Productions{% endblock %}</title>
+  <meta name="description" content="{% block description %}{% endblock %}">
+  <meta name="keywords" content="{% block keywords %}{% endblock %}">
+  <link rel="icon" href="{{ asset('images/logo3.png') }}">
 
-        
-    </head>
-    <body class="bg-site d-flex flex-column min-vh-100">
-        {% include "_include/_nav.html.twig" %}  
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 
-        <main>
-            <h1 class="text-center py-4 text-dark">{% block h1 %}{% endblock %}</h1>
-            {% include "_include/_flashes.html.twig" %}
-            {% block body %}{% endblock %}
-        </main>
+  <style>
+    /* ── VARIABLES ── */
+    :root {
+      --cream: #F5EDD6;
+      --dark:  #1C1208;
+      --red:   #C13020;
+      --gold:  #C8963C;
+      --pale:  #EAE0C4;
+      --mid:   #2E1F0A;
+    }
 
-        {% include "_include/_footer.html.twig" %}
-        
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
-        <script src="{{asset('js/script.js')}}"></script>
-        {% block javascripts %}{% endblock %}
-    </body>
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--cream);
+      font-family: 'Crimson Pro', serif;
+      color: var(--dark);
+      display: flex; flex-direction: column; min-height: 100vh;
+    }
+
+    main { flex: 1; padding-top: 62px; }
+
+    /* Grain subtil */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='400'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='400' height='400' filter='url(%23n)' opacity='0.035'/%3E%3C/svg%3E");
+      pointer-events: none; z-index: 1000;
+    }
+
+    /* ── NAV ── */
+    .ks-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+      background: var(--dark);
+      border-bottom: 3px solid var(--gold);
+      height: 62px;
+      transition: box-shadow .3s;
+    }
+
+    .ks-nav.scrolled { box-shadow: 0 4px 40px rgba(0,0,0,.5); }
+
+    .ks-nav .navbar-brand { padding: 0; }
+    .ks-nav .navbar-brand img { height: 40px; width: auto; }
+
+    .ks-nav .navbar-toggler {
+      border: 1px solid rgba(200,150,60,.4); padding: 4px 8px;
+    }
+
+    .ks-nav .navbar-toggler-icon {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(200,150,60,0.9)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+    }
+
+    .ks-nav .nav-link {
+      color: var(--pale) !important;
+      font-size: .78rem;
+      letter-spacing: .12em;
+      font-variant: small-caps;
+      font-family: 'Playfair Display', serif;
+      padding: 8px 14px !important;
+      transition: color .3s;
+    }
+
+    .ks-nav .nav-link:hover,
+    .ks-nav .nav-link:focus { color: var(--gold) !important; }
+
+    .ks-nav .dropdown-menu {
+      background: var(--dark);
+      border: 1px solid rgba(200,150,60,.25);
+      border-radius: 0; padding: 8px 0;
+      margin-top: 3px !important;
+      min-width: 200px;
+    }
+
+    .ks-nav .dropdown-item {
+      color: rgba(245,237,214,.6);
+      font-size: .82rem;
+      font-family: 'Crimson Pro', serif;
+      padding: 8px 20px;
+      transition: background .2s, color .2s;
+    }
+
+    .ks-nav .dropdown-item:hover {
+      background: rgba(200,150,60,.1);
+      color: var(--gold);
+    }
+
+    .ks-nav .dropdown-divider { border-color: rgba(200,150,60,.15); margin: 6px 0; }
+
+    .ks-nav__cta {
+      background: var(--red) !important;
+      color: white !important;
+      padding: 8px 20px !important;
+      margin-left: 8px;
+      transition: background .3s !important;
+    }
+
+    .ks-nav__cta:hover { background: #a02010 !important; color: white !important; }
+
+    .ks-nav__user-icon {
+      width: 26px; height: 26px;
+      border: 1px solid rgba(200,150,60,.4);
+      border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: var(--gold); font-size: .65rem; margin-right: 5px;
+      vertical-align: middle;
+    }
+
+    /* ── FLASHES ── */
+    .ks-flashes { max-width: 900px; margin: 24px auto 0; padding: 0 24px; }
+
+    /* ── FOOTER ── */
+    .ks-footer {
+      background: var(--dark);
+      border-top: 3px solid var(--gold);
+      padding: 48px 60px 32px;
+    }
+
+    .ks-footer__top {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 60px;
+      max-width: 1200px; margin: 0 auto;
+      padding-bottom: 36px;
+      border-bottom: 1px solid rgba(200,150,60,.15);
+      margin-bottom: 28px;
+    }
+
+    @media (max-width: 900px) {
+      .ks-footer__top { grid-template-columns: 1fr; gap: 36px; }
+      .ks-footer { padding: 40px 24px 24px; }
+    }
+
+    .ks-footer__logo {
+      font-family: 'Playfair Display', serif;
+      font-style: italic; font-size: 1.5rem;
+      color: var(--gold); display: block; margin-bottom: 4px;
+    }
+
+    .ks-footer__tagline {
+      font-size: .68rem; letter-spacing: .2em; text-transform: uppercase;
+      color: rgba(245,237,214,.28); margin-bottom: 16px;
+    }
+
+    .ks-footer__about {
+      font-size: .85rem; line-height: 1.8;
+      color: rgba(245,237,214,.38); font-style: italic;
+    }
+
+    .ks-footer__col h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: .88rem; font-variant: small-caps; letter-spacing: .15em;
+      color: var(--gold); margin-bottom: 14px; padding-bottom: 8px;
+      border-bottom: 1px solid rgba(200,150,60,.2);
+    }
+
+    .ks-footer__col ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+
+    .ks-footer__col a {
+      color: rgba(245,237,214,.4); text-decoration: none;
+      font-size: .82rem; transition: color .3s;
+    }
+
+    .ks-footer__col a:hover { color: var(--gold); }
+
+    .ks-footer__bottom {
+      max-width: 1200px; margin: 0 auto;
+      display: flex; justify-content: space-between; align-items: center;
+      flex-wrap: wrap; gap: 16px;
+    }
+
+    .ks-footer__copy { font-size: .72rem; color: rgba(245,237,214,.22); letter-spacing: .05em; }
+
+    .ks-footer__socials { display: flex; gap: 10px; }
+
+    .ks-footer__social {
+      width: 34px; height: 34px;
+      border: 1px solid rgba(200,150,60,.22);
+      display: flex; align-items: center; justify-content: center;
+      color: rgba(245,237,214,.35); text-decoration: none;
+      font-size: .72rem; transition: border-color .3s, color .3s;
+    }
+
+    .ks-footer__social:hover { border-color: var(--gold); color: var(--gold); }
+  </style>
+
+  {% block stylesheets %}{% endblock %}
+</head>
+
+<body>
+
+  {# ── NAV ── #}
+  <nav class="ks-nav navbar navbar-expand-lg" id="ks-nav">
+    <div class="container-fluid px-4">
+
+      <a class="navbar-brand" href="{{ path('app_home') }}">
+        <img src="{{ asset('images/logo1.png') }}" alt="Kastone Productions">
+      </a>
+
+      <button class="navbar-toggler" type="button"
+              data-bs-toggle="collapse" data-bs-target="#ksNavLinks"
+              aria-controls="ksNavLinks" aria-expanded="false" aria-label="Menu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <div class="collapse navbar-collapse" id="ksNavLinks">
+        <ul class="navbar-nav ms-auto align-items-center gap-1">
+
+          <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_home') }}#spectacles">Spectacles</a>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="{{ path('app_artiste_index') }}"
+               role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Artistes
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{{ path('app_artiste_index') }}">— Tous les artistes</a></li>
+              <li><hr class="dropdown-divider"></li>
+              {% for artiste in parameter.artistes %}
+                <li>
+                  <a class="dropdown-item" href="{{ path('app_artiste_show', {'id': artiste.id}) }}">
+                    {{ artiste.prenom }} {{ artiste.nom }}
+                  </a>
+                </li>
+              {% endfor %}
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_about') }}">À propos</a>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="{{ path('app_contact') }}">Contact</a>
+          </li>
+
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#"
+               role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <span class="ks-nav__user-icon">
+                {% if app.user %}✦{% else %}◇{% endif %}
+              </span>
+              Mon compte
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              {% if app.user %}
+                {% if is_granted('ROLE_ADMIN') %}
+                  <li><a class="dropdown-item" href="{{ path('admin_dashboard') }}">⚙ Administration</a></li>
+                  <li><hr class="dropdown-divider"></li>
+                {% endif %}
+                <li><a class="dropdown-item" href="{{ path('app_panier') }}">🛒 Mon panier</a></li>
+                <li><a class="dropdown-item" href="{{ path('app_mes_commandes') }}">🎟️ Mes commandes</a></li>
+                <li><hr class="dropdown-divider"></li>
+                <li><a class="dropdown-item" href="{{ path('app_logout') }}">Déconnexion</a></li>
+              {% else %}
+                <li><a class="dropdown-item" href="{{ path('app_login') }}">Connexion</a></li>
+                <li><a class="dropdown-item" href="{{ path('app_register') }}">Inscription</a></li>
+              {% endif %}
+            </ul>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link ks-nav__cta" href="{{ path('app_home') }}#spectacles">Réserver</a>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  {# ── MAIN ── #}
+  <main>
+    <div class="ks-flashes">
+      {% include "_include/_flashes.html.twig" %}
+    </div>
+    {% block body %}{% endblock %}
+  </main>
+
+  {# ── FOOTER ── #}
+  <footer class="ks-footer">
+    <div class="ks-footer__top">
+
+      <div>
+        <span class="ks-footer__logo">Kastone Productions</span>
+        <p class="ks-footer__tagline">Stand-Up · Comedy · Paris</p>
+        <p class="ks-footer__about">
+          On déniche les talents, on produit les shows, on allume les scènes parisiennes. Chaque soir, le rire en grand.
+        </p>
+      </div>
+
+      <div class="ks-footer__col">
+        <h4>Navigation</h4>
+        <ul>
+          <li><a href="{{ path('app_home') }}">Accueil</a></li>
+          <li><a href="{{ path('app_artiste_index') }}">Artistes</a></li>
+          <li><a href="{{ path('app_home') }}#spectacles">Spectacles</a></li>
+          <li><a href="{{ path('app_about') }}">À propos</a></li>
+          <li><a href="{{ path('app_contact') }}">Contact</a></li>
+        </ul>
+      </div>
+
+      <div class="ks-footer__col">
+        <h4>Informations</h4>
+        <ul>
+          <li><a href="{{ path('app_mentions_legales') }}">Mentions légales</a></li>
+          <li><a href="{{ path('app_cgv') }}">Conditions générales de vente</a></li>
+          <li><a href="{{ path('app_contact') }}">Nous contacter</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="ks-footer__bottom">
+      <span class="ks-footer__copy">© {{ "now"|date("Y") }} Kastone Productions · Tous droits réservés</span>
+      <div class="ks-footer__socials">
+        <a href="#" class="ks-footer__social">ig</a>
+        <a href="#" class="ks-footer__social">fb</a>
+        <a href="#" class="ks-footer__social">yt</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+  <script src="{{ asset('js/script.js') }}"></script>
+
+  <script>
+    const nav = document.getElementById('ks-nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    });
+  </script>
+
+  {% block javascripts %}{% endblock %}
+</body>
 </html>
-      
-    

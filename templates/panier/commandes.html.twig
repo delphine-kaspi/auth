@@ -1,72 +1,144 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mes commandes{% endblock %}
-{% block h1 %}Mes commandes confirmées{% endblock %}
+{% block title %}Mes commandes — Kastone Productions{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root { --cream:#F5EDD6; --dark:#1C1208; --red:#C13020; --gold:#C8963C; --mid:#2E1F0A; }
+  body { background:var(--cream); font-family:'Crimson Pro',serif; color:var(--dark); }
+
+  .ks-hero { background:var(--dark); position:relative; overflow:hidden; padding:80px 40px 60px; text-align:center; }
+  .ks-hero__arch { position:absolute; left:50%; transform:translateX(-50%); border:1.5px solid rgba(200,150,60,.14); border-radius:50% 50% 0 0; pointer-events:none; }
+  .ks-hero__arch--1 { width:min(900px,160vw); height:min(450px,80vw); top:-50px; }
+  .ks-hero__arch--2 { width:min(620px,120vw); height:min(310px,60vw); top:-10px; }
+  .ks-hero__inner { position:relative; z-index:2; }
+  .ks-hero__pretitle { font-size:.68rem; letter-spacing:.42em; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
+  .ks-hero__ornament { color:var(--gold); font-size:1.2rem; letter-spacing:.3em; opacity:.55; margin:6px 0 14px; }
+  .ks-hero__title { font-family:'Playfair Display',serif; font-size:clamp(2.5rem,6vw,5.5rem); font-weight:900; line-height:.9; color:var(--cream); text-transform:uppercase; letter-spacing:-.02em; margin:0; }
+  .ks-hero__title em { display:block; font-style:italic; font-weight:400; color:var(--gold); font-size:.45em; letter-spacing:.06em; line-height:1.7; margin-bottom:4px; }
+  .ks-hero__rule { display:flex; align-items:center; justify-content:center; gap:14px; margin:20px auto; max-width:280px; }
+  .ks-hero__rule span { flex:1; height:1px; background:var(--gold); opacity:.3; }
+  .ks-hero__rule i { color:var(--gold); font-style:normal; opacity:.5; }
+
+  .ks-band { background:var(--gold); padding:12px 0; display:flex; justify-content:center; gap:24px; flex-wrap:wrap;
+    font-family:'Playfair Display',serif; font-size:.72rem; letter-spacing:.2em; font-variant:small-caps; color:var(--dark); }
+  .ks-band span { opacity:.4; }
+
+  .ks-section { padding:60px 40px 80px; background:var(--dark); color:var(--cream); }
+
+  .ks-empty { text-align:center; padding:80px 40px; max-width:500px; margin:0 auto; }
+  .ks-empty__icon { font-size:3.5rem; margin-bottom:20px; display:block; }
+  .ks-empty__msg { font-size:1.1rem; font-style:italic; color:rgba(245,237,214,.45); margin-bottom:28px; }
+  .ks-btn-gold { display:inline-block; background:transparent; color:var(--gold); border:1px solid var(--gold); padding:12px 32px;
+    font-family:'Playfair Display',serif; font-variant:small-caps; font-size:.9rem; letter-spacing:.15em; text-decoration:none; transition:background .3s; }
+  .ks-btn-gold:hover { background:rgba(200,150,60,.1); color:var(--gold); }
+
+  .ks-commandes-wrapper { max-width:820px; margin:0 auto; display:flex; flex-direction:column; gap:2px; }
+
+  .ks-commande-card { border:1px solid rgba(200,150,60,.15); position:relative; overflow:hidden; }
+  .ks-commande-card::before { content:''; position:absolute; left:0; top:0; bottom:0; width:3px; background:var(--gold); }
+
+  .ks-commande-card__header {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:20px 28px; background:rgba(255,255,255,.03);
+    border-bottom:1px solid rgba(200,150,60,.1); flex-wrap:wrap; gap:12px;
+  }
+  .ks-commande-card__titre { font-family:'Playfair Display',serif; font-size:1.3rem; font-weight:700; color:var(--cream); }
+  .ks-commande-card__total { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:900; color:var(--gold); }
+
+  .ks-commande-card__body { padding:20px 28px; }
+
+  .ks-commande-row { display:flex; justify-content:space-between; align-items:center; padding:10px 0; border-bottom:1px solid rgba(200,150,60,.06); gap:16px; flex-wrap:wrap; }
+  .ks-commande-row:last-child { border-bottom:none; }
+
+  .ks-commande-label { font-size:.68rem; letter-spacing:.15em; text-transform:uppercase; color:rgba(245,237,214,.35); flex-shrink:0; }
+  .ks-commande-value { font-size:.95rem; color:rgba(245,237,214,.7); text-align:right; }
+  .ks-commande-value--confirmed { color:#4ade80; font-weight:600; }
+</style>
+{% endblock %}
 
 {% block body %}
 
-<div class="panier-wrapper">
+<section class="ks-hero">
+  <div class="ks-hero__arch ks-hero__arch--1"></div>
+  <div class="ks-hero__arch ks-hero__arch--2"></div>
+  <div class="ks-hero__inner">
+    <p class="ks-hero__pretitle">Kastone Productions · Mon compte</p>
+    <div class="ks-hero__ornament">✦ ✦ ✦</div>
+    <h1 class="ks-hero__title">
+      <em>Mes commandes</em>
+      Confirmées
+    </h1>
+    <div class="ks-hero__rule"><span></span><i>❧</i><span></span></div>
+  </div>
+</section>
 
-    {% if commandes is empty %}
-
-        <div class="panier-empty">
-            <p class="panier-empty-icon">🎟️</p>
-            <p class="panier-empty-msg">Vous n'avez aucune commande confirmée.</p>
-            <a href="{{ path('app_home') }}" class="btn-confirmation">Découvrir les spectacles</a>
-        </div>
-
-    {% else %}
-
-        {% for reservation in commandes %}
-            {% set representation = reservation.representation %}
-            {% set spectacle = representation.spectacle %}
-            {% set total = reservation.nbPlace * representation.prix %}
-
-            <div class="panier-card">
-                <div class="panier-card-header">
-                    <span class="panier-titre">{{ spectacle.titre }}</span>
-                    <span class="panier-prix-total">{{ total|number_format(2, ',', ' ') }} €</span>
-                </div>
-                <div class="panier-card-body">
-                    <div class="panier-row">
-                        <span class="panier-label">Artiste</span>
-                        <span class="panier-value">{{ spectacle.artiste }}</span>
-                    </div>
-                    <div class="panier-row">
-                        <span class="panier-label">Date</span>
-                        <span class="panier-value">{{ representation.dateRepresentation|date('d/m/Y') }}</span>
-                    </div>
-                    <div class="panier-row">
-                        <span class="panier-label">Heure</span>
-                        <span class="panier-value">{{ representation.heureRepresentation|date('H:i') }}</span>
-                    </div>
-                    <div class="panier-row">
-                        <span class="panier-label">Salle</span>
-                        <span class="panier-value">{{ representation.salle }}</span>
-                    </div>
-                    <div class="panier-row">
-                        <span class="panier-label">Places</span>
-                        <span class="panier-value">{{ reservation.nbPlace }}</span>
-                    </div>
-                    <div class="panier-row">
-                        <span class="panier-label">Prix unitaire</span>
-                        <span class="panier-value">{{ representation.prix }} €</span>
-                    </div>
-                    <div class="panier-row">
-                        <span class="panier-label">Commandé le</span>
-                        <span class="panier-value">{{ reservation.dateResa|date('d/m/Y à H:i') }}</span>
-                    </div>
-                    <div class="panier-row">
-                        <span class="panier-label">Statut</span>
-                        <span class="panier-value" style="color: green; font-weight: bold;">✅ Confirmée</span>
-                    </div>
-                </div>
-            </div>
-
-        {% endfor %}
-
-    {% endif %}
-
+<div class="ks-band">
+  <span>✦</span> Billetterie <span>✦</span> Commandes <span>✦</span> Kastone Productions <span>✦</span>
 </div>
+
+<section class="ks-section">
+
+  {% if commandes is empty %}
+    <div class="ks-empty">
+      <span class="ks-empty__icon">🎟️</span>
+      <p class="ks-empty__msg">Vous n'avez aucune commande confirmée.</p>
+      <a href="{{ path('app_home') }}" class="ks-btn-gold">Découvrir les spectacles</a>
+    </div>
+
+  {% else %}
+    <div class="ks-commandes-wrapper">
+      {% for reservation in commandes %}
+        {% set representation = reservation.representation %}
+        {% set spectacle = representation.spectacle %}
+        {% set total = reservation.nbPlace * representation.prix %}
+
+        <div class="ks-commande-card">
+          <div class="ks-commande-card__header">
+            <span class="ks-commande-card__titre">{{ spectacle.titre }}</span>
+            <span class="ks-commande-card__total">{{ total|number_format(2, ',', ' ') }} €</span>
+          </div>
+          <div class="ks-commande-card__body">
+            <div class="ks-commande-row">
+              <span class="ks-commande-label">Artiste</span>
+              <span class="ks-commande-value">{{ spectacle.artiste }}</span>
+            </div>
+            <div class="ks-commande-row">
+              <span class="ks-commande-label">Date</span>
+              <span class="ks-commande-value">{{ representation.dateRepresentation|date('d/m/Y') }}</span>
+            </div>
+            <div class="ks-commande-row">
+              <span class="ks-commande-label">Heure</span>
+              <span class="ks-commande-value">{{ representation.heureRepresentation|date('H:i') }}</span>
+            </div>
+            <div class="ks-commande-row">
+              <span class="ks-commande-label">Salle</span>
+              <span class="ks-commande-value">{{ representation.salle }}</span>
+            </div>
+            <div class="ks-commande-row">
+              <span class="ks-commande-label">Places</span>
+              <span class="ks-commande-value">{{ reservation.nbPlace }}</span>
+            </div>
+            <div class="ks-commande-row">
+              <span class="ks-commande-label">Prix unitaire</span>
+              <span class="ks-commande-value">{{ representation.prix }} €</span>
+            </div>
+            <div class="ks-commande-row">
+              <span class="ks-commande-label">Commandé le</span>
+              <span class="ks-commande-value">{{ reservation.dateResa|date('d/m/Y à H:i') }}</span>
+            </div>
+            <div class="ks-commande-row">
+              <span class="ks-commande-label">Statut</span>
+              <span class="ks-commande-value ks-commande-value--confirmed">✅ Confirmée</span>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% endif %}
+
+</section>
 
 {% endblock %}

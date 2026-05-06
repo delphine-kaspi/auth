@@ -1,50 +1,211 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Back office{% endblock %}
-{% block h1 %}Back office{% endblock %}
+{% block title %}Back office — Kastone Productions{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root { --cream:#F5EDD6; --dark:#1C1208; --red:#C13020; --gold:#C8963C; --mid:#2E1F0A; }
+  body { background:var(--cream); font-family:'Crimson Pro',serif; color:var(--dark); }
+
+  /* ── HERO ADMIN ── */
+  .ks-admin-hero {
+    background: var(--dark); position:relative; overflow:hidden;
+    padding: 70px 40px 56px; text-align:center;
+    border-bottom: 3px solid var(--gold);
+  }
+
+  .ks-admin-hero__arch {
+    position:absolute; left:50%; transform:translateX(-50%);
+    border:1.5px solid rgba(200,150,60,.12); border-radius:50% 50% 0 0; pointer-events:none;
+  }
+  .ks-admin-hero__arch--1 { width:min(900px,160vw); height:min(450px,80vw); top:-50px; }
+  .ks-admin-hero__arch--2 { width:min(620px,120vw); height:min(310px,60vw); top:-10px; }
+
+  .ks-admin-hero__inner { position:relative; z-index:2; }
+
+  .ks-admin-hero__pretitle {
+    font-size:.65rem; letter-spacing:.45em; text-transform:uppercase;
+    color:var(--red); margin-bottom:8px;
+  }
+
+  .ks-admin-hero__title {
+    font-family:'Playfair Display',serif;
+    font-size:clamp(2.2rem,5vw,4.5rem);
+    font-weight:900; line-height:.9;
+    color:var(--cream); text-transform:uppercase; letter-spacing:-.02em; margin:0 0 8px;
+  }
+
+  .ks-admin-hero__title em {
+    display:block; font-style:italic; font-weight:400;
+    color:var(--gold); font-size:.45em; letter-spacing:.06em; line-height:1.7; margin-bottom:4px;
+  }
+
+  .ks-admin-hero__rule {
+    display:flex; align-items:center; justify-content:center;
+    gap:14px; margin:18px auto; max-width:280px;
+  }
+  .ks-admin-hero__rule span { flex:1; height:1px; background:var(--gold); opacity:.3; }
+  .ks-admin-hero__rule i { color:var(--gold); font-style:normal; opacity:.5; }
+
+  .ks-admin-hero__user {
+    font-size:.78rem; font-style:italic;
+    color:rgba(245,237,214,.4); letter-spacing:.05em;
+  }
+
+  .ks-admin-hero__user strong { color:var(--gold); font-style:normal; }
+
+  /* ── GRILLE ── */
+  .ks-admin-section { padding:64px 48px 80px; background:var(--cream); }
+
+  .ks-admin-grid {
+    display:grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap:2px;
+    max-width:1100px; margin:0 auto;
+  }
+
+  /* ── CARTE ── */
+  .ks-admin-card {
+    background:var(--dark);
+    padding:40px 36px;
+    text-decoration:none;
+    position:relative; overflow:hidden;
+    display:flex; flex-direction:column; gap:10px;
+    transition:background .3s, transform .2s;
+  }
+
+  .ks-admin-card:hover {
+    background: var(--mid);
+    transform:translateY(-3px);
+  }
+
+  /* Bordure intérieure décorative */
+  .ks-admin-card::before {
+    content:''; position:absolute; inset:10px;
+    border:1px solid rgba(200,150,60,.1); pointer-events:none;
+    transition:border-color .3s;
+  }
+  .ks-admin-card:hover::before { border-color:rgba(200,150,60,.35); }
+
+  /* Barre gauche au hover */
+  .ks-admin-card::after {
+    content:''; position:absolute; left:0; top:0; bottom:0; width:3px;
+    background:var(--gold); transform:scaleY(0); transform-origin:bottom;
+    transition:transform .3s;
+  }
+  .ks-admin-card:hover::after { transform:scaleY(1); }
+
+  .ks-admin-card__icon {
+    font-size:1.8rem; line-height:1; margin-bottom:4px;
+  }
+
+  .ks-admin-card__label {
+    font-family:'Playfair Display',serif;
+    font-size:1.4rem; font-weight:900;
+    color:var(--cream); line-height:1;
+  }
+
+  .ks-admin-card__desc {
+    font-size:.85rem; font-style:italic;
+    color:rgba(245,237,214,.4); line-height:1.5;
+  }
+
+  .ks-admin-card__arrow {
+    margin-top:auto; padding-top:16px;
+    font-family:'Playfair Display',serif;
+    font-size:.7rem; letter-spacing:.2em; text-transform:uppercase;
+    color:rgba(200,150,60,.4);
+    transition:color .3s;
+    border-top:1px solid rgba(200,150,60,.1);
+  }
+
+  .ks-admin-card:hover .ks-admin-card__arrow { color:var(--gold); }
+
+  /* Numéro décoratif */
+  .ks-admin-card__num {
+    position:absolute; bottom:16px; right:20px;
+    font-family:'Playfair Display',serif;
+    font-size:4rem; font-weight:900;
+    color:rgba(200,150,60,.05); line-height:1;
+    pointer-events:none;
+  }
+</style>
+{% endblock %}
 
 {% block body %}
 
-<div class="admin-dashboard">
-    <div class="admin-grid">
+{# ── HERO ── #}
+<section class="ks-admin-hero">
+  <div class="ks-admin-hero__arch ks-admin-hero__arch--1"></div>
+  <div class="ks-admin-hero__arch ks-admin-hero__arch--2"></div>
+  <div class="ks-admin-hero__inner">
+    <p class="ks-admin-hero__pretitle">⚙ Administration</p>
+    <h1 class="ks-admin-hero__title">
+      <em>Tableau de bord</em>
+      Back Office
+    </h1>
+    <div class="ks-admin-hero__rule"><span></span><i>❧</i><span></span></div>
+    {% if app.user %}
+      <p class="ks-admin-hero__user">Connecté en tant que <strong>{{ app.user.email }}</strong></p>
+    {% endif %}
+  </div>
+</section>
 
-        <a href="{{ path('app_admin_artiste_index') }}" class="admin-card">
-            <div class="admin-card-icon">🎤</div>
-            <div class="admin-card-label">Artistes</div>
-            <div class="admin-card-desc">Ajouter, modifier, supprimer des artistes</div>
-        </a>
+{# ── GRILLE ── #}
+<section class="ks-admin-section">
+  <div class="ks-admin-grid">
 
-        <a href="{{ path('app_admin_salle_index') }}" class="admin-card">
-            <div class="admin-card-icon">🏛️</div>
-            <div class="admin-card-label">Salles</div>
-            <div class="admin-card-desc">Gérer les salles et leurs capacités</div>
-        </a>
+    <a href="{{ path('app_admin_artiste_index') }}" class="ks-admin-card">
+      <div class="ks-admin-card__num">01</div>
+      <div class="ks-admin-card__icon">🎤</div>
+      <div class="ks-admin-card__label">Artistes</div>
+      <div class="ks-admin-card__desc">Ajouter, modifier, supprimer des artistes</div>
+      <div class="ks-admin-card__arrow">Gérer →</div>
+    </a>
 
-        <a href="{{ path('app_admin_spectacle_index') }}" class="admin-card">
-            <div class="admin-card-icon">🎭</div>
-            <div class="admin-card-label">Spectacles</div>
-            <div class="admin-card-desc">Gérer les spectacles par artiste</div>
-        </a>
+    <a href="{{ path('app_admin_salle_index') }}" class="ks-admin-card">
+      <div class="ks-admin-card__num">02</div>
+      <div class="ks-admin-card__icon">🏛️</div>
+      <div class="ks-admin-card__label">Salles</div>
+      <div class="ks-admin-card__desc">Gérer les salles et leurs capacités</div>
+      <div class="ks-admin-card__arrow">Gérer →</div>
+    </a>
 
-        <a href="{{ path('app_admin_representation_index') }}" class="admin-card">
-            <div class="admin-card-icon">📅</div>
-            <div class="admin-card-label">Représentations</div>
-            <div class="admin-card-desc">Gérer les dates et horaires</div>
-        </a>
+    <a href="{{ path('app_admin_spectacle_index') }}" class="ks-admin-card">
+      <div class="ks-admin-card__num">03</div>
+      <div class="ks-admin-card__icon">🎭</div>
+      <div class="ks-admin-card__label">Spectacles</div>
+      <div class="ks-admin-card__desc">Gérer les spectacles par artiste</div>
+      <div class="ks-admin-card__arrow">Gérer →</div>
+    </a>
 
-        <a href="{{ path('app_admin_reservation_index') }}" class="admin-card">
-            <div class="admin-card-icon">🎟️</div>
-            <div class="admin-card-label">Réservations</div>
-            <div class="admin-card-desc">Consulter et gérer les réservations</div>
-        </a>
+    <a href="{{ path('app_admin_representation_index') }}" class="ks-admin-card">
+      <div class="ks-admin-card__num">04</div>
+      <div class="ks-admin-card__icon">📅</div>
+      <div class="ks-admin-card__label">Représentations</div>
+      <div class="ks-admin-card__desc">Gérer les dates et horaires</div>
+      <div class="ks-admin-card__arrow">Gérer →</div>
+    </a>
 
-        <a href="{{ path('admin_messages_index') }}" class="admin-card">
-            <div class="admin-card-icon">📩</div>
-            <div class="admin-card-label">Messages de contact</div>
-            <div class="admin-card-desc">Consulter les messages reçus</div>
-        </a>
+    <a href="{{ path('app_admin_reservation_index') }}" class="ks-admin-card">
+      <div class="ks-admin-card__num">05</div>
+      <div class="ks-admin-card__icon">🎟️</div>
+      <div class="ks-admin-card__label">Réservations</div>
+      <div class="ks-admin-card__desc">Consulter et gérer les réservations</div>
+      <div class="ks-admin-card__arrow">Consulter →</div>
+    </a>
 
-    </div>
-</div>
+    <a href="{{ path('admin_messages_index') }}" class="ks-admin-card">
+      <div class="ks-admin-card__num">06</div>
+      <div class="ks-admin-card__icon">📩</div>
+      <div class="ks-admin-card__label">Messages</div>
+      <div class="ks-admin-card__desc">Consulter les messages reçus</div>
+      <div class="ks-admin-card__arrow">Consulter →</div>
+    </a>
+
+  </div>
+</section>
 
 {% endblock %}

@@ -1,0 +1,545 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ spectacle.titre }}
+	— Kastone Productions
+{% endblock %}
+{% block h1 %}
+	{{ spectacle.titre }}
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+	<style>:root
+	{
+		--cream: #F5EDD6;
+		--dark: #1C1208;
+		--red: #C13020;
+		--gold: #C8963C;
+		--pale: #EAE0C4;
+		--mid: #2E1F0A;
+	}
+
+	body {
+		background: var(--cream);
+		font-family: 'Crimson Pro', serif;
+		color: var(--dark);
+	}
+
+	/* ── HERO SPECTACLE ── */
+	.ks-show-hero {
+		background: var(--dark);
+		position: relative;
+		overflow: hidden;
+		padding: 100px 40px 80px;
+	}
+
+	.ks-show-hero__arch {
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		border: 1.5px solid rgba(200, 150, 60, 0.12);
+		border-radius: 50% 50% 0 0;
+		pointer-events: none;
+	}
+	.ks-show-hero__arch--1 {
+		width: min(1000px, 160vw);
+		height: min(500px, 80vw);
+		top: -60px;
+	}
+	.ks-show-hero__arch--2 {
+		width: min(700px, 120vw);
+		height: min(350px, 60vw);
+		top: -20px;
+	}
+
+	.ks-show-hero__inner {
+		position: relative;
+		z-index: 2;
+		max-width: 800px;
+		margin: 0 auto;
+		text-align: center;
+	}
+
+	.ks-show-hero__back {
+		position: absolute;
+		top: 24px;
+		left: 40px;
+		z-index: 3;
+		color: rgba(245, 237, 214, .4);
+		text-decoration: none;
+		font-size: 0.72rem;
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+		transition: color 0.3s;
+	}
+	.ks-show-hero__back:hover {
+		color: var(--gold);
+	}
+
+	.ks-show-hero__pretitle {
+		font-size: 0.68rem;
+		letter-spacing: 0.42em;
+		text-transform: uppercase;
+		color: var(--gold);
+		margin-bottom: 8px;
+	}
+
+	.ks-show-hero__ornament {
+		color: var(--gold);
+		font-size: 1.2rem;
+		letter-spacing: 0.3em;
+		opacity: .55;
+		margin: 6px 0 14px;
+	}
+
+	.ks-show-hero__title {
+		font-family: 'Playfair Display', serif;
+		font-size: clamp(3rem, 7vw, 7rem);
+		font-weight: 900;
+		line-height: .88;
+		color: var(--cream);
+		text-transform: uppercase;
+		letter-spacing: -0.02em;
+		margin: 0 0 16px;
+	}
+
+	.ks-show-hero__rule {
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		gap: 14px;
+		margin: 20px auto;
+		max-width: 320px;
+	}
+	.ks-show-hero__rule span {
+		flex: 1;
+		height: 1px;
+		background: var(--gold);
+		opacity: .3;
+	}
+	.ks-show-hero__rule i {
+		color: var(--gold);
+		font-style: normal;
+		opacity: .5;
+	}
+
+	.ks-show-hero__meta {
+		display: flex;
+		justify-content: center;
+		gap: 32px;
+		flex-wrap: wrap;
+		margin-bottom: 28px;
+	}
+
+	.ks-show-hero__meta-item {
+		text-align: center;
+	}
+
+	.ks-show-hero__meta-label {
+		font-size: 0.6rem;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		color: rgba(245, 237, 214, .3);
+		display: block;
+		margin-bottom: 4px;
+	}
+
+	.ks-show-hero__meta-value {
+		font-family: 'Playfair Display', serif;
+		font-size: 1rem;
+		color: var(--gold);
+	}
+
+	.ks-show-hero__desc {
+		font-size: 1.05rem;
+		line-height: 1.85;
+		color: rgba(245, 237, 214, .55);
+		font-style: italic;
+		max-width: 580px;
+		margin: 0 auto 36px;
+	}
+
+	.ks-show-hero__artiste-link {
+		display: inline-flex;
+		align-items: center;
+		gap: 10px;
+		color: var(--gold);
+		text-decoration: none;
+		font-family: 'Playfair Display', serif;
+		font-variant: small-caps;
+		font-size: 0.9rem;
+		letter-spacing: 0.12em;
+		border: 1px solid rgba(200, 150, 60, .35);
+		padding: 10px 24px;
+		transition: background 0.3s;
+	}
+	.ks-show-hero__artiste-link:hover {
+		background: rgba(200, 150, 60, .1);
+		color: var(--gold);
+	}
+
+	/* ── BANDEAU ── */
+	.ks-band {
+		background: var(--gold);
+		padding: 12px 0;
+		display: flex;
+		justify-content: center;
+		gap: 24px;
+		flex-wrap: wrap;
+		font-family: 'Playfair Display', serif;
+		font-size: 0.72rem;
+		letter-spacing: 0.2em;
+		font-variant: small-caps;
+		color: var(--dark);
+		border-top: 2px solid rgba(28, 18, 8, .12);
+	}
+	.ks-band span {
+		opacity: .4;
+	}
+
+	/* ── SECTION REPRÉSENTATIONS ── */
+	.ks-section {
+		padding: 80px 40px;
+	}
+	.ks-section--dark {
+		background: var(--dark);
+		color: var(--cream);
+	}
+
+	.ks-section__header {
+		margin-bottom: 48px;
+	}
+
+	.ks-section__pretitle {
+		font-size: 0.68rem;
+		letter-spacing: 0.42em;
+		text-transform: uppercase;
+		color: var(--gold);
+		margin-bottom: 8px;
+	}
+
+	.ks-section__title {
+		font-family: 'Playfair Display', serif;
+		font-size: clamp(1.8rem, 3vw, 2.8rem);
+		font-weight: 900;
+		text-transform: uppercase;
+		line-height: 1;
+		margin: 0;
+	}
+
+	.ks-section__rule {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+		margin: 14px 0 0;
+		max-width: 240px;
+	}
+	.ks-section__rule span {
+		flex: 1;
+		height: 1px;
+		background: var(--gold);
+		opacity: .4;
+	}
+	.ks-section__rule i {
+		color: var(--gold);
+		font-style: normal;
+		opacity: .5;
+	}
+
+	/* ── TABLEAU ── */
+	.ks-repros-wrap {
+		max-width: 900px;
+		margin: 0 auto;
+	}
+
+	.ks-repros-subtitle {
+		font-family: 'Playfair Display', serif;
+		font-size: 0.8rem;
+		font-variant: small-caps;
+		letter-spacing: 0.2em;
+		color: var(--gold);
+		margin-bottom: 12px;
+		margin-top: 40px;
+		padding-bottom: 8px;
+		border-bottom: 1px solid rgba(200, 150, 60, .15);
+	}
+
+	.ks-table-wrap {
+		overflow-x: auto;
+		margin-bottom: 8px;
+	}
+
+	.ks-table {
+		width: 100%;
+		border-collapse: collapse;
+		border: 1px solid rgba(200, 150, 60, .1);
+	}
+
+	.ks-table thead tr {
+		border-bottom: 1px solid rgba(200, 150, 60, .2);
+	}
+
+	.ks-table th {
+		padding: 12px 20px;
+		font-size: 0.62rem;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		color: rgba(245, 237, 214, .35);
+		font-weight: 400;
+		text-align: left;
+	}
+
+	.ks-table td {
+		padding: 18px 20px;
+		font-size: 0.9rem;
+		color: rgba(245, 237, 214, .7);
+		border-bottom: 1px solid rgba(255, 255, 255, .04);
+		vertical-align: middle;
+	}
+
+	.ks-table tbody tr {
+		transition: background 0.2s;
+	}
+	.ks-table tbody tr:hover {
+		background: rgba(200, 150, 60, .05);
+	}
+
+	.ks-table__date-day {
+		font-family: 'Playfair Display', serif;
+		font-size: 1.5rem;
+		font-weight: 900;
+		color: var(--gold);
+		line-height: 1;
+		display: block;
+	}
+	.ks-table__date-month {
+		font-size: 0.6rem;
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+		color: rgba(245, 237, 214, .3);
+		display: block;
+	}
+
+	.ks-table__salle {
+		font-weight: 600;
+		color: rgba(245, 237, 214, .85);
+	}
+	.ks-table__ville {
+		font-size: 0.8rem;
+		color: rgba(245, 237, 214, .4);
+		display: block;
+	}
+
+	.ks-table__prix {
+		font-family: 'Playfair Display', serif;
+		font-size: 1.15rem;
+		font-weight: 700;
+		color: var(--cream);
+	}
+
+	.ks-btn-reserver {
+		background: var(--red);
+		color: white;
+		border: none;
+		padding: 10px 22px;
+		font-family: 'Playfair Display', serif;
+		font-variant: small-caps;
+		font-size: 0.82rem;
+		letter-spacing: 0.12em;
+		cursor: pointer;
+		text-decoration: none;
+		display: inline-block;
+		transition: background 0.3s, transform 0.2s;
+		white-space: nowrap;
+	}
+	.ks-btn-reserver:hover {
+		background: #a02010;
+		color: white;
+		transform: translateY(-1px);
+	}
+
+	.ks-table--past {
+		opacity: .45;
+	}
+
+	.ks-empty {
+		font-style: italic;
+		color: rgba(245, 237, 214, .35);
+		font-size: 0.9rem;
+		padding: 24px 0;
+	}
+</style>{% endblock %}{% block body %}
+
+{# ── HERO ── #}
+<section class="ks-show-hero">
+	<a href="{{ path('app_home') }}" class="ks-show-hero__back">← Retour à l'accueil</a>
+
+	<div class="ks-show-hero__arch ks-show-hero__arch--1"></div>
+	<div class="ks-show-hero__arch ks-show-hero__arch--2"></div>
+
+	<div class="ks-show-hero__inner">
+		<p class="ks-show-hero__pretitle">Kastone Productions · Spectacle</p>
+		<div class="ks-show-hero__ornament">✦ ✦ ✦</div>
+		<h1 class="ks-show-hero__title">{{ spectacle.titre }}</h1>
+		<div class="ks-show-hero__rule">
+			<span></span>
+			<i>❧</i>
+			<span></span>
+		</div>
+
+		<div class="ks-show-hero__meta">
+			{% if spectacle.duree %}
+				<div class="ks-show-hero__meta-item">
+					<span class="ks-show-hero__meta-label">Durée</span>
+					<span class="ks-show-hero__meta-value">{{ spectacle.duree }}
+						min</span>
+				</div>
+			{% endif %}
+			<div class="ks-show-hero__meta-item">
+				<span class="ks-show-hero__meta-label">Artiste</span>
+				<span class="ks-show-hero__meta-value">{{ spectacle.artiste.prenom }}
+					{{ spectacle.artiste.nom }}</span>
+			</div>
+			<div class="ks-show-hero__meta-item">
+				<span class="ks-show-hero__meta-label">Représentations</span>
+				<span class="ks-show-hero__meta-value">{{ spectacle.representations|length }}</span>
+			</div>
+		</div>
+
+		{% if spectacle.description %}
+			<p class="ks-show-hero__desc">{{ spectacle.description }}</p>
+		{% endif %}
+
+		<a href="{{ path('app_artiste_show', {'id': spectacle.artiste.id}) }}" class="ks-show-hero__artiste-link">
+			Voir le profil de
+			{{ spectacle.artiste.prenom }}
+			{{ spectacle.artiste.nom }}
+			→
+		</a>
+	</div>
+</section>
+
+{# ── BANDEAU ── #}
+<div class="ks-band">
+	<span>✦</span>
+	Stand-Up
+	<span>✦</span>
+	One-Man Show
+	<span>✦</span>
+	Spectacle Vivant
+	<span>✦</span>
+</div>
+
+{# ── REPRÉSENTATIONS ── #}
+<section class="ks-section ks-section--dark">
+	<div class="ks-section__header">
+		<p class="ks-section__pretitle">Billetterie</p>
+		<h2 class="ks-section__title">Dates & Réservations</h2>
+		<div class="ks-section__rule">
+			<span></span>
+			<i>❧</i>
+			<span></span>
+		</div>
+	</div>
+
+	<div
+		class="ks-repros-wrap">
+
+		{# Séparation à venir / passées #}
+		{% set repros_a_venir = [] %}
+		{% set repros_passees = [] %}
+		{% for rep in spectacle.representations %}
+			{% if rep.dateRepresentation >= date() %}
+				{% set repros_a_venir = repros_a_venir|merge([rep]) %}
+			{% else %}
+				{% set repros_passees = repros_passees|merge([rep]) %}
+			{% endif %}
+		{% endfor %}
+
+		{# À venir #}
+		{% if repros_a_venir|length > 0 %}
+			<div class="ks-repros-subtitle">Dates disponibles</div>
+			<div class="ks-table-wrap">
+				<table class="ks-table">
+					<thead>
+						<tr>
+							<th>Date</th>
+							<th>Heure</th>
+							<th>Salle</th>
+							<th>Prix</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for rep in repros_a_venir %}
+							<tr>
+								<td>
+									<span class="ks-table__date-day">{{ rep.dateRepresentation|date('d') }}</span>
+									<span class="ks-table__date-month">{{ rep.dateRepresentation|date('M Y') }}</span>
+								</td>
+								<td>{{ rep.heureRepresentation|date('H:i') }}</td>
+								<td>
+									<span class="ks-table__salle">{{ rep.salle.nom }}</span>
+									<span class="ks-table__ville">{{ rep.salle.ville }}</span>
+								</td>
+								<td>
+									<span class="ks-table__prix">{{ rep.prix }}
+										€</span>
+								</td>
+								<td>
+									<a href="{{ path('reservation', { id: rep.id }) }}" class="ks-btn-reserver">
+										Réserver
+									</a>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+
+		{% else %}
+			<p class="ks-empty">Aucune représentation à venir pour ce spectacle.</p>
+		{% endif %}
+
+		{# Passées #}
+		{% if repros_passees|length > 0 %}
+			<div class="ks-repros-subtitle" style="opacity:.5; margin-top:56px;">Dates passées</div>
+			<div class="ks-table-wrap">
+				<table class="ks-table ks-table--past">
+					<thead>
+						<tr>
+							<th>Date</th>
+							<th>Heure</th>
+							<th>Salle</th>
+							<th>Prix</th>
+							<th></th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for rep in repros_passees %}
+							<tr>
+								<td>
+									<span class="ks-table__date-day">{{ rep.dateRepresentation|date('d') }}</span>
+									<span class="ks-table__date-month">{{ rep.dateRepresentation|date('M Y') }}</span>
+								</td>
+								<td>{{ rep.heureRepresentation|date('H:i') }}</td>
+								<td>
+									<span class="ks-table__salle">{{ rep.salle.nom }}</span>
+									<span class="ks-table__ville">{{ rep.salle.ville }}</span>
+								</td>
+								<td>
+									<span class="ks-table__prix">{{ rep.prix }}
+										€</span>
+								</td>
+								<td style="color:rgba(245,237,214,.25); font-style:italic; font-size:.8rem;">Terminé</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		{% endif %}
+
+	</div>
+</section>{% endblock %}

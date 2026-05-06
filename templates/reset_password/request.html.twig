@@ -1,25 +1,125 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Mot de passe oublié{% endblock %}
-{% block description %}Mot de passe oublié{% endblock %}
-{% block h1 %}Mot de passe oublié{% endblock %}
-{% block keywords %}Mot de passe oublié{% endblock %}
+{% block title %}Mot de passe oublié — Kastone Productions{% endblock %}
+{% block description %}Réinitialisez votre mot de passe Kastone Productions{% endblock %}
+{% block keywords %}mot de passe oublié, réinitialisation{% endblock %}
 
+{% block stylesheets %}
+{{ parent() }}
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root { --cream:#F5EDD6; --dark:#1C1208; --red:#C13020; --gold:#C8963C; --mid:#2E1F0A; }
+  body { background:var(--dark); font-family:'Crimson Pro',serif; color:var(--cream); }
+
+  .ks-auth { min-height:calc(100vh - 62px); display:flex; align-items:center; justify-content:center; padding:60px 24px; position:relative; overflow:hidden; }
+
+  .ks-auth__arch { position:absolute; left:50%; transform:translateX(-50%); border:1.5px solid rgba(200,150,60,.1); border-radius:50% 50% 0 0; pointer-events:none; }
+  .ks-auth__arch--1 { width:min(1000px,160vw); height:min(500px,80vw); top:-60px; }
+  .ks-auth__arch--2 { width:min(680px,120vw);  height:min(340px,60vw); top:-20px; }
+
+  .ks-auth__inner { position:relative; z-index:2; max-width:480px; width:100%; }
+
+  .ks-auth__header { text-align:center; margin-bottom:32px; }
+  .ks-auth__pretitle { font-size:.68rem; letter-spacing:.42em; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
+  .ks-auth__ornament { color:var(--gold); font-size:1.2rem; letter-spacing:.3em; opacity:.55; margin:6px 0 14px; }
+  .ks-auth__title { font-family:'Playfair Display',serif; font-size:clamp(2rem,5vw,4rem); font-weight:900; line-height:.9; color:var(--cream); text-transform:uppercase; letter-spacing:-.02em; margin:0; }
+  .ks-auth__title em { display:block; font-style:italic; font-weight:400; color:var(--gold); font-size:.48em; letter-spacing:.06em; line-height:1.7; margin-bottom:4px; }
+  .ks-auth__rule { display:flex; align-items:center; gap:14px; margin:20px auto; max-width:240px; }
+  .ks-auth__rule span { flex:1; height:1px; background:var(--gold); opacity:.3; }
+  .ks-auth__rule i { color:var(--gold); font-style:normal; opacity:.5; }
+
+  /* Carte */
+  .ks-auth__card { border:1px solid rgba(200,150,60,.2); padding:40px 44px; position:relative; }
+  .ks-auth__card::before { content:''; position:absolute; inset:8px; border:1px solid rgba(200,150,60,.07); pointer-events:none; }
+
+  /* Erreur flash */
+  .ks-auth__error {
+    background:rgba(193,48,32,.1); border:1px solid rgba(193,48,32,.3);
+    color:var(--red); padding:12px 18px; font-style:italic;
+    font-size:.88rem; margin-bottom:20px; text-align:center;
+  }
+
+  /* Champ email */
+  .ks-field { margin-bottom:18px; }
+  .ks-field label { display:block; font-size:.65rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(245,237,214,.4); margin-bottom:7px; }
+
+  .ks-auth__card input[type="email"],
+  .ks-auth__card input[type="text"] {
+    width:100%; background:rgba(255,255,255,.05) !important;
+    border:1px solid rgba(200,150,60,.2) !important; color:var(--cream) !important;
+    padding:12px 16px !important; font-family:'Crimson Pro',serif !important;
+    font-size:.98rem !important; outline:none !important; border-radius:0 !important;
+    transition:border-color .3s !important;
+  }
+  .ks-auth__card input:focus { border-color:var(--gold) !important; }
+  .ks-auth__card input::placeholder { color:rgba(245,237,214,.18) !important; }
+
+  /* Note explicative */
+  .ks-auth__note {
+    font-size:.85rem; font-style:italic; color:rgba(245,237,214,.35);
+    line-height:1.7; margin:14px 0 22px; text-align:center;
+  }
+
+  /* Bouton */
+  .ks-btn-submit {
+    width:100%; background:var(--red); color:white; border:none; border-radius:0 !important;
+    padding:14px 32px; font-family:'Playfair Display',serif;
+    font-variant:small-caps; font-size:1rem; letter-spacing:.15em;
+    cursor:pointer; transition:background .3s, transform .2s;
+  }
+  .ks-btn-submit:hover { background:#a02010; transform:translateY(-2px); }
+
+  /* Retour connexion */
+  .ks-auth__back { text-align:center; margin-top:20px; font-size:.85rem; color:rgba(245,237,214,.3); }
+  .ks-auth__back a { color:var(--gold); text-decoration:none; }
+  .ks-auth__back a:hover { text-decoration:underline; }
+</style>
+{% endblock %}
 
 {% block body %}
+
+<section class="ks-auth">
+  <div class="ks-auth__arch ks-auth__arch--1"></div>
+  <div class="ks-auth__arch ks-auth__arch--2"></div>
+
+  <div class="ks-auth__inner">
+
+    <div class="ks-auth__header">
+      <p class="ks-auth__pretitle">Kastone Productions · Mon compte</p>
+      <div class="ks-auth__ornament">✦ ✦ ✦</div>
+      <h1 class="ks-auth__title">
+        <em>Réinitialisation</em>
+        Mot de passe
+      </h1>
+      <div class="ks-auth__rule"><span></span><i>❧</i><span></span></div>
+    </div>
+
+    {# Erreurs flash #}
     {% for flash_error in app.flashes('reset_password_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+      <div class="ks-auth__error">{{ flash_error }}</div>
     {% endfor %}
-    
 
-    {{ form_start(requestForm, {'attr': {'class':'bg-white col-md-6 mx-auto p-4 border border-2 border-green mb-5'} })  }}
+    <div class="ks-auth__card">
+
+      {{ form_start(requestForm) }}
+
         {{ form_row(requestForm.email) }}
-        <div class="my-2">
-            <small>
-                Saisissez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe.
-            </small>
-        </div>
 
-        <button class="btn btn-custom w-100 pt-2">Envoyer un email</button>
-    {{ form_end(requestForm) }}
+        <p class="ks-auth__note">
+          Saisissez votre adresse e-mail et nous vous enverrons un lien pour réinitialiser votre mot de passe.
+        </p>
+
+        <button type="submit" class="ks-btn-submit">Envoyer le lien</button>
+
+      {{ form_end(requestForm) }}
+
+    </div>
+
+    <p class="ks-auth__back">
+      <a href="{{ path('app_login') }}">← Retour à la connexion</a>
+    </p>
+
+  </div>
+</section>
+
 {% endblock %}

@@ -1,94 +1,211 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Inscription{% endblock %}
-{% block h1 %}Inscription{% endblock %}
+{% block title %}Inscription — Kastone Productions{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root { --cream:#F5EDD6; --dark:#1C1208; --red:#C13020; --gold:#C8963C; --mid:#2E1F0A; }
+  body { background:var(--dark); font-family:'Crimson Pro',serif; color:var(--cream); }
+
+  .ks-auth { min-height:calc(100vh - 62px); display:flex; align-items:center; justify-content:center; padding:60px 24px; position:relative; overflow:hidden; }
+
+  .ks-auth__arch { position:absolute; left:50%; transform:translateX(-50%); border:1.5px solid rgba(200,150,60,.1); border-radius:50% 50% 0 0; pointer-events:none; }
+  .ks-auth__arch--1 { width:min(1000px,160vw); height:min(500px,80vw); top:-60px; }
+  .ks-auth__arch--2 { width:min(680px,120vw);  height:min(340px,60vw); top:-20px; }
+
+  .ks-auth__inner { position:relative; z-index:2; max-width:520px; width:100%; }
+
+  .ks-auth__header { text-align:center; margin-bottom:32px; }
+  .ks-auth__pretitle { font-size:.68rem; letter-spacing:.42em; text-transform:uppercase; color:var(--gold); margin-bottom:8px; }
+  .ks-auth__ornament { color:var(--gold); font-size:1.2rem; letter-spacing:.3em; opacity:.55; margin:6px 0 14px; }
+  .ks-auth__title { font-family:'Playfair Display',serif; font-size:clamp(2.5rem,5vw,4rem); font-weight:900; line-height:.9; color:var(--cream); text-transform:uppercase; letter-spacing:-.02em; margin:0; }
+  .ks-auth__title em { display:block; font-style:italic; font-weight:400; color:var(--gold); font-size:.45em; letter-spacing:.06em; line-height:1.7; margin-bottom:4px; }
+  .ks-auth__rule { display:flex; align-items:center; gap:14px; margin:20px auto; max-width:240px; }
+  .ks-auth__rule span { flex:1; height:1px; background:var(--gold); opacity:.3; }
+  .ks-auth__rule i { color:var(--gold); font-style:normal; opacity:.5; }
+
+  /* Carte formulaire */
+  .ks-auth__card {
+    border:1px solid rgba(200,150,60,.2); padding:40px 44px; position:relative;
+  }
+  .ks-auth__card::before { content:''; position:absolute; inset:8px; border:1px solid rgba(200,150,60,.07); pointer-events:none; }
+
+  /* Champs */
+  .ks-auth__card .form-field-group,
+  .ks-auth__card div { margin-bottom:16px; }
+
+  .ks-auth__card label {
+    display:block; font-size:.65rem; letter-spacing:.2em; text-transform:uppercase;
+    color:rgba(245,237,214,.4); margin-bottom:6px;
+  }
+
+  .ks-auth__card input[type="text"],
+  .ks-auth__card input[type="email"],
+  .ks-auth__card input[type="password"] {
+    width:100%; background:rgba(255,255,255,.05) !important;
+    border:1px solid rgba(200,150,60,.2) !important; color:var(--cream) !important;
+    padding:11px 16px !important; font-family:'Crimson Pro',serif !important;
+    font-size:.95rem !important; border-radius:0 !important; outline:none !important;
+    transition:border-color .3s !important;
+  }
+  .ks-auth__card input:focus { border-color:var(--gold) !important; }
+  .ks-auth__card input::placeholder { color:rgba(245,237,214,.15) !important; }
+
+  /* Password wrapper */
+  .password-wrapper { position:relative; }
+  .password-wrapper input { padding-right:44px !important; }
+  .toggle-password {
+    position:absolute; right:12px; top:50%; transform:translateY(-50%);
+    background:none; border:none; color:rgba(245,237,214,.3); cursor:pointer;
+    transition:color .3s; padding:0;
+  }
+  .toggle-password:hover { color:var(--gold); }
+
+  /* Checkbox CGV */
+  .agree-terms-row {
+    display:flex; align-items:flex-start; gap:12px; margin:20px 0 !important;
+  }
+  .agree-terms-row input[type="checkbox"] { margin-top:3px; accent-color:var(--gold); flex-shrink:0; }
+  .agree-terms-row label {
+    font-size:.88rem !important; letter-spacing:normal !important; text-transform:none !important;
+    color:rgba(245,237,214,.55) !important; line-height:1.5;
+  }
+  .agree-terms-row label a { color:var(--gold); text-decoration:none; }
+  .agree-terms-row label a:hover { text-decoration:underline; }
+  .agree-terms-row label span { color:var(--red); }
+
+  /* Erreurs */
+  .ks-auth__card .form-error,
+  .ks-auth__card ul { color:var(--red); font-size:.82rem; font-style:italic; margin-top:4px; list-style:none; padding:0; }
+
+  /* Bouton */
+  .btn-register {
+    width:100%; background:var(--red); color:white; border:none;
+    padding:14px 32px; font-family:'Playfair Display',serif;
+    font-variant:small-caps; font-size:1rem; letter-spacing:.15em;
+    cursor:pointer; margin-top:8px; transition:background .3s, transform .2s;
+    border-radius: 0 !important;
+  }
+  .btn-register:hover { background:#a02010; transform:translateY(-2px); }
+
+  /* Lien connexion */
+  .ks-auth__login {
+    text-align:center; margin-top:20px; font-size:.85rem;
+    color:rgba(245,237,214,.35);
+  }
+  .ks-auth__login a { color:var(--gold); text-decoration:none; }
+  .ks-auth__login a:hover { text-decoration:underline; }
+
+  /* Alert success */
+  .ks-alert { background:rgba(200,150,60,.12); border:1px solid rgba(200,150,60,.3);
+    color:var(--gold); padding:12px 18px; font-style:italic; font-size:.9rem; margin-bottom:20px; text-align:center; }
+</style>
+{% endblock %}
 
 {% block body %}
 
-{# Flash email envoyé #}
-{% for message in app.flashes('success') %}
-	<div class="alert alert-success col-md-6 mx-auto text-center" role="alert">
-		✅ {{ message }}
-	</div>
-{% endfor %}
+<section class="ks-auth">
+  <div class="ks-auth__arch ks-auth__arch--1"></div>
+  <div class="ks-auth__arch ks-auth__arch--2"></div>
 
-{{ form_errors(registrationForm) }}
+  <div class="ks-auth__inner">
 
-{{ form_start(registrationForm, {'attr': {'class': 'register-card', 'novalidate': 'novalidate'}}) }}
-
-    {# Prénom #}
-    <div class="form-field-group">
-        {{ form_label(registrationForm.prenom, null, {'label_attr': {'class': 'form-label'}}) }}
-        {{ form_widget(registrationForm.prenom, {'attr': {'class': 'form-control'}}) }}
-        {{ form_errors(registrationForm.prenom) }}
+    <div class="ks-auth__header">
+      <p class="ks-auth__pretitle">Kastone Productions · Mon compte</p>
+      <div class="ks-auth__ornament">✦ ✦ ✦</div>
+      <h1 class="ks-auth__title">
+        <em>Rejoignez-nous</em>
+        Inscription
+      </h1>
+      <div class="ks-auth__rule"><span></span><i>❧</i><span></span></div>
     </div>
 
-    {# Nom #}
-    <div class="form-field-group">
-        {{ form_label(registrationForm.nom, null, {'label_attr': {'class': 'form-label'}}) }}
-        {{ form_widget(registrationForm.nom, {'attr': {'class': 'form-control'}}) }}
-        {{ form_errors(registrationForm.nom) }}
-    </div>
+    {% for message in app.flashes('success') %}
+      <div class="ks-alert">✅ {{ message }}</div>
+    {% endfor %}
 
-    {# Email #}
-    <div class="form-field-group">
-        {{ form_label(registrationForm.email, null, {'label_attr': {'class': 'form-label'}}) }}
-        {{ form_widget(registrationForm.email, {'attr': {'class': 'form-control'}}) }}
-        {{ form_errors(registrationForm.email) }}
-    </div>
+    {{ form_errors(registrationForm) }}
 
-    {# Mot de passe #}
-    <div class="form-field-group">
-        {{ form_label(registrationForm.plainPassword.first, null, {'label_attr': {'class': 'form-label'}}) }}
-        <div class="password-wrapper">
-            {{ form_widget(registrationForm.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
-            <button type="button" class="toggle-password" onclick="togglePassword(this)" aria-label="Afficher/masquer le mot de passe">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
-                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
-                </svg>
-            </button>
+    <div class="ks-auth__card">
+      {{ form_start(registrationForm, {'attr': {'novalidate': 'novalidate'}}) }}
+
+        <div class="form-field-group">
+          {{ form_label(registrationForm.prenom) }}
+          {{ form_widget(registrationForm.prenom) }}
+          {{ form_errors(registrationForm.prenom) }}
         </div>
-        {{ form_errors(registrationForm.plainPassword.first) }}
-    </div>
 
-    {# Confirmation mot de passe #}
-    <div class="form-field-group">
-        {{ form_label(registrationForm.plainPassword.second, null, {'label_attr': {'class': 'form-label'}}) }}
-        <div class="password-wrapper">
-            {{ form_widget(registrationForm.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
-            <button type="button" class="toggle-password" onclick="togglePassword(this)" aria-label="Afficher/masquer le mot de passe">
-                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" viewBox="0 0 16 16">
-                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
-                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
-                </svg>
-            </button>
+        <div class="form-field-group">
+          {{ form_label(registrationForm.nom) }}
+          {{ form_widget(registrationForm.nom) }}
+          {{ form_errors(registrationForm.nom) }}
         </div>
-        {{ form_errors(registrationForm.plainPassword.second) }}
+
+        <div class="form-field-group">
+          {{ form_label(registrationForm.email) }}
+          {{ form_widget(registrationForm.email) }}
+          {{ form_errors(registrationForm.email) }}
+        </div>
+
+        <div class="form-field-group">
+          {{ form_label(registrationForm.plainPassword.first) }}
+          <div class="password-wrapper">
+            {{ form_widget(registrationForm.plainPassword.first) }}
+            <button type="button" class="toggle-password" onclick="togglePassword(this)" aria-label="Afficher/masquer">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+              </svg>
+            </button>
+          </div>
+          {{ form_errors(registrationForm.plainPassword.first) }}
+        </div>
+
+        <div class="form-field-group">
+          {{ form_label(registrationForm.plainPassword.second) }}
+          <div class="password-wrapper">
+            {{ form_widget(registrationForm.plainPassword.second) }}
+            <button type="button" class="toggle-password" onclick="togglePassword(this)" aria-label="Afficher/masquer">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="currentColor" viewBox="0 0 16 16">
+                <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
+                <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
+              </svg>
+            </button>
+          </div>
+          {{ form_errors(registrationForm.plainPassword.second) }}
+        </div>
+
+        <div class="agree-terms-row">
+          {{ form_widget(registrationForm.agreeTerms) }}
+          <label for="{{ registrationForm.agreeTerms.vars.id }}">
+            J'accepte les <a href="{{ path('app_cgv') }}" target="_blank">conditions générales de vente</a>. <span>*</span>
+          </label>
+        </div>
+        {{ form_errors(registrationForm.agreeTerms) }}
+
+        <button type="submit" class="btn-register">S'inscrire</button>
+
+      {{ form_end(registrationForm) }}
     </div>
 
-    {# Conditions d'utilisation #}
-    <div class="agree-terms-row">
-        {{ form_widget(registrationForm.agreeTerms) }}
-        <label for="{{ registrationForm.agreeTerms.vars.id }}">
-            J'accepte les <a href="{{ path('app_cgv') }}" target="_blank">conditions générales de vente.</a> <span>*</span>
-        </label>
-    </div>
-    {{ form_errors(registrationForm.agreeTerms) }}
+    <p class="ks-auth__login">
+      Déjà un compte ? <a href="{{ path('app_login') }}">Se connecter</a>
+    </p>
 
-    <button type="submit" class="btn-register">S'inscrire</button>
-
-{{ form_end(registrationForm) }}
+  </div>
+</section>
 
 {% endblock %}
 
 {% block javascripts %}
 <script>
-    function togglePassword(btn) {
-        const input = btn.previousElementSibling;
-        const isPassword = input.type === 'password';
-        input.type = isPassword ? 'text' : 'password';
-        btn.style.color = isPassword ? '#4db6ac' : '#888';
-    }
+  function togglePassword(btn) {
+    const input = btn.previousElementSibling;
+    const isPassword = input.type === 'password';
+    input.type = isPassword ? 'text' : 'password';
+    btn.style.color = isPassword ? '#C8963C' : 'rgba(245,237,214,.3)';
+  }
 </script>
 {% endblock %}

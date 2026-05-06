@@ -1,109 +1,621 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ artiste.prenom }} {{ artiste.nom }}{% endblock %}
-{% block h1 %}{{ artiste.prenom }} {{ artiste.nom }}{% endblock %}
+{% block title %}
+	{{ artiste.prenom }}
+	{{ artiste.nom }}
+	— Kastone Productions
+{% endblock %}
+{% block h1 %}
+	{{ artiste.prenom }}
+	{{ artiste.nom }}
+{% endblock %}
 
-{% block body %}
+{% block stylesheets %}
+	{{ parent() }}
+	<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400&display=swap" rel="stylesheet">
+	<style>:root
+	{
+		--cream: #F5EDD6;
+		--dark: #1C1208;
+		--red: #C13020;
+		--gold: #C8963C;
+		--pale: #EAE0C4;
+		--mid: #2E1F0A;
+	}
 
-<div class="container my-5">
+	body {
+		background: var(--cream);
+		font-family: 'Crimson Pro', serif;
+		color: var(--dark);
+	}
 
-    {# Bio #}
-    <div class="row mb-5 align-items-center">
-        {% if artiste.photo %}
-            <div class="col-md-4 mb-4 mb-md-0">
-                <img src="{{ asset('images/' ~ artiste.photo) }}"
-                     class="img-fluid rounded shadow-sm w-100"
-                     style="max-height: 400px; object-fit: cover;"
-                     alt="Photo de {{ artiste.prenom }} {{ artiste.nom }}">
-            </div>
-        {% endif %}
+	/* ── HERO ARTISTE ── */
+	.ks-artist-hero {
+		background: var(--dark);
+		position: relative;
+		overflow: hidden;
+		padding: 100px 40px 80px;
+	}
 
-        <div class="col-md-8 d-flex flex-column justify-content-center">
-            {% if artiste.bio %}
-                <p class="lead">{{ artiste.bio }}</p>
-            {% else %}
-                <p class="text-muted">Pas de bio pour cet artiste.</p>
-            {% endif %}
-        </div>
-    </div>
+	.ks-artist-hero__arch {
+		position: absolute;
+		left: 50%;
+		transform: translateX(-50%);
+		border: 1.5px solid rgba(200, 150, 60, 0.12);
+		border-radius: 50% 50% 0 0;
+		pointer-events: none;
+	}
+	.ks-artist-hero__arch--1 {
+		width: min(1000px, 160vw);
+		height: min(500px, 80vw);
+		top: -60px;
+	}
+	.ks-artist-hero__arch--2 {
+		width: min(700px, 120vw);
+		height: min(350px, 60vw);
+		top: -20px;
+	}
 
-    {# Spectacles et représentations #}
-    {% if artiste.spectacles|length > 0 %}
+	.ks-artist-hero__inner {
+		position: relative;
+		z-index: 2;
+		max-width: 1100px;
+		margin: 0 auto;
+		display: grid;
+		grid-template-columns: 320px 1fr;
+		gap: 72px;
+		align-items: center;
+	}
 
-        {% for spectacle in artiste.spectacles %}
+	@media(max-width: 768px) {
+		.ks-artist-hero__inner {
+			grid-template-columns: 1fr;
+			gap: 40px;
+			text-align: center;
+		}
+	}
 
-            <div class="spectacle-block mb-5">
-                <div class="spectacle-header">
-                    <h2 class="spectacle-titre">{{ spectacle.titre }}</h2>
-                    {% if spectacle.duree %}
-                        <span class="spectacle-duree">⏱ {{ spectacle.duree }} min</span>
-                    {% endif %}
-                </div>
+	.ks-artist-hero__img-wrap {
+		position: relative;
+	}
 
-                {% if spectacle.description %}
-                    <p class="spectacle-description">{{ spectacle.description }}</p>
-                {% endif %}
+	.ks-artist-hero__img-wrap::before {
+		content: '';
+		position: absolute;
+		inset: -10px;
+		border: 1px solid rgba(200, 150, 60, 0.25);
+		pointer-events: none;
+	}
 
-                {% if spectacle.representations|length > 0 %}
+	.ks-artist-hero__img {
+		width: 100%;
+		height: 380px;
+		object-fit: cover;
+		object-position: top;
+		display: block;
+		filter: sepia(10%) grayscale(15%);
+	}
 
-                    {# Sépare à venir / passées #}
-                    {% set repros_a_venir = [] %}
-                    {% set repros_passees = [] %}
-                    {% for rep in spectacle.representations %}
-                        {% if rep.dateRepresentation >= date() %}
-                            {% set repros_a_venir = repros_a_venir|merge([rep]) %}
-                        {% else %}
-                            {% set repros_passees = repros_passees|merge([rep]) %}
-                        {% endif %}
-                    {% endfor %}
+	.ks-artist-hero__img-placeholder {
+		width: 100%;
+		height: 380px;
+		background: rgba(255, 255, 255, 0.04);
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		color: rgba(245, 237, 214, 0.2);
+		font-style: italic;
+	}
 
-                    {% if repros_a_venir|length > 0 %}
-                        <h3 class="repros-section-title">Dates disponibles</h3>
-                        <div class="table-responsive">
-                            <table class="table-repros">
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Heure</th>
-                                        <th>Salle</th>
-                                        <th>Ville</th>
-                                        <th>Prix</th>
-                                        <th></th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {% for rep in repros_a_venir %}
-                                        <tr>
-                                            <td>{{ rep.dateRepresentation|date('d/m/Y') }}</td>
-                                            <td>{{ rep.heureRepresentation|date('H:i') }}</td>
-                                            <td>{{ rep.salle.nom }}</td>
-                                            <td>{{ rep.salle.ville }}</td>
-                                            <td><strong>{{ rep.prix }} €</strong></td>
-                                            <td>
-                                                <a href="{{ path('reservation', { id: rep.id }) }}" class="btn-reserver">
-                                                    Réserver
-                                                </a>
-                                            </td>
-                                        </tr>
-                                    {% endfor %}
-                                </tbody>
-                            </table>
-                        </div>
-                    {% else %}
-                        <p class="text-muted">Aucune représentation à venir pour ce spectacle.</p>
-                    {% endif %}
+	.ks-artist-hero__pretitle {
+		font-size: 0.68rem;
+		letter-spacing: 0.42em;
+		text-transform: uppercase;
+		color: var(--gold);
+		margin-bottom: 10px;
+	}
 
-                {% else %}
-                    <p class="text-muted">Aucune représentation programmée.</p>
-                {% endif %}
-            </div>
+	.ks-artist-hero__name {
+		font-family: 'Playfair Display', serif;
+		font-size: clamp(2.5rem, 5vw, 5rem);
+		font-weight: 900;
+		line-height: .9;
+		color: var(--cream);
+		text-transform: uppercase;
+		letter-spacing: -0.02em;
+		margin-bottom: 8px;
+	}
 
-        {% endfor %}
+	.ks-artist-hero__name em {
+		display: block;
+		font-style: italic;
+		font-weight: 400;
+		font-size: 0.55em;
+		color: var(--gold);
+		letter-spacing: 0.06em;
+		line-height: 1.6;
+	}
 
-    {% else %}
-        <p class="text-muted text-center">Aucun spectacle pour le moment.</p>
-    {% endif %}
+	.ks-artist-hero__rule {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+		margin: 20px 0;
+		max-width: 340px;
+	}
+	@media(max-width: 768px) {
+		.ks-artist-hero__rule {
+			margin: 20px auto;
+		}
+	}
+	.ks-artist-hero__rule span {
+		flex: 1;
+		height: 1px;
+		background: var(--gold);
+		opacity: .3;
+	}
+	.ks-artist-hero__rule i {
+		color: var(--gold);
+		font-style: normal;
+		opacity: .5;
+	}
 
+	.ks-artist-hero__bio {
+		font-size: 1.05rem;
+		line-height: 1.85;
+		color: rgba(245, 237, 214, .6);
+		font-style: italic;
+	}
+
+	.ks-artist-hero__back {
+		position: absolute;
+		top: 24px;
+		left: 40px;
+		z-index: 3;
+		color: rgba(245, 237, 214, .4);
+		text-decoration: none;
+		font-size: 0.72rem;
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+		transition: color 0.3s;
+	}
+	.ks-artist-hero__back:hover {
+		color: var(--gold);
+	}
+
+	/* ── BANDEAU ── */
+	.ks-band {
+		background: var(--gold);
+		padding: 12px 0;
+		display: flex;
+		justify-content: center;
+		gap: 24px;
+		flex-wrap: wrap;
+		font-family: 'Playfair Display', serif;
+		font-size: 0.72rem;
+		letter-spacing: 0.2em;
+		font-variant: small-caps;
+		color: var(--dark);
+		border-top: 2px solid rgba(28, 18, 8, .12);
+	}
+	.ks-band span {
+		opacity: .4;
+	}
+
+	/* ── SECTION BASE ── */
+	.ks-section {
+		padding: 80px 40px;
+	}
+	.ks-section--dark {
+		background: var(--dark);
+		color: var(--cream);
+	}
+	.ks-section--mid {
+		background: var(--mid);
+		color: var(--cream);
+	}
+
+	.ks-section__header {
+		margin-bottom: 48px;
+	}
+
+	.ks-section__pretitle {
+		font-size: 0.68rem;
+		letter-spacing: 0.42em;
+		text-transform: uppercase;
+		margin-bottom: 8px;
+		color: var(--gold);
+	}
+
+	.ks-section__title {
+		font-family: 'Playfair Display', serif;
+		font-size: clamp(1.8rem, 3vw, 2.8rem);
+		font-weight: 900;
+		text-transform: uppercase;
+		line-height: 1;
+		letter-spacing: -0.01em;
+		margin: 0;
+	}
+
+	.ks-section__rule {
+		display: flex;
+		align-items: center;
+		gap: 14px;
+		margin: 14px 0 0;
+		max-width: 240px;
+	}
+	.ks-section__rule span {
+		flex: 1;
+		height: 1px;
+		background: var(--gold);
+		opacity: .4;
+	}
+	.ks-section__rule i {
+		color: var(--gold);
+		font-style: normal;
+		opacity: .5;
+	}
+
+	/* ── BLOC SPECTACLE ── */
+	.ks-spectacle-block {
+		max-width: 960px;
+		margin: 0 auto 60px;
+		border: 1px solid rgba(200, 150, 60, .15);
+		overflow: hidden;
+	}
+
+	.ks-spectacle-block__header {
+		padding: 32px 40px;
+		background: rgba(255, 255, 255, .03);
+		border-bottom: 1px solid rgba(200, 150, 60, .12);
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
+		gap: 24px;
+		flex-wrap: wrap;
+	}
+
+	.ks-spectacle-block__titre {
+		font-family: 'Playfair Display', serif;
+		font-size: 1.9rem;
+		font-weight: 900;
+		color: var(--cream);
+		line-height: 1;
+	}
+
+	.ks-spectacle-block__duree {
+		font-size: 0.72rem;
+		letter-spacing: 0.2em;
+		text-transform: uppercase;
+		color: var(--gold);
+		border: 1px solid rgba(200, 150, 60, .35);
+		padding: 5px 12px;
+		white-space: nowrap;
+	}
+
+	.ks-spectacle-block__desc {
+		padding: 24px 40px;
+		font-size: 0.95rem;
+		line-height: 1.8;
+		color: rgba(245, 237, 214, .5);
+		font-style: italic;
+		border-bottom: 1px solid rgba(200, 150, 60, .08);
+	}
+
+	/* ── SOUS-TITRE DATES ── */
+	.ks-repros-title {
+		font-family: 'Playfair Display', serif;
+		font-size: 0.8rem;
+		font-variant: small-caps;
+		letter-spacing: 0.2em;
+		color: var(--gold);
+		padding: 18px 40px 10px;
+		border-bottom: 1px solid rgba(200, 150, 60, .08);
+	}
+
+	/* ── TABLEAU REPRÉSENTATIONS ── */
+	.ks-table-wrap {
+		overflow-x: auto;
+	}
+
+	.ks-table {
+		width: 100%;
+		border-collapse: collapse;
+	}
+
+	.ks-table thead tr {
+		border-bottom: 1px solid rgba(200, 150, 60, .2);
+	}
+
+	.ks-table th {
+		padding: 12px 20px;
+		font-size: 0.62rem;
+		letter-spacing: 0.22em;
+		text-transform: uppercase;
+		color: rgba(245, 237, 214, .35);
+		font-weight: 400;
+		text-align: left;
+	}
+
+	.ks-table td {
+		padding: 16px 20px;
+		font-size: 0.9rem;
+		color: rgba(245, 237, 214, .7);
+		border-bottom: 1px solid rgba(255, 255, 255, .04);
+		vertical-align: middle;
+	}
+
+	.ks-table tbody tr {
+		transition: background 0.2s;
+	}
+	.ks-table tbody tr:hover {
+		background: rgba(200, 150, 60, .05);
+	}
+
+	.ks-table__date-day {
+		font-family: 'Playfair Display', serif;
+		font-size: 1.4rem;
+		font-weight: 900;
+		color: var(--gold);
+		line-height: 1;
+		display: block;
+	}
+
+	.ks-table__date-month {
+		font-size: 0.6rem;
+		letter-spacing: 0.15em;
+		text-transform: uppercase;
+		color: rgba(245, 237, 214, .3);
+		display: block;
+	}
+
+	.ks-table__prix {
+		font-family: 'Playfair Display', serif;
+		font-size: 1.1rem;
+		font-weight: 700;
+		color: var(--cream);
+	}
+
+	.ks-table__salle {
+		font-weight: 600;
+		color: rgba(245, 237, 214, .85);
+	}
+	.ks-table__ville {
+		font-size: 0.8rem;
+		color: rgba(245, 237, 214, .4);
+		display: block;
+	}
+
+	.ks-btn-reserver {
+		background: var(--red);
+		color: white;
+		border: none;
+		padding: 9px 20px;
+		font-family: 'Playfair Display', serif;
+		font-variant: small-caps;
+		font-size: 0.82rem;
+		letter-spacing: 0.12em;
+		cursor: pointer;
+		text-decoration: none;
+		display: inline-block;
+		transition: background 0.3s, transform 0.2s;
+		white-space: nowrap;
+	}
+	.ks-btn-reserver:hover {
+		background: #a02010;
+		color: white;
+		transform: translateY(-1px);
+	}
+
+	.ks-empty {
+		padding: 24px 40px;
+		font-style: italic;
+		color: rgba(245, 237, 214, .35);
+		font-size: 0.9rem;
+	}
+
+	/* ── PASSÉES ── */
+	.ks-repros-past {
+		opacity: .5;
+	}
+	.ks-repros-past .ks-table__date-day {
+		color: rgba(200, 150, 60, .5);
+	}
+
+	/* ── AUCUN SPECTACLE ── */
+	.ks-no-shows {
+		text-align: center;
+		padding: 80px 40px;
+		font-style: italic;
+		color: rgba(245, 237, 214, .35);
+	}
+</style>{% endblock %}{% block body %}
+
+{# ── HERO ── #}
+<section class="ks-artist-hero">
+	<a href="{{ path('app_artiste_index') }}" class="ks-artist-hero__back">← Tous les artistes</a>
+
+	<div class="ks-artist-hero__arch ks-artist-hero__arch--1"></div>
+	<div class="ks-artist-hero__arch ks-artist-hero__arch--2"></div>
+
+	<div
+		class="ks-artist-hero__inner">
+
+		{# Photo #}
+		<div class="ks-artist-hero__img-wrap">
+			{% if artiste.photo %}
+				<img src="{{ asset('images/' ~ artiste.photo) }}" class="ks-artist-hero__img" alt="Photo de {{ artiste.prenom }} {{ artiste.nom }}">
+			{% else %}
+				<div class="ks-artist-hero__img-placeholder">Pas de photo</div>
+			{% endif %}
+		</div>
+
+		{# Infos #}
+		<div>
+			<p class="ks-artist-hero__pretitle">Kastone Productions · Artiste</p>
+			<h1 class="ks-artist-hero__name">
+				<em>{{ artiste.prenom }}</em>
+				{{ artiste.nom }}
+			</h1>
+			<div class="ks-artist-hero__rule">
+				<span></span>
+				<i>❧</i>
+				<span></span>
+			</div>
+			{% if artiste.bio %}
+				<p class="ks-artist-hero__bio">{{ artiste.bio }}</p>
+			{% else %}
+				<p class="ks-artist-hero__bio">Pas de biographie pour cet artiste.</p>
+			{% endif %}
+		</div>
+
+	</div>
+</section>
+
+{# ── BANDEAU ── #}
+<div class="ks-band">
+	<span>✦</span>
+	Stand-Up
+	<span>✦</span>
+	One-Man Show
+	<span>✦</span>
+	Spectacle Vivant
+	<span>✦</span>
 </div>
 
-{% endblock %}
+{# ── SPECTACLES ── #}
+<section class="ks-section ks-section--dark">
+	<div class="ks-section__header">
+		<p class="ks-section__pretitle">Programmation</p>
+		<h2 class="ks-section__title">Ses Spectacles</h2>
+		<div class="ks-section__rule">
+			<span></span>
+			<i>❧</i>
+			<span></span>
+		</div>
+	</div>
+
+	{% if artiste.spectacles|length > 0 %}
+
+		{% for spectacle in artiste.spectacles %}
+
+			{# Séparation à venir / passées #}
+			{% set repros_a_venir = [] %}
+			{% set repros_passees = [] %}
+			{% for rep in spectacle.representations %}
+				{% if rep.dateRepresentation >= date() %}
+					{% set repros_a_venir = repros_a_venir|merge([rep]) %}
+				{% else %}
+					{% set repros_passees = repros_passees|merge([rep]) %}
+				{% endif %}
+			{% endfor %}
+
+			<div
+				class="ks-spectacle-block">
+
+				{# En-tête spectacle #}
+				<div class="ks-spectacle-block__header">
+					<div class="ks-spectacle-block__titre">{{ spectacle.titre }}</div>
+					{% if spectacle.duree %}
+						<div class="ks-spectacle-block__duree">⏱
+							{{ spectacle.duree }}
+							min</div>
+					{% endif %}
+				</div>
+
+				{% if spectacle.description %}
+					<div class="ks-spectacle-block__desc">{{ spectacle.description }}</div>
+				{% endif %}
+
+				{# Dates à venir #}
+				{% if repros_a_venir|length > 0 %}
+					<div class="ks-repros-title">Dates disponibles</div>
+					<div class="ks-table-wrap">
+						<table class="ks-table">
+							<thead>
+								<tr>
+									<th>Date</th>
+									<th>Heure</th>
+									<th>Salle</th>
+									<th>Prix</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for rep in repros_a_venir %}
+									<tr>
+										<td>
+											<span class="ks-table__date-day">{{ rep.dateRepresentation|date('d') }}</span>
+											<span class="ks-table__date-month">{{ rep.dateRepresentation|date('M Y') }}</span>
+										</td>
+										<td>{{ rep.heureRepresentation|date('H:i') }}</td>
+										<td>
+											<span class="ks-table__salle">{{ rep.salle.nom }}</span>
+											<span class="ks-table__ville">{{ rep.salle.ville }}</span>
+										</td>
+										<td>
+											<span class="ks-table__prix">{{ rep.prix }}
+												€</span>
+										</td>
+										<td>
+											<a href="{{ path('reservation', { id: rep.id }) }}" class="ks-btn-reserver">
+												Réserver
+											</a>
+										</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+
+				{% else %}
+					<p class="ks-empty">Aucune représentation à venir pour ce spectacle.</p>
+				{% endif %}
+
+				{# Dates passées #}
+				{% if repros_passees|length > 0 %}
+					<div class="ks-repros-title" style="opacity:.5;">Dates passées</div>
+					<div class="ks-table-wrap ks-repros-past">
+						<table class="ks-table">
+							<thead>
+								<tr>
+									<th>Date</th>
+									<th>Heure</th>
+									<th>Salle</th>
+									<th>Prix</th>
+									<th></th>
+								</tr>
+							</thead>
+							<tbody>
+								{% for rep in repros_passees %}
+									<tr>
+										<td>
+											<span class="ks-table__date-day">{{ rep.dateRepresentation|date('d') }}</span>
+											<span class="ks-table__date-month">{{ rep.dateRepresentation|date('M Y') }}</span>
+										</td>
+										<td>{{ rep.heureRepresentation|date('H:i') }}</td>
+										<td>
+											<span class="ks-table__salle">{{ rep.salle.nom }}</span>
+											<span class="ks-table__ville">{{ rep.salle.ville }}</span>
+										</td>
+										<td>
+											<span class="ks-table__prix">{{ rep.prix }}
+												€</span>
+										</td>
+										<td style="color:rgba(245,237,214,.2); font-style:italic; font-size:.8rem;">Terminé</td>
+									</tr>
+								{% endfor %}
+							</tbody>
+						</table>
+					</div>
+				{% endif %}
+
+			</div>
+
+		{% endfor %}
+
+	{% else %}
+		<div class="ks-no-shows">Aucun spectacle pour le moment.</div>
+	{% endif %}
+
+</section>{% endblock %}
